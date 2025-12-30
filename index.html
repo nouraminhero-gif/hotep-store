@@ -3,31 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | طلب سريع</title>
+    <title>HOTEP | تأكيد الطلب</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
         .container { max-width: 450px; margin: 10px auto; background: #111; border: 2px solid #D4AF37; border-radius: 30px; padding: 20px; box-shadow: 0 0 25px rgba(212,175,55,0.3); }
-        .product-img { width: 100%; border-radius: 20px; border: 1px solid #333; height: auto; }
-        .price-badge { background: #D4AF37; color: #000; font-size: 26px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -20px; position: relative; }
-        input { width: 100%; padding: 15px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; }
-        button { width: 100%; padding: 18px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 22px; cursor: pointer; margin-top: 20px; }
-        button:disabled { background: #555; }
+        .brand-header { color: #D4AF37; font-size: 35px; font-weight: bold; margin-bottom: 15px; }
+        .product-img { width: 100%; border-radius: 20px; border: 1px solid #333; display: block; height: auto; }
+        .price-badge { background: #D4AF37; color: #000; font-size: 26px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -25px; position: relative; z-index: 5; }
+        input, select { width: 100%; padding: 15px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; outline: none; }
+        button { width: 100%; padding: 18px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 22px; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:active { transform: scale(0.98); }
+        button:disabled { background: #555; color: #888; }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h1 style="color:#D4AF37">HOTEP</h1>
-    <img src="https://l.top4top.io/p_36510goa90.jpg" class="product-img">
+    <div class="brand-header">HOTEP</div>
+    
+    <div style="position: relative;">
+        <img src="https://l.top4top.io/p_36510goa90.jpg" class="product-img">
+    </div>
+    
     <div class="price-badge">200 جنيهاً</div>
+
+    <p style="margin-top:20px; color:#ccc;">أدخل بياناتك وسيتم شحن الطلب فوراً</p>
+
     <input type="text" id="name" placeholder="الاسم بالكامل">
     <input type="tel" id="phone" placeholder="رقم الهاتف">
-    <input type="text" id="address" placeholder="العنوان بالتفصيل">
+    <input type="text" id="address" placeholder="عنوان التوصيل بالتفصيل">
+
+    <select id="size">
+        <option value="M">Medium (M)</option>
+        <option value="L">Large (L)</option>
+        <option value="XL">X-Large (XL)</option>
+        <option value="XXL">XX-Large (XXL)</option>
+    </select>
+
     <button id="sendBtn" onclick="sendOrder()">تأكيد الطلب الآن</button>
 </div>
+
 <script>
-    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.firebaseio.com/" };
+    // تم تعديل الرابط ليتوافق مع سيرفر بلجيكا الخاص بك في Firebase
+    const firebaseConfig = {
+        databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/"
+    };
+    
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
 
@@ -36,27 +59,33 @@
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
+        const size = document.getElementById('size').value;
 
         if(name && phone && address) {
             btn.disabled = true;
-            btn.innerText = "جاري الحفظ...";
-            // الإرسال للمسار الرئيسي مباشرة
+            btn.innerText = "جاري الإرسال...";
+
+            // إرسال البيانات
             db.ref('orders').push({
-                name: name,
-                phone: phone,
-                address: address,
-                date: new Date().toLocaleString('ar-EG')
+                customer_name: name,
+                customer_phone: phone,
+                customer_address: address,
+                product_size: size,
+                order_date: new Date().toLocaleString('ar-EG')
             }).then(() => {
-                alert("✅ تم استلام طلبك بنجاح!");
+                alert("✅ تم استلام طلبك بنجاح! شكراً لك.");
                 window.location.reload();
-            }).catch((e) => {
-                alert("خطأ: اضغط على Publish في Firebase");
+            }).catch((error) => {
+                alert("حدث خطأ في الشبكة، حاول مرة أخرى.");
                 btn.disabled = false;
                 btn.innerText = "تأكيد الطلب الآن";
             });
-        } else { alert("اكمل البيانات"); }
+        } else {
+            alert("يرجى ملء كافة البيانات");
+        }
     }
 </script>
+
 </body>
 </html>
 
