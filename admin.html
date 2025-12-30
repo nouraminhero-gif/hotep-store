@@ -4,57 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP Admin | Inventory & Delivery</title>
+    <title>HOTEP Admin | Inventory Fix</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --orange: #ff8c00; }
+        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --red: #d9534f; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        
-        .top-nav { background: var(--dark); padding: 10px 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
+        .top-nav { background: var(--dark); padding: 10px 15px; border-bottom: 2px solid var(--gold); text-align: center; }
         .top-nav h1 { color: var(--gold); margin: 0; font-size: 18px; }
 
-        /* المخزن */
-        .inventory-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; padding: 10px; background: #1a1a1a; margin: 10px; border-radius: 10px; border: 1px solid var(--gold); }
-        .inv-item { text-align: center; border-left: 1px solid #333; }
-        .inv-item:last-child { border: none; }
-        .inv-item label { display: block; font-size: 10px; color: var(--gold); }
-        .inv-item input { background: transparent; border: none; color: #fff; width: 50px; text-align: center; font-size: 16px; font-weight: bold; }
+        /* بار المخزن المحسن */
+        .inventory-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; padding: 10px; background: #111; margin: 10px; border-radius: 10px; border: 1px solid #333; }
+        .inv-item { text-align: center; background: #000; padding: 5px; border-radius: 5px; border: 1px solid #222; }
+        .inv-item label { display: block; font-size: 10px; color: var(--gold); margin-bottom: 2px; }
+        .inv-item input { background: transparent; border: none; color: #fff; width: 100%; text-align: center; font-size: 14px; font-weight: bold; outline: none; }
 
-        .stats-container { display: flex; gap: 8px; padding: 10px; overflow-x: auto; }
-        .stat-card { background: var(--dark); border: 1px solid #333; padding: 10px; border-radius: 8px; flex: 1; text-align: center; min-width: 100px; }
+        .stats-container { display: flex; gap: 8px; padding: 0 10px; }
+        .stat-card { background: var(--dark); border: 1px solid #333; padding: 10px; border-radius: 8px; flex: 1; text-align: center; }
         .stat-card span { display: block; font-size: 16px; font-weight: bold; color: var(--gold); }
-        .stat-label { font-size: 10px; color: #aaa; }
+        .stat-label { font-size: 10px; color: #888; }
 
         .table-container { margin: 10px; background: var(--dark); border-radius: 12px; border: 1px solid #333; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 900px; }
-        th { background: #1a1a1a; color: var(--gold); padding: 10px; font-size: 12px; border-bottom: 1px solid #444; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { background: #1a1a1a; color: var(--gold); padding: 10px; font-size: 12px; }
         td { padding: 8px; border-bottom: 1px solid #222; text-align: center; font-size: 12px; }
         
-        .btn-mini { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; border: none; font-size: 14px; transition: 0.2s; text-decoration: none; }
-        .btn-delivered { background: var(--blue); } /* زر التسليم */
+        .btn-mini { width: 35px; height: 35px; border-radius: 8px; border: none; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-delivered { background: var(--blue); }
         .btn-shipped { background: var(--green); }
-        .btn-wa { background: #075e54; }
-        .btn-del { background: #d9534f; }
+        .btn-del { background: var(--red); }
+        .btn-mini:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
 
-    <nav class="top-nav">
-        <h1>HOTEP <span style="font-weight:100">| إدارة المخزن والطلبات</span></h1>
-    </nav>
+    <nav class="top-nav"><h1>HOTEP | لوحة التحكم والمخزن</h1></nav>
 
-    <div class="inventory-bar" id="inventoryInputs">
-        <div class="inv-item"><label>مخزن M</label><input type="number" id="inv-M" value="0" onchange="updateInvManually('M', this.value)"></div>
-        <div class="inv-item"><label>مخزن L</label><input type="number" id="inv-L" value="0" onchange="updateInvManually('L', this.value)"></div>
-        <div class="inv-item"><label>مخزن XL</label><input type="number" id="inv-XL" value="0" onchange="updateInvManually('XL', this.value)"></div>
-        <div class="inv-item"><label>مخزن XXL</label><input type="number" id="inv-XXL" value="0" onchange="updateInvManually('XXL', this.value)"></div>
-        <div class="inv-item"><label>مخزن XXXL</label><input type="number" id="inv-XXXL" value="0" onchange="updateInvManually('XXXL', this.value)"></div>
+    <div class="inventory-bar">
+        <div class="inv-item"><label>مخزن M</label><input type="number" id="inv-M" onchange="saveInv('M', this.value)"></div>
+        <div class="inv-item"><label>مخزن L</label><input type="number" id="inv-L" onchange="saveInv('L', this.value)"></div>
+        <div class="inv-item"><label>مخزن XL</label><input type="number" id="inv-XL" onchange="saveInv('XL', this.value)"></div>
+        <div class="inv-item"><label>مخزن XXL</label><input type="number" id="inv-XXL" onchange="saveInv('XXL', this.value)"></div>
     </div>
 
     <div class="stats-container">
         <div class="stat-card"><div class="stat-label">أوردرات نشطة</div><span id="sActive">0</span></div>
         <div class="stat-card"><div class="stat-label">تم التسليم</div><span id="sDone">0</span></div>
-        <div class="stat-card"><div class="stat-label">إجمالي المبيعات</div><span id="sMoney">0</span></div>
+        <div class="stat-card"><div class="stat-label">أرباح تم تحصيلها</div><span id="sMoney">0</span></div>
     </div>
 
     <div class="table-container">
@@ -62,11 +57,10 @@
             <thead>
                 <tr>
                     <th>العميل</th>
-                    <th>العنوان</th>
+                    <th>المحافظة</th>
                     <th>المقاس</th>
                     <th>الكمية</th>
                     <th>الإجمالي</th>
-                    <th>الحالة</th>
                     <th>التحكم</th>
                 </tr>
             </thead>
@@ -81,20 +75,21 @@
         const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        
-        // جلب المخزن وتحديثه
+
+        // 1. مزامنة المخزن
         db.ref('inventory').on('value', s => {
-            const data = s.val() || {};
-            ['M','L','XL','XXL','XXXL'].forEach(size => {
-                document.getElementById('inv-'+size).value = data[size] || 0;
-            });
+            const data = s.val() || { M:0, L:0, XL:0, XXL:0 };
+            for (let size in data) {
+                const el = document.getElementById('inv-' + size);
+                if(el) el.value = data[size];
+            }
         });
 
-        function updateInvManually(size, val) {
-            db.ref('inventory/' + size).set(parseInt(val));
+        function saveInv(size, val) {
+            db.ref('inventory/' + size).set(parseInt(val) || 0);
         }
 
-        // جلب الطلبات
+        // 2. معالجة الطلبات
         db.ref('orders').on('value', (snapshot) => {
             const tbody = document.getElementById('ordersBody');
             tbody.innerHTML = '';
@@ -107,53 +102,53 @@
                 if (o.الحاله === 'تم التسليم') {
                     s.done++;
                     s.money += (parseInt(o.الاجمالي) || 0);
-                    return; // إخفاء الأوردر من الجدول
+                } else {
+                    s.active++;
+                    const row = `
+                        <tr>
+                            <td style="text-align:right"><b>${o.الاسم}</b><br><small>${o.الهاتف}</small></td>
+                            <td>${o.المحافظة}</td>
+                            <td><b style="color:var(--gold)">${o.المقاس}</b></td>
+                            <td>${o.الكمية}</td>
+                            <td style="color:var(--green)">${o.الاجمالي} ج</td>
+                            <td>
+                                <div style="display:flex; gap:5px; justify-content:center">
+                                    <button onclick="confirmDelivery('${id}', '${o.المقاس}', '${o.الكمية}')" class="btn-mini btn-delivered" title="تم التسليم"><i class="fas fa-check-double"></i></button>
+                                    <button onclick="updateStatus('${id}', 'تم الشحن')" class="btn-mini btn-shipped"><i class="fas fa-truck"></i></button>
+                                    <button onclick="deleteOrder('${id}')" class="btn-mini btn-del"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>`;
+                    tbody.insertAdjacentHTML('afterbegin', row);
                 }
-
-                s.active++;
-                const amount = parseInt(o.الاجمالي) || 0;
-
-                const row = `
-                    <tr>
-                        <td style="text-align:right"><b>${o.الاسم}</b><br>${o.الهاتف}</td>
-                        <td style="text-align:right">${o.المحافظة}</td>
-                        <td><b style="color:var(--gold)">${o.المقاس}</b></td>
-                        <td>${o.الكمية}</td>
-                        <td style="color:var(--green)">${amount} ج</td>
-                        <td><small>${o.الحاله || 'جديد'}</small></td>
-                        <td>
-                            <div style="display:flex; gap:4px; justify-content:center">
-                                <button onclick="deliverOrder('${id}', '${o.المقاس}', ${o.الكمية})" class="btn-mini btn-delivered" title="تم التسليم ونقص المخزن"><i class="fas fa-hand-holding-usd"></i></button>
-                                <button onclick="markStatus('${id}', 'تم الشحن')" class="btn-mini btn-shipped"><i class="fas fa-truck"></i></button>
-                                <a href="https://wa.me/2${o.الهاتف}" target="_blank" class="btn-mini btn-wa"><i class="fab fa-whatsapp"></i></a>
-                                <button onclick="del('${id}')" class="btn-mini btn-del"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>`;
-                tbody.insertAdjacentHTML('afterbegin', row);
             });
             document.getElementById('sActive').innerText = s.active;
             document.getElementById('sDone').innerText = s.done;
             document.getElementById('sMoney').innerText = s.money + " ج";
         });
 
-        function markStatus(id, status) { db.ref('orders/' + id).update({ الحاله: status }); }
+        // 3. وظيفة التسليم والخصم (الإصلاح الجذري)
+        function confirmDelivery(id, size, qtyText) {
+            if (!confirm('هل تم تسليم الأوردر؟ سيختفي من هنا ويخصم من المخزن.')) return;
 
-        function deliverOrder(id, size, qty) {
-            if(confirm('تأكيد استلام العميل؟ سيتم إخفاء الأوردر وخصم الكمية من المخزن.')) {
-                // 1. تحديث حالة الأوردر
-                db.ref('orders/' + id).update({ الحاله: 'تم التسليم' });
-                
-                // 2. خصم من المخزن
-                const invRef = db.ref('inventory/' + size);
-                invRef.once('value', s => {
-                    let current = s.val() || 0;
-                    invRef.set(Math.max(0, current - parseInt(qty)));
+            // استخراج الرقم فقط من الكمية (مثلاً "2 علبة" تصبح 2)
+            const qtyNum = parseInt(qtyText.replace(/[^0-9]/g, '')) || 1;
+
+            // تحديث حالة الأوردر أولاً
+            db.ref('orders/' + id).update({ الحاله: 'تم التسليم' })
+            .then(() => {
+                // خصم من المخزن بعد نجاح تحديث الحالة
+                const invPath = db.ref('inventory/' + size);
+                invPath.once('value', snapshot => {
+                    let currentInv = parseInt(snapshot.val()) || 0;
+                    invPath.set(Math.max(0, currentInv - qtyNum));
                 });
-            }
+            })
+            .catch(err => alert('حدث خطأ: ' + err.message));
         }
 
-        function del(id) { if(confirm('حذف؟')) db.ref('orders/' + id).remove(); }
+        function updateStatus(id, st) { db.ref('orders/' + id).update({ الحاله: st }); }
+        function deleteOrder(id) { if(confirm('حذف؟')) db.ref('orders/' + id).remove(); }
     </script>
 </body>
 </html>
