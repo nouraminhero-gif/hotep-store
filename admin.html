@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP Admin | لوحة التحكم</title>
+    <title>HOTEP Admin | لوحة التحكم المطورة</title>
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #121212; --green: #25d366; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
@@ -17,33 +17,33 @@
         .stat-card span { display: block; font-size: 20px; font-weight: bold; color: var(--gold); }
 
         .table-container { overflow-x: auto; background: var(--dark); border-radius: 15px; border: 1px solid #333; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
-        th { background: var(--gold); color: #000; padding: 12px; font-size: 13px; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+        th { background: var(--gold); color: #000; padding: 12px; font-size: 13px; }
         td { padding: 12px; border-bottom: 1px solid #222; text-align: center; font-size: 13px; vertical-align: middle; }
         
-        .client-info { text-align: right; min-width: 150px; }
+        .client-info { text-align: right; min-width: 180px; }
         .highlight { color: var(--gold); font-weight: bold; }
-        .price-tag { background: rgba(212, 175, 55, 0.1); padding: 4px 8px; border-radius: 5px; color: var(--gold); border: 1px solid rgba(212, 175, 55, 0.3); }
+        .price-tag { background: rgba(37, 211, 102, 0.1); padding: 4px 8px; border-radius: 5px; color: var(--green); border: 1px solid rgba(37, 211, 102, 0.3); font-weight: bold; }
         
-        .action-btns { display: flex; gap: 5px; justify-content: center; }
-        .btn { padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; text-decoration: none; font-size: 11px; }
+        .btn { padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; text-decoration: none; font-size: 11px; display: inline-block; margin: 2px; }
         .btn-call { background: #007bff; }
         .btn-wa { background: var(--green); }
         .btn-del { background: #dc3545; }
         
-        .status-new { color: #25d366; font-size: 11px; border: 1px solid #25d366; padding: 2px 5px; border-radius: 4px; }
         tr:hover { background: #1a1a1a; }
+        .date-text { font-size: 10px; color: #888; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>HOTEP | Orders Management</h1>
+        <h1>HOTEP | إدارة الطلبات</h1>
     </div>
 
     <div class="stats-bar">
-        <div class="stat-card">عدد الطلبات<span id="totalOrders">0</span></div>
-        <div class="stat-card">إجمالي المبيعات<span id="totalSales">0</span></div>
+        <div class="stat-card">إجمالي الطلبات<span id="totalOrders">0</span></div>
+        <div class="stat-card">مبيعات المنتجات<span id="totalSales">0</span></div>
+        <div class="stat-card">إجمالي التحصيل<span id="totalCollection">0</span></div>
     </div>
 
     <div class="table-container">
@@ -51,13 +51,13 @@
             <thead>
                 <tr>
                     <th>التاريخ</th>
-                    <th>العميل</th>
-                    <th>المحافظة والعنوان</th>
+                    <th>بيانات العميل</th>
+                    <th>العنوان</th>
                     <th>المقاس</th>
                     <th>الكمية</th>
-                    <th>حساب المنتج</th>
+                    <th>سعر المنتج</th>
                     <th>الشحن</th>
-                    <th>الإجمالي</th>
+                    <th>الإجمالي المطلوب</th>
                     <th>الإجراءات</th>
                 </tr>
             </thead>
@@ -78,38 +78,42 @@
             const tbody = document.getElementById('ordersBody');
             tbody.innerHTML = '';
             let count = 0;
-            let sales = 0;
+            let productSales = 0;
+            let totalWithShipping = 0;
 
             snapshot.forEach((child) => {
                 const order = child.val();
                 const id = child.key;
                 count++;
 
-                // معالجة الأرقام للحساب الإجمالي في الإحصائيات
-                const itemPrice = parseInt(order.الحساب) || 0;
-                const shipPrice = parseInt(order.الشحن) || 0;
-                const finalTotal = itemPrice + shipPrice;
-                sales += itemPrice;
+                // تحويل القيم لنصوص وأرقام لضمان عدم حدوث خطأ في الحساب
+                const pPrice = parseInt(order.سعر_المنتجات) || 0;
+                const sPrice = parseInt(order.سعر_الشحن) || 0;
+                const fTotal = parseInt(order.الاجمالي) || (pPrice + sPrice);
+
+                productSales += pPrice;
+                totalWithShipping += fTotal;
 
                 const row = `
                     <tr>
-                        <td style="font-size:10px; color:#888">${order.التاريخ || '-'}</td>
+                        <td class="date-text">${order.التاريخ || '-'}</td>
                         <td class="client-info">
                             <b>${order.الاسم}</b><br>
                             <small>${order.الهاتف}</small>
                         </td>
-                        <td>${order.المحافظة}<br><small style="color:#888">${order.العنوان}</small></td>
+                        <td>
+                            <small>${order.المحافظة}</small><br>
+                            <small style="color:#888">${order.العنوان}</small>
+                        </td>
                         <td class="highlight">${order.المقاس}</td>
                         <td>${order.الكمية}</td>
-                        <td>${order.الحساب}</td>
-                        <td>${order.الشحن}</td>
-                        <td><span class="price-tag">${finalTotal} ج.م</span></td>
+                        <td>${pPrice} ج</td>
+                        <td>${sPrice} ج</td>
+                        <td><span class="price-tag">${fTotal} ج.م</span></td>
                         <td>
-                            <div class="action-btns">
-                                <a href="tel:${order.الهاتف}" class="btn btn-call">اتصال</a>
-                                <a href="https://wa.me/2${order.الهاتف}" target="_blank" class="btn btn-wa">واتساب</a>
-                                <button onclick="deleteOrder('${id}')" class="btn btn-del">حذف</button>
-                            </div>
+                            <a href="tel:${order.الهاتف}" class="btn btn-call">اتصال</a>
+                            <a href="https://wa.me/2${order.الهاتف}" target="_blank" class="btn btn-wa">واتساب</a>
+                            <button onclick="deleteOrder('${id}')" class="btn btn-del">حذف</button>
                         </td>
                     </tr>
                 `;
@@ -117,11 +121,12 @@
             });
 
             document.getElementById('totalOrders').innerText = count;
-            document.getElementById('totalSales').innerText = sales + " ج.م";
+            document.getElementById('totalSales').innerText = productSales + " ج";
+            document.getElementById('totalCollection').innerText = totalWithShipping + " ج";
         });
 
         function deleteOrder(id) {
-            if(confirm('هل أنت متأكد من حذف هذا الأوردر؟')) {
+            if(confirm('هل تريد حذف هذا الطلب نهائياً؟')) {
                 db.child(id).remove();
             }
         }
