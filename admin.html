@@ -4,116 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP Dashboard | لوحة التحكم الاحترافية</title>
+    <title>HOTEP Admin | Compact</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --gray: #888; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --orange: #ff8c00; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* Sidebar & Layout */
-        .wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-        .top-nav { background: var(--dark); padding: 15px 25px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .top-nav h1 { color: var(--gold); margin: 0; font-size: 22px; letter-spacing: 2px; }
+        /* تقليص الهيدر */
+        .top-nav { background: var(--dark); padding: 8px 15px; border-bottom: 1px solid var(--gold); display: flex; justify-content: space-between; align-items: center; sticky: top; }
+        .top-nav h1 { color: var(--gold); margin: 0; font-size: 16px; letter-spacing: 1px; }
 
-        /* Stats Cards */
-        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
-        .stat-card { background: var(--dark); border: 1px solid #333; padding: 20px; border-radius: 15px; text-align: center; transition: 0.3s; }
-        .stat-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-        .stat-card i { font-size: 24px; color: var(--gold); margin-bottom: 10px; }
-        .stat-card span { display: block; font-size: 22px; font-weight: bold; margin-top: 5px; }
+        /* تصغير الكروت */
+        .stats-container { display: flex; gap: 8px; padding: 10px; overflow-x: auto; }
+        .stat-card { background: var(--dark); border: 1px solid #333; padding: 8px 15px; border-radius: 8px; flex: 1; text-align: center; min-width: 80px; }
+        .stat-card i { font-size: 14px; color: var(--gold); margin-bottom: 3px; }
+        .stat-card span { display: block; font-size: 14px; font-weight: bold; }
+        .stat-label { font-size: 10px; color: #888; }
 
-        /* Filters */
-        .filters { padding: 0 20px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
-        .filter-btn { background: #222; border: 1px solid #444; color: #fff; padding: 8px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .filter-btn.active { background: var(--gold); color: #000; font-weight: bold; border-color: var(--gold); }
-
-        /* Table Style */
-        .main-content { padding: 0 20px 20px; }
-        .table-container { background: var(--dark); border-radius: 15px; border: 1px solid #333; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 1200px; }
-        th { background: #1a1a1a; color: var(--gold); padding: 15px; font-size: 13px; text-align: center; border-bottom: 2px solid #333; }
-        td { padding: 15px; border-bottom: 1px solid #222; text-align: center; font-size: 13px; color: #eee; }
+        /* جدول مضغوط جداً */
+        .table-container { margin: 0 10px 10px; background: var(--dark); border-radius: 10px; border: 1px solid #333; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 850px; }
+        th { background: #1a1a1a; color: var(--gold); padding: 8px; font-size: 11px; border-bottom: 1px solid #333; }
+        td { padding: 6px 8px; border-bottom: 1px solid #222; text-align: center; font-size: 11px; }
         
-        /* Status Tags */
-        .status-tag { padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; }
-        .status-new { background: rgba(255, 193, 7, 0.2); color: #ffc107; border: 1px solid #ffc107; }
-        .status-shipped { background: rgba(37, 211, 102, 0.2); color: var(--green); border: 1px solid var(--green); }
-
-        /* Action Buttons */
-        .action-group { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
-        .btn-icon { width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; border: none; transition: 0.2s; text-decoration: none; }
+        .client-info { text-align: right; line-height: 1.2; }
+        .highlight { color: var(--gold); font-weight: bold; }
+        
+        /* تصغير الأزرار */
+        .action-group { display: flex; gap: 4px; justify-content: center; }
+        .btn-mini { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; border: none; text-decoration: none; font-size: 12px; transition: 0.2s; }
         .btn-shipped { background: var(--green); }
-        .btn-wa { background: #128c7e; }
-        .btn-messenger { background: var(--blue); }
-        .btn-print { background: #555; }
-        .btn-del { background: #dc3545; }
-        .btn-icon:hover { opacity: 0.8; transform: scale(1.1); }
+        .btn-wa { background: #075e54; }
+        .btn-share { background: var(--orange); }
+        .btn-print { background: #444; }
+        .btn-del { background: #bc1c1c; }
+        .btn-mini:hover { transform: scale(1.1); }
 
-        /* Print Style (Hide from Screen) */
-        @media print {
-            body * { visibility: hidden; }
-            #printSection, #printSection * { visibility: visible; }
-            #printSection { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; }
-        }
-
-        /* Invoice Overlay (Simple) */
-        #printArea { display: none; }
+        .status-tag { padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; text-transform: uppercase; }
+        .status-new { color: #ffc107; border: 1px solid #ffc107; }
+        .status-shipped { color: var(--green); border: 1px solid var(--green); }
     </style>
 </head>
 <body>
 
-    <div class="wrapper">
-        <nav class="top-nav">
-            <h1>HOTEP <small style="font-size: 12px; color: var(--gray);">ADMIN PANEL</small></h1>
-            <div id="currentTime" style="font-size: 12px; color: var(--gray);"></div>
-        </nav>
+    <nav class="top-nav">
+        <h1>HOTEP <span style="font-weight:100">| ADMIN</span></h1>
+        <div id="time" style="font-size: 10px; color: #666;"></div>
+    </nav>
 
-        <div class="stats-container">
-            <div class="stat-card">
-                <i class="fas fa-shopping-cart"></i>
-                كل الطلبات <span id="countAll">0</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-box"></i>
-                طلبات جديدة <span id="countNew">0</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-truck"></i>
-                تم الشحن <span id="countShipped">0</span>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-money-bill-wave"></i>
-                المبيعات المتوقعة <span id="totalMoney">0</span>
-            </div>
-        </div>
-
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterOrders('all', this)">الكل</button>
-            <button class="filter-btn" onclick="filterOrders('جديد', this)">الطلبات الجديدة</button>
-            <button class="filter-btn" onclick="filterOrders('تم الشحن', this)">المشحونة</button>
-        </div>
-
-        <div class="main-content">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>التاريخ</th>
-                            <th>العميل/الهاتف</th>
-                            <th>المحافظة/العنوان</th>
-                            <th>المقاس/الكمية</th>
-                            <th>الحساب</th>
-                            <th>الحالة</th>
-                            <th>الإجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ordersBody"></tbody>
-                </table>
-            </div>
-        </div>
+    <div class="stats-container">
+        <div class="stat-card"><div class="stat-label">الكل</div><span id="sAll">0</span></div>
+        <div class="stat-card"><div class="stat-label">جديد</div><span id="sNew" style="color:#ffc107">0</span></div>
+        <div class="stat-card"><div class="stat-label">مشحون</div><span id="sShipped" style="color:#25d366">0</span></div>
+        <div class="stat-card"><div class="stat-label">الخزنة</div><span id="sMoney">0</span></div>
     </div>
 
-    <div id="printArea"></div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>تاريخ</th>
+                    <th>العميل</th>
+                    <th>العنوان</th>
+                    <th>طلب</th>
+                    <th>إجمالي</th>
+                    <th>حالة</th>
+                    <th>تحكم</th>
+                </tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+        </table>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -123,111 +84,64 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database().ref('orders');
 
-        let allOrders = [];
-
         db.on('value', (snapshot) => {
-            allOrders = [];
-            snapshot.forEach((child) => {
-                allOrders.push({ id: child.key, ...child.val() });
-            });
-            renderOrders(allOrders);
-            updateStats();
-        });
-
-        function renderOrders(data) {
             const tbody = document.getElementById('ordersBody');
             tbody.innerHTML = '';
-            
-            // ترتيب الأحدث أولاً
-            data.slice().reverse().forEach((order) => {
-                const statusClass = order.الحاله === 'تم الشحن' ? 'status-shipped' : 'status-new';
-                const pPrice = parseInt(order.سعر_المنتجات) || 0;
-                const sPrice = parseInt(order.سعر_الشحن) || 0;
-                const fTotal = order.الاجمالي || (pPrice + sPrice);
+            let s = { all: 0, new: 0, shipped: 0, money: 0 };
 
-                // تجهيز رسائل المشاركة
-                const shareText = `طلب جديد من HOTEP:\nالعميل: ${order.الاسم}\nالهاتف: ${order.الهاتف}\nالعنوان: ${order.المحافظة} - ${order.العنوان}\nالمقاس: ${order.المقاس}\nالكمية: ${order.الكمية}\nالإجمالي: ${fTotal} ج`;
-                const waLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-                const messengerLink = `fb-messenger://share/?link=${encodeURIComponent(shareText)}&app_id=123456789`;
+            snapshot.forEach((child) => {
+                const o = child.val();
+                const id = child.key;
+                s.all++;
+                (o.الحاله === 'تم الشحن') ? s.shipped++ : s.new++;
+                s.money += (parseInt(o.الاجمالي) || 0);
+
+                const waText = encodeURIComponent(`✅ تأكيد HOTEP\nأستاذ ${o.الاسم}، طلبك ${o.الكمية} مقاس ${o.المقاس} جاهز. الحساب: ${o.الاجمالي}ج.\nأكد الجاهزية؟`);
+                const billText = `HOTEP BILL\n---\nالعميل: ${o.الاسم}\nهاتف: ${o.الهاتف}\n${o.المحافظة}: ${o.العنوان}\nالمحتوى: ${o.الكمية} - ${o.المقاس}\nالحساب: ${o.الاجمالي}ج`;
 
                 const row = `
                     <tr>
-                        <td style="font-size:10px">${order.التاريخ || '-'}</td>
-                        <td style="text-align:right"><b>${order.الاسم}</b><br><small>${order.الهاتف}</small></td>
-                        <td style="text-align:right">${order.المحافظة}<br><small style="color:#777">${order.العنوان}</small></td>
-                        <td>${order.المقاس}<br><small class="highlight">${order.الكمية}</small></td>
-                        <td class="highlight">${fTotal} ج</td>
-                        <td><span class="status-tag ${statusClass}">${order.الحاله || 'جديد'}</span></td>
+                        <td style="color:#666; font-size:9px">${o.التاريخ ? o.التاريخ.split(',')[0] : '-'}</td>
+                        <td class="client-info"><b>${o.الاسم}</b><br>${o.الهاتف}</td>
+                        <td class="client-info">${o.المحافظة}<br><span style="color:#666">${o.العنوان}</span></td>
+                        <td>${o.المقاس}<br><span class="highlight">${o.الكمية}</span></td>
+                        <td class="highlight" style="color:#25d366">${o.الاجمالي}ج</td>
+                        <td><span class="status-tag ${o.الحاله === 'تم الشحن' ? 'status-shipped' : 'status-new'}">${o.الحاله || 'جديد'}</span></td>
                         <td>
                             <div class="action-group">
-                                <button onclick="markAsShipped('${order.id}')" class="btn-icon btn-shipped" title="تحديد كمشحون"><i class="fas fa-check"></i></button>
-                                <a href="${waLink}" target="_blank" class="btn-icon btn-wa" title="مشاركة واتساب"><i class="fab fa-whatsapp"></i></a>
-                                <a href="https://m.me/" onclick="copyToClipboard('${shareText}')" target="_blank" class="btn-icon btn-messenger" title="نسخ لمسنجر"><i class="fab fa-facebook-messenger"></i></a>
-                                <button onclick="printInvoice('${order.id}')" class="btn-icon btn-print" title="طباعة بوليصة"><i class="fas fa-print"></i></button>
-                                <button onclick="deleteOrder('${order.id}')" class="btn-icon btn-del" title="حذف"><i class="fas fa-trash"></i></button>
+                                <button onclick="mark('${id}')" class="btn-mini btn-shipped"><i class="fas fa-check"></i></button>
+                                <a href="https://wa.me/2${o.الهاتف}?text=${waText}" target="_blank" class="btn-mini btn-wa"><i class="fab fa-whatsapp"></i></a>
+                                <button onclick="copy('${billText.replace(/\n/g, '\\n')}')" class="btn-mini btn-share"><i class="fas fa-share-nodes"></i></button>
+                                <button onclick="prnt('${id}')" class="btn-mini btn-print"><i class="fas fa-print"></i></button>
+                                <button onclick="del('${id}')" class="btn-mini btn-del"><i class="fas fa-times"></i></button>
                             </div>
                         </td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML('beforeend', row);
+                    </tr>`;
+                tbody.insertAdjacentHTML('afterbegin', row);
+            });
+            document.getElementById('sAll').innerText = s.all;
+            document.getElementById('sNew').innerText = s.new;
+            document.getElementById('sShipped').innerText = s.shipped;
+            document.getElementById('sMoney').innerText = s.money + "ج";
+        });
+
+        function mark(id) { db.child(id).update({ الحاله: 'تم الشحن' }); }
+        function copy(t) { navigator.clipboard.writeText(t.replace(/\\n/g, '\n')).then(() => alert("تم نسخ البوليصة")); }
+        function del(id) { if(confirm('حذف؟')) db.child(id).remove(); }
+        function prnt(id) {
+            db.child(id).once('value', s => {
+                const o = s.val();
+                const w = window.open('', '', 'width=400,height=400');
+                w.document.write(`<div dir="rtl" style="font-family:sans-serif; border:1px solid #000; padding:10px;">
+                    <h3>بوليصة HOTEP</h3>
+                    <p>${o.الاسم} | ${o.الهاتف}<br>${o.المحافظة} - ${o.العنوان}</p>
+                    <p>الطلب: ${o.الكمية} (${o.المقاس})</p>
+                    <hr><b>المطلوب: ${o.الاجمالي}ج</b>
+                </div>`);
+                w.print(); w.close();
             });
         }
-
-        function markAsShipped(id) {
-            db.child(id).update({ الحاله: 'تم الشحن' });
-        }
-
-        function filterOrders(status, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if (status === 'all') {
-                renderOrders(allOrders);
-            } else {
-                const filtered = allOrders.filter(o => (o.الحاله || 'جديد') === status);
-                renderOrders(filtered);
-            }
-        }
-
-        function updateStats() {
-            document.getElementById('countAll').innerText = allOrders.length;
-            document.getElementById('countNew').innerText = allOrders.filter(o => (o.الحاله || 'جديد') === 'جديد').length;
-            document.getElementById('countShipped').innerText = allOrders.filter(o => o.الحاله === 'تم الشحن').length;
-            
-            const total = allOrders.reduce((sum, o) => sum + (parseInt(o.الاجمالي) || 0), 0);
-            document.getElementById('totalMoney').innerText = total + " ج";
-        }
-
-        function printInvoice(id) {
-            const order = allOrders.find(o => o.id === id);
-            const printWin = window.open('', '', 'width=600,height=800');
-            printWin.document.write(`
-                <div dir="rtl" style="font-family:Arial; padding:40px; border:2px solid #000;">
-                    <h1 style="text-align:center; border-bottom:2px solid #000;">بوليصة شحن HOTEP</h1>
-                    <p><b>التاريخ:</b> ${order.التاريخ}</p>
-                    <p><b>اسم العميل:</b> ${order.الاسم}</p>
-                    <p><b>الهاتف:</b> ${order.الهاتف}</p>
-                    <p><b>العنوان:</b> ${order.المحافظة} - ${order.العنوان}</p>
-                    <hr>
-                    <p><b>المنتج:</b> بوكسر هوتب (علبة 2 قطعة)</p>
-                    <p><b>المقاس:</b> ${order.المقاس} | <b>الكمية:</b> ${order.الكمية}</p>
-                    <h2 style="text-align:left;">الإجمالي المطلوب: ${order.الاجمالي} جنيهاً</h2>
-                    <p style="text-align:center; margin-top:50px;">شكراً لشرائكم من HOTEP</p>
-                </div>
-            `);
-            printWin.print();
-            printWin.close();
-        }
-
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ بيانات الأوردر.. يمكنك لصقها الآن في مسنجر");
-        }
-
-        function deleteOrder(id) {
-            if(confirm('حذف الطلب نهائياً؟')) db.child(id).remove();
-        }
-
-        document.getElementById('currentTime').innerText = new Date().toLocaleString('ar-EG');
+        setInterval(() => { document.getElementById('time').innerText = new Date().toLocaleTimeString('ar-EG'); }, 1000);
     </script>
 </body>
 </html>
