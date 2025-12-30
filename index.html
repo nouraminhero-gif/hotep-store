@@ -8,31 +8,36 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 15px; margin: 0; }
-        .container { max-width: 450px; margin: auto; background: #111; border: 1px solid #D4AF37; border-radius: 25px; padding: 20px; box-shadow: 0 0 20px rgba(212,175,55,0.2); }
-        .brand-name { color: #D4AF37; font-size: 32px; font-weight: bold; letter-spacing: 4px; margin-bottom: 15px; }
-        .product-img { width: 100%; border-radius: 15px; border: 1px solid #333; margin-bottom: 10px; }
-        .price-tag { color: #fff; font-size: 24px; font-weight: bold; margin: 10px 0; background: #D4AF37; color: #000; display: inline-block; padding: 5px 20px; border-radius: 50px; }
-        input, select { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; }
-        label { display: block; text-align: right; margin-top: 10px; color: #D4AF37; font-size: 14px; padding-right: 5px; }
-        button { width: 100%; padding: 18px; background: #D4AF37; color: #000; border: none; border-radius: 10px; font-weight: bold; font-size: 20px; cursor: pointer; margin-top: 20px; }
-        button:disabled { background: #555; }
+        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
+        .container { max-width: 450px; margin: 10px auto; background: #111; border: 2px solid #D4AF37; border-radius: 30px; padding: 20px; box-shadow: 0 0 25px rgba(212,175,55,0.3); }
+        .brand-header { color: #D4AF37; font-size: 35px; font-weight: bold; letter-spacing: 5px; margin-bottom: 10px; text-shadow: 2px 2px 5px #000; }
+        .product-box { position: relative; margin-bottom: 15px; }
+        .product-img { width: 100%; border-radius: 20px; border: 1px solid #333; display: block; }
+        .price-badge { background: #D4AF37; color: #000; font-size: 26px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -25px; position: relative; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        input, select { width: 100%; padding: 15px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; outline: none; }
+        input:focus { border-color: #D4AF37; }
+        label { display: block; text-align: right; margin-top: 10px; color: #D4AF37; font-size: 14px; font-weight: bold; }
+        button { width: 100%; padding: 18px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 22px; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:active { transform: scale(0.98); }
+        button:disabled { background: #555; color: #888; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="brand-name">HOTEP</div>
+    <div class="brand-header">HOTEP</div>
     
-    <img src="https://i.ibb.co/hR8jH6v/product.jpg" class="product-img" alt="Hotep Product">
+    <div class="product-box">
+        <img src="https://i.ibb.co/ZzB6f3X/1000066988.jpg" class="product-img" alt="HOTEP Product">
+    </div>
     
-    <div class="price-tag">السعر: 200 جنيهاً</div>
+    <div class="price-badge">200 جنيهاً</div>
 
-    <p style="color: #aaa; font-size: 14px;">أدخل بياناتك وسيتم شحن الطلب فوراً</p>
+    <p style="margin-top:15px; color:#ccc;">سجل بياناتك وسيتم شحن الطلب فوراً</p>
 
     <input type="text" id="name" placeholder="الاسم بالكامل">
     <input type="tel" id="phone" placeholder="رقم الهاتف">
-    <input type="text" id="address" placeholder="عنوان التوصيل">
+    <input type="text" id="address" placeholder="عنوان التوصيل بالتفصيل">
 
     <label>اختر المقاس:</label>
     <select id="size">
@@ -45,13 +50,13 @@
     <label>اختر اللون:</label>
     <select id="color">
         <option value="أسود">أسود ملكي</option>
-        <option value="كحلي">كحلي</option>
     </select>
 
-    <button id="sendBtn" onclick="sendOrder()">تأكيد الطلب (الدفع عند الاستلام)</button>
+    <button id="sendBtn" onclick="sendOrder()">تأكيد الطلب الآن</button>
 </div>
 
 <script>
+    // إعدادات Firebase الخاصة بمشروعك
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.firebaseio.com/" };
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
@@ -70,22 +75,23 @@
 
             db.ref('orders/').push({
                 الاسم: name,
-                التليفون: phone,
+                الهاتف: phone,
                 العنوان: address,
                 المقاس: size,
                 اللون: color,
                 السعر: "200 ج",
+                المصدر: "إعلان فيسبوك",
                 التاريخ: new Date().toLocaleString('ar-EG')
             }).then(() => {
-                alert("تم استلام طلبك يا بطل! سنتصل بك خلال ساعات.");
+                alert("✅ تم استلام طلبك بنجاح! سنتصل بك قريباً.");
                 window.location.reload();
             }).catch((e) => {
-                alert("خطأ: " + e.message);
+                alert("عذراً، حدث خطأ: " + e.message);
                 btn.disabled = false;
                 btn.innerText = "تأكيد الطلب الآن";
             });
         } else {
-            alert("يرجى إكمال البيانات المطلوبة");
+            alert("يرجى إكمال جميع البيانات المطلوبة");
         }
     }
 </script>
