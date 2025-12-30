@@ -1,79 +1,151 @@
 <!DOCTYPE html>
-<html dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | Exclusive</title>
-    <link rel="icon" type="image/png" href="https://l.top4top.io/p_36510goa90.jpg">
-    <link rel="apple-touch-icon" href="https://l.top4top.io/p_36510goa90.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HOTEP | Quality</title>
     
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <link rel="icon" href="https://l.top4top.io/p_36510goa90.jpg">
+    <link rel="apple-touch-icon" href="https://l.top4top.io/p_36510goa90.jpg">
 
     <style>
-        /* التنسيقات الأساسية لضمان ظهور المحتوى */
-        body { background-color: #000 !important; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 10px; display: block !important; }
-        .container { max-width: 450px; margin: 0 auto; background: #111; border: 2px solid #D4AF37; border-radius: 25px; padding: 15px; display: block !important; opacity: 1 !important; }
-        .brand { color: #D4AF37; font-size: 32px; font-weight: bold; margin-bottom: 15px; }
-        .product-img { width: 100%; border-radius: 20px; border: 1px solid #222; }
-        .price-tag { background: #D4AF37; color: #000; font-size: 24px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -25px; position: relative; }
+        /* نظام الألوان والتنسيق لضمان الاستقرار */
+        :root { --gold: #D4AF37; --bg: #000; --card: #111; }
+        body { background: var(--bg); color: #fff; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 10px; display: block; }
+        .container { max-width: 450px; margin: 0 auto; background: var(--card); border: 2px solid var(--gold); border-radius: 20px; padding: 15px; box-sizing: border-box; }
         
-        /* قسم الخامة والجودة */
-        .quality-box { background: #1a1a1a; border-right: 4px solid #D4AF37; padding: 15px; margin: 20px 0; text-align: right; border-radius: 5px; }
-        .quality-box h3 { color: #D4AF37; margin: 0; font-size: 18px; }
-        .quality-box li { font-size: 14px; color: #ccc; margin: 5px 0; list-style: none; }
+        .brand { color: var(--gold); font-size: 28px; font-weight: bold; margin-bottom: 15px; }
+        .product-img { width: 100%; border-radius: 15px; border: 1px solid #333; display: block; }
+        .price-tag { background: var(--gold); color: #000; font-size: 22px; font-weight: bold; padding: 8px 20px; border-radius: 50px; display: inline-block; transform: translateY(-20px); }
 
-        .promo-box { border: 1px dashed #D4AF37; border-radius: 15px; padding: 15px; margin: 20px 0; text-align: right; background: #1a1a1a; font-size: 14px; }
+        .section { background: #1a1a1a; border-radius: 12px; padding: 12px; margin: 15px 0; text-align: right; border-right: 3px solid var(--gold); }
+        .section h3 { color: var(--gold); margin: 0 0 8px 0; font-size: 17px; }
+        .section p, .section li { font-size: 14px; margin: 5px 0; color: #ccc; list-style: none; }
+
+        /* الجدول */
+        .size-chart { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        .size-chart th { background: var(--gold); color: #000; padding: 8px; }
+        .size-chart td { border: 1px solid #333; padding: 8px; text-align: center; }
+
+        /* المدخلات */
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; outline: none; }
+        label { display: block; text-align: right; color: var(--gold); font-size: 13px; margin-right: 5px; }
         
-        /* جدول المقاسات */
-        .size-chart { width: 100%; border-collapse: collapse; margin: 20px 0; background: #1a1a1a; }
-        .size-chart th { background: #D4AF37; color: #000; padding: 10px; }
-        .size-chart td { border: 1px solid #333; padding: 8px; font-size: 13px; }
+        #orderBtn { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        #orderBtn:disabled { background: #555; }
 
-        input, select { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; }
-        label { display:
+        /* نافذة النجاح */
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 99; justify-content: center; align-items: center; }
+        .modal { background: var(--card); border: 2px solid var(--gold); padding: 25px; border-radius: 20px; width: 80%; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div id="successModal">
+    <div class="modal">
+        <h2 style="color:var(--gold)">HOTEP</h2>
+        <p>✅ تم استلام طلبك بنجاح</p>
+        <button onclick="location.reload()" style="background:var(--gold); border:none; padding:10px 20px; border-radius:8px; font-weight:bold;">موافق</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="brand">HOTEP</div>
+    <img src="https://l.top4top.io/p_36510goa90.jpg" class="product-img">
+    <div class="price-tag">200 جنيهاً</div>
+
+    <div class="section">
+        <h3>✨ الجودة الملكية</h3>
+        <li>• قطن مصري 100% ليكرا أصلي</li>
+        <li>• ملمس ناعم وثبات تام للألوان</li>
+    </div>
+
+    <div class="section" style="border-right-color: #28a745;">
+        <h3>🚚 العرض والشحن</h3>
+        <p>⭐ العبوة بها <b>2 قطعة</b> بـ 200ج فقط</p>
+        <p>• القاهرة والجيزة: <b>50 ج</b></p>
+        <p>• باقي المحافظات: <b>70 ج</b></p>
+    </div>
+
+    <h3 style="color:var(--gold); font-size: 15px; margin: 20px 0 5px 0;">جدول المقاسات (سم)</h3>
+    <table class="size-chart">
+        <tr><th>Size</th><th>الخصر</th><th>الطول</th></tr>
+        <tr><td>M</td><td>34</td><td>30</td></tr>
+        <tr><td>L</td><td>36</td><td>32</td></tr>
+        <tr><td>XL</td><td>38</td><td>35</td></tr>
+        <tr><td>2XL</td><td>40</td><td>38</td></tr>
+        <tr><td>3XL</td><td>42</td><td>40</td></tr>
+    </table>
+
+    <div style="margin-top:20px;">
+        <input type="text" id="name" placeholder="الاسم بالكامل">
+        <input type="tel" id="phone" placeholder="رقم الهاتف">
+        
+        <label>المحافظة:</label>
+        <select id="province">
+            <option value="القاهرة">القاهرة</option>
+            <option value="الجيزة">الجيزة</option>
+            <option value="الإسكندرية">الإسكندرية</option>
+            <option value="باقي المحافظات">باقي المحافظات</option>
+        </select>
+
+        <input type="text" id="address" placeholder="العنوان بالتفصيل">
+        <label>اللون:</label>
+        <select disabled><option>أسود فقط</option></select>
+
+        <label>المقاس:</label>
+        <select id="size">
+            <option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option>
+        </select>
+
+        <button id="orderBtn" onclick="sendOrder()">تأكيد الطلب الآن</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     
-    try {
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.database();
+    function sendOrder() {
+        const n = document.getElementById('name').value;
+        const p = document.getElementById('phone').value;
+        const a = document.getElementById('address').value;
+        
+        if(!n || !p || !a) { alert("من فضلك أكمل البيانات"); return; }
 
-        function submitOrder() {
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const addr = document.getElementById('address').value;
-            const prov = document.getElementById('province').value;
-            const size = document.getElementById('size').value;
+        const btn = document.getElementById('orderBtn');
+        btn.disabled = true;
+        btn.innerText = "جاري الإرسال...";
 
-            if(name && phone && addr) {
-                document.getElementById('orderBtn').disabled = true;
-                document.getElementById('orderBtn').innerText = "جاري الحفظ...";
-                
-                db.ref('orders').push({
-                    الاسم: name,
-                    الهاتف: phone,
-                    المحافظة: prov,
-                    العنوان: addr,
-                    اللون: "أسود",
-                    المقاس: size,
-                    التاريخ: new Date().toLocaleString('ar-EG')
-                }).then(() => {
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
+            
+            db.ref('orders').push({
+                الاسم: n,
+                الهاتف: p,
+                المحافظة: document.getElementById('province').value,
+                العنوان: a,
+                اللون: "أسود",
+                المقاس: document.getElementById('size').value,
+                التاريخ: new Date().toLocaleString('ar-EG')
+            }, (error) => {
+                if(error) {
+                    alert("عذراً، حدث خطأ. حاول مرة أخرى.");
+                    btn.disabled = false;
+                    btn.innerText = "تأكيد الطلب الآن";
+                } else {
                     document.getElementById('successModal').style.display = 'flex';
-                }).catch((error) => {
-                    alert("خطأ في الاتصال: " + error.message);
-                    document.getElementById('orderBtn').disabled = false;
-                    document.getElementById('orderBtn').innerText = "تأكيد الطلب الآن";
-                });
-            } else {
-                alert("يرجى ملء جميع البيانات");
-            }
+                }
+            });
+        } catch(e) {
+            alert("مشكلة في الاتصال بالسيرفر");
+            btn.disabled = false;
         }
-    } catch (e) {
-        console.error("Firebase Initialization Error", e);
     }
 </script>
 </body>
 </html>
-
 
