@@ -4,70 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مدير HOTEP</title>
+    
+    <link rel="icon" type="image/png" href="https://l.top4top.io/p_36510goa90.jpg">
     <link rel="apple-touch-icon" href="https://l.top4top.io/p_36510goa90.jpg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="مدير HOTEP">
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
         .header { text-align: center; color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 10px; margin-bottom: 20px; }
-        .order-card { background: #111; border: 1px solid #D4AF37; border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(212,175,55,0.1); }
+        .order-card { background: #111; border: 1px solid #D4AF37; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
         .btn-call { background: #28a745; color: white; text-decoration: none; padding: 12px; border-radius: 8px; display: inline-block; width: 45%; text-align: center; font-weight: bold; }
-        .btn-delete { background: #dc3545; color: white; padding: 12px; border-radius: 8px; display: inline-block; width: 45%; border: none; float: left; font-weight: bold; cursor: pointer; }
+        .btn-delete { background: #dc3545; color: white; padding: 12px; border-radius: 8px; display: inline-block; width: 45%; border: none; float: left; font-weight: bold; }
         .info { margin: 10px 0; font-size: 16px; border-bottom: 1px solid #222; padding-bottom: 5px; }
         .info b { color: #D4AF37; }
-        .count { background: #D4AF37; color: #000; padding: 5px 15px; border-radius: 20px; font-weight: bold; display: inline-block; margin-bottom: 15px; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>HOTEP ADMIN</h1>
-        <div id="orderCount" class="count">جاري التحميل...</div>
+        <h1>مدير HOTEP</h1>
     </div>
-    
-    <div id="ordersContainer">انتظر قليلاً...</div>
+    <div id="ordersContainer">جاري تحميل الطلبات...</div>
 
 <script>
-    // إعدادات قاعدة البيانات الخاصة بك
-    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    if (!firebase.apps.length) firebase.initializeApp(config);
     const db = firebase.database();
 
-    // جلب الطلبات وعرضها تلقائياً عند حدوث أي جديد
     db.ref('orders').on('value', (snapshot) => {
         const container = document.getElementById('ordersContainer');
-        const countBox = document.getElementById('orderCount');
         container.innerHTML = '';
-        let total = 0;
-
         snapshot.forEach((child) => {
-            total++;
             const val = child.val();
-            const id = child.key;
             container.innerHTML += `
                 <div class="order-card">
-                    <div class="info">👤 العميل: <b>${val.الاسم || val.Name}</b></div>
-                    <div class="info">📞 الموبايل: <b>${val.الهاتف || val.Phone}</b></div>
-                    <div class="info">📍 العنوان: <b>${val.العنوان || val.Address}</b></div>
-                    <div class="info">📏 المقاس: <b>${val.المقاس || val.Size}</b> | 🎨 اللون: <b>${val.اللون || val.Color}</b></div>
-                    <div class="info">🕒 التاريخ: <small>${val.التاريخ || val.Time || ''}</small></div>
-                    <a href="tel:${val.الهاتف || val.Phone}" class="btn-call">اتصال الآن</a>
-                    <button onclick="deleteOrder('${id}')" class="btn-delete">مسح الطلب</button>
+                    <div class="info">👤 العميل: <b>${val.الاسم}</b></div>
+                    <div class="info">📞 الهاتف: <b>${val.الهاتف}</b></div>
+                    <div class="info">📍 العنوان: <b>${val.العنوان}</b></div>
+                    <div class="info">📏 المقاس: <b>${val.المقاس}</b> | 🎨 اللون: <b>${val.اللون}</b></div>
+                    <a href="tel:${val.الهاتف}" class="btn-call">اتصال</a>
+                    <button onclick="if(confirm('حذف؟')) db.ref('orders').child('${child.key}').remove()" class="btn-delete">حذف</button>
                 </div>`;
         });
-        
-        countBox.innerText = "إجمالي الطلبات: " + total;
-        if (!snapshot.exists()) {
-            container.innerHTML = "<h3 style='text-align:center; color:#555;'>لا توجد طلبات حالياً</h3>";
-            countBox.innerText = "القائمة فارغة";
-        }
+        if (!snapshot.exists()) container.innerHTML = "لا توجد طلبات";
     });
-
-    // وظيفة حذف الطلب من قاعدة البيانات بعد تنفيذه
-    function deleteOrder(id) {
-        if(confirm("هل تريد مسح هذا الطلب نهائياً من القائمة؟")) {
-            db.ref('orders').child(id).remove();
-        }
-    }
 </script>
 </body>
 </html>
