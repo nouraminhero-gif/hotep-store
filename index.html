@@ -9,62 +9,129 @@
     
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark-grey: #111; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; }
-        .container { max-width: 500px; margin: 0 auto; background: var(--dark-grey); border: 2px solid var(--gold); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(212,175,55,0.2); }
         
-        .brand { color: var(--gold); font-size: 35px; font-weight: bold; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .product-img { width: 100%; border-radius: 15px; border: 1px solid #333; transition: 0.3s; }
-        .price-tag { background: var(--gold); color: #000; font-size: 24px; font-weight: bold; padding: 10px 30px; border-radius: 50px; display: inline-block; transform: translateY(-25px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        /* التوسيط الكامل للموقع */
+        body { 
+            background: var(--black); 
+            color: #fff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 10px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* توسيط العناصر أفقياً */
+            text-align: center; /* توسيط النصوص */
+        }
 
-        .info-section { background: #1a1a1a; border-right: 4px solid var(--gold); padding: 15px; margin: 15px 0; text-align: right; border-radius: 8px; }
-        .info-section h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
-        .info-section p { font-size: 15px; margin: 5px 0; color: #ddd; }
+        .container { 
+            width: 100%;
+            max-width: 450px; 
+            background: var(--dark-grey); 
+            border: 2px solid var(--gold); 
+            border-radius: 25px; 
+            padding: 20px; 
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(212,175,55,0.1);
+        }
+        
+        .brand { color: var(--gold); font-size: 35px; font-weight: bold; margin-bottom: 20px; }
+        
+        .product-img { width: 100%; border-radius: 20px; border: 1px solid #333; }
+        
+        .price-tag { 
+            background: var(--gold); 
+            color: #000; 
+            font-size: 24px; 
+            font-weight: bold; 
+            padding: 10px 35px; 
+            border-radius: 50px; 
+            display: inline-block; 
+            margin-top: -25px; 
+            position: relative; 
+            z-index: 5;
+        }
 
-        .size-chart { width: 100%; border-collapse: collapse; margin-top: 15px; background: #1a1a1a; overflow: hidden; border-radius: 10px; }
-        .size-chart th { background: var(--gold); color: #000; padding: 10px; font-size: 14px; }
-        .size-chart td { border: 1px solid #333; padding: 10px; font-size: 14px; text-align: center; }
+        /* تنسيق أقسام المعلومات لتكون في المنتصف */
+        .info-section { 
+            background: #1a1a1a; 
+            border: 1px solid #333;
+            border-top: 3px solid var(--gold); /* تم تغيير التصميم للتوسيط */
+            padding: 15px; 
+            margin: 20px 0; 
+            border-radius: 15px; 
+            text-align: center; /* جعل الكلام في المنتصف */
+        }
+        .info-section h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 19px; }
+        .info-section p { font-size: 15px; margin: 8px 0; color: #ddd; line-height: 1.6; }
 
-        .form-group { margin-top: 25px; text-align: right; }
-        input, select { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; transition: 0.3s; }
-        input:focus { border-color: var(--gold); outline: none; }
-        label { color: var(--gold); font-weight: bold; font-size: 14px; margin-right: 5px; }
+        /* جدول المقاسات متوسط */
+        .size-chart { width: 100%; border-collapse: collapse; margin: 20px 0; background: #1a1a1a; border-radius: 12px; overflow: hidden; }
+        .size-chart th { background: var(--gold); color: #000; padding: 12px; font-size: 14px; }
+        .size-chart td { border: 1px solid #333; padding: 12px; font-size: 14px; text-align: center; }
 
-        #orderBtn { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 15px rgba(212,175,55,0.3); }
-        #orderBtn:active { transform: scale(0.98); }
+        /* حقول الإدخال متوسطة */
+        .form-group { width: 100%; margin-top: 20px; }
+        input, select { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 12px; 
+            border: 1px solid #333; 
+            background: #000; 
+            color: #fff; 
+            font-size: 16px; 
+            box-sizing: border-box; 
+            text-align: center; /* توسيط النص داخل الخانات */
+        }
+        label { color: var(--gold); font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px; }
 
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal { background: var(--dark-grey); border: 2px solid var(--gold); padding: 40px; border-radius: 25px; width: 85%; max-width: 350px; text-align: center; }
+        #orderBtn { 
+            width: 100%; 
+            padding: 18px; 
+            background: var(--gold); 
+            color: #000; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 20px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 15px;
+        }
+
+        /* نافذة النجاح */
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; justify-content: center; align-items: center; }
+        .modal { background: var(--dark-grey); border: 2px solid var(--gold); padding: 35px; border-radius: 25px; width: 85%; max-width: 350px; text-align: center; }
     </style>
 </head>
 <body>
 
 <div id="successModal">
     <div class="modal">
-        <h2 style="color:var(--gold); font-size: 30px;">HOTEP</h2>
-        <p style="font-size: 18px;">✅ تم حجز طلبك بنجاح!</p>
-        <p style="color:#aaa; font-size: 14px;">سنتواصل معك هاتفياً لتأكيد الشحن.</p>
-        <button onclick="location.reload()" style="background:var(--gold); border:none; padding:12px 30px; border-radius:10px; font-weight:bold; margin-top:20px; cursor:pointer; width:100%;">موافق</button>
+        <h2 style="color:var(--gold)">HOTEP</h2>
+        <p style="font-size: 18px;">✅ تم استلام طلبك بنجاح!</p>
+        <button onclick="location.reload()" style="background:var(--gold); border:none; padding:12px 30px; border-radius:10px; font-weight:bold; cursor:pointer; width:100%;">موافق</button>
     </div>
 </div>
 
 <div class="container">
     <div class="brand">HOTEP</div>
-    <img src="https://l.top4top.io/p_36510goa90.jpg" class="product-img" alt="Hotep Product">
+    <img src="https://l.top4top.io/p_36510goa90.jpg" class="product-img">
     <div class="price-tag">200 جنيهاً</div>
 
     <div class="info-section">
         <h3>🏆 ضمان الجودة</h3>
-        <p>• قطن مصري 100% ليكرا - نعومة فائقة.</p>
-        <p>• صبغات أصلية ثابتة لا تتغير مع الغسيل.</p>
+        <p>قطن مصري 100% ليكرا - نعومة فائقة</p>
+        <p>صبغات أصلية ثابتة لا تتغير مع الغسيل</p>
     </div>
 
-    <div class="info-section" style="border-right-color: #28a745;">
+    <div class="info-section" style="border-top-color: #28a745;">
         <h3>🚚 عرض الشحن</h3>
-        <p>⭐ العلبة بها <b>2 قطعة</b> بـ 200ج فقط.</p>
-        <p>• الشحن: 50ج (قاهرة/جيزة) | 70ج (أقاليم).</p>
+        <p>⭐ العبوة بها <b>2 قطعة</b> بـ 200ج فقط</p>
+        <p>القاهرة والجيزة: <b>50ج</b></p>
+        <p>باقي المحافظات: <b>70ج</b></p>
     </div>
 
-    <h3 style="color:var(--gold); font-size: 16px; margin: 25px 0 10px 0;">جدول المقاسات بدقة (Size Chart)</h3>
+    <h3 style="color:var(--gold); font-size: 16px;">جدول المقاسات (Size Chart)</h3>
     <table class="size-chart">
         <tr><th>Size</th><th>الخصر</th><th>الطول</th></tr>
         <tr><td>M</td><td>34 سم</td><td>30 سم</td></tr>
@@ -75,27 +142,28 @@
     </table>
 
     <div class="form-group">
-        <input type="text" id="name" placeholder="الاسم بالكامل" required>
-        <input type="tel" id="phone" placeholder="رقم الموبايل" required>
+        <input type="text" id="name" placeholder="الاسم بالكامل">
+        <input type="tel" id="phone" placeholder="رقم الموبايل">
         
-        <label>اختر المحافظة:</label>
+        <label>اختر المحافظة</label>
         <select id="province">
             <option>القاهرة</option>
             <option>الجيزة</option>
             <option>الإسكندرية</option>
-            <option>الدقهلية</option>
-            <option>الغربية</option>
             <option>باقي المحافظات</option>
         </select>
 
-        <input type="text" id="address" placeholder="العنوان بالتفصيل" required>
+        <input type="text" id="address" placeholder="العنوان بالتفصيل">
 
-        <label>المقاس المطلوب:</label>
+        <label>اللون المتوفر</label>
+        <select disabled><option>أسود فقط</option></select>
+
+        <label>المقاس المطلوب</label>
         <select id="size">
             <option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option>
         </select>
 
-        <button id="orderBtn" onclick="processOrder()">تأكيد الطلب الآن</button>
+        <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
     </div>
 </div>
 
@@ -103,11 +171,35 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // إعدادات قاعدة البيانات القوية
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     
-    // محرك معالجة الطلبات
-    function processOrder() {
+    function submitOrder() {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+
+        if(name && phone && address) {
+            const btn = document.getElementById('orderBtn');
+            btn.disabled = true;
+            btn.innerText = "جاري الحجز...";
+
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            firebase.database().ref('orders').push({
+                الاسم: name,
+                الهاتف: phone,
+                المحافظة: document.getElementById('province').value,
+                العنوان: address,
+                اللون: "أسود",
+                المقاس: document.getElementById('size').value,
+                التاريخ: new Date().toLocaleString('ar-EG')
+            }).then(() => {
+                document.getElementById('successModal').style.display = 'flex';
+            });
+        } else { alert("يرجى إكمال البيانات"); }
+    }
+</script>
+</body>
+</html>
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
@@ -188,5 +280,6 @@
 </script>
 </body>
 </html>
+
 
 
