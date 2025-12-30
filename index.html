@@ -12,17 +12,16 @@
         .brand { color: #D4AF37; font-size: 32px; font-weight: bold; margin-bottom: 15px; letter-spacing: 2px; }
 
         /* ستايل السلايدر بمقاس ثابت */
-        .slider-wrapper { position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 20px; border: 1px solid #333; background: #000; }
+        .slider-wrapper { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: 20px; border: 1px solid #333; background: #000; }
         .slides { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
         .slides img { width: 100%; height: 100%; object-fit: contain; flex-shrink: 0; }
         
-        /* أزرار التنقل */
         .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.6); border: none; color: white; padding: 12px; cursor: pointer; border-radius: 50%; z-index: 10; font-weight: bold; }
         .prev { left: 10px; } .next { right: 10px; }
         
         .price-tag { background: #D4AF37; color: #000; font-size: 24px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -25px; position: relative; z-index: 15; }
         
-        input, select { width: 95%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; }
+        input, select { width: 95%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; outline: none; }
         label { display: block; text-align: right; margin: 10px 15px 0 0; color: #D4AF37; font-size: 14px; font-weight: bold; }
         #orderBtn { width: 95%; padding: 16px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 15px; }
     </style>
@@ -48,9 +47,9 @@
 
         <label>اللون:</label>
         <select id="color">
-            <option value="Black">Black</option>
-            <option value="Navy">Navy Blue</option>
-            <option value="Grey">Grey</option>
+            <option value="أسود">أسود</option>
+            <option value="كحلي">كحلي</option>
+            <option value="رمادي">رمادي</option>
         </select>
 
         <label>المقاس:</label>
@@ -59,6 +58,7 @@
             <option value="L">L</option>
             <option value="XL">XL</option>
             <option value="XXL">XXL</option>
+            <option value="XXXL">XXXL</option>
         </select>
 
         <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
@@ -69,5 +69,49 @@
     // برمجة حركة الصور
     let currentIdx = 0;
     function changeSlide(dir) {
-        const slider = document.getElementById('
+        const slider = document.getElementById('slides');
+        const total = 2; // عدد الصور
+        currentIdx = (currentIdx + dir + total) % total;
+        slider.style.transform = `translateX(${currentIdx * 100}%)`;
+    }
+
+    // ربط Firebase بسيرفر بلجيكا الصحيح
+    const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    if (!firebase.apps.length) firebase.initializeApp(config);
+    const db = firebase.database();
+
+    function submitOrder() {
+        const btn = document.getElementById('orderBtn');
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const addr = document.getElementById('address').value;
+        const clr = document.getElementById('color').value;
+        const sz = document.getElementById('size').value;
+
+        if(name && phone && addr) {
+            btn.disabled = true; 
+            btn.innerText = "جاري الإرسال...";
+            
+            db.ref('orders').push({
+                الاسم: name,
+                الهاتف: phone,
+                العنوان: addr,
+                اللون: clr,
+                المقاس: sz,
+                التاريخ: new Date().toLocaleString('ar-EG')
+            }).then(() => {
+                alert("تم استلام طلبك"); // رسالة النجاح كما طلبت
+                location.reload();
+            }).catch((err) => {
+                alert("حدث خطأ، يرجى التأكد من الضغط على Publish في Firebase");
+                btn.disabled = false;
+                btn.innerText = "تأكيد الطلب الآن";
+            });
+        } else { 
+            alert("يرجى إكمال جميع البيانات"); 
+        }
+    }
+</script>
+</body>
+</html>
 
