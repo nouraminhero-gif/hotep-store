@@ -1,74 +1,73 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP Admin | Pro Compact</title>
+    <title>HOTEP Admin | Inventory & Delivery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --orange: #ff8c00; --white: #ffffff; }
-        body { background: var(--black); color: var(--white); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --orange: #ff8c00; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
         .top-nav { background: var(--dark); padding: 10px 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
-        .top-nav h1 { color: var(--gold); margin: 0; font-size: 18px; text-transform: uppercase; }
+        .top-nav h1 { color: var(--gold); margin: 0; font-size: 18px; }
 
-        .stats-container { display: flex; gap: 10px; padding: 10px; background: #000; overflow-x: auto; }
-        .stat-card { background: var(--dark); border: 1px solid #333; padding: 10px; border-radius: 8px; flex: 1; text-align: center; min-width: 90px; }
+        /* المخزن */
+        .inventory-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; padding: 10px; background: #1a1a1a; margin: 10px; border-radius: 10px; border: 1px solid var(--gold); }
+        .inv-item { text-align: center; border-left: 1px solid #333; }
+        .inv-item:last-child { border: none; }
+        .inv-item label { display: block; font-size: 10px; color: var(--gold); }
+        .inv-item input { background: transparent; border: none; color: #fff; width: 50px; text-align: center; font-size: 16px; font-weight: bold; }
+
+        .stats-container { display: flex; gap: 8px; padding: 10px; overflow-x: auto; }
+        .stat-card { background: var(--dark); border: 1px solid #333; padding: 10px; border-radius: 8px; flex: 1; text-align: center; min-width: 100px; }
         .stat-card span { display: block; font-size: 16px; font-weight: bold; color: var(--gold); }
-        .stat-label { font-size: 10px; color: #aaa; margin-bottom: 2px; }
+        .stat-label { font-size: 10px; color: #aaa; }
 
         .table-container { margin: 10px; background: var(--dark); border-radius: 12px; border: 1px solid #333; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; min-width: 900px; }
         th { background: #1a1a1a; color: var(--gold); padding: 10px; font-size: 12px; border-bottom: 1px solid #444; }
-        td { padding: 8px; border-bottom: 1px solid #222; text-align: center; font-size: 12px; vertical-align: middle; }
+        td { padding: 8px; border-bottom: 1px solid #222; text-align: center; font-size: 12px; }
         
-        /* تحسين وضوح بيانات العميل */
-        .c-name { color: var(--white); font-size: 13px; font-weight: 800; display: block; margin-bottom: 2px; }
-        .c-phone { color: var(--gold); font-size: 12px; font-weight: bold; }
-        .c-address { color: #ccc; font-size: 11px; line-height: 1.3; display: block; margin-top: 3px; }
-        
-        .highlight-box { background: rgba(212, 175, 55, 0.1); padding: 4px; border-radius: 5px; color: var(--gold); font-weight: bold; }
-        .price-total { color: var(--green); font-size: 14px; font-weight: 900; }
-
-        .action-group { display: flex; gap: 5px; justify-content: center; }
-        .btn-mini { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; border: none; text-decoration: none; font-size: 14px; transition: 0.2s; }
+        .btn-mini { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; border: none; font-size: 14px; transition: 0.2s; text-decoration: none; }
+        .btn-delivered { background: var(--blue); } /* زر التسليم */
         .btn-shipped { background: var(--green); }
         .btn-wa { background: #075e54; }
-        .btn-share { background: var(--orange); }
-        .btn-print { background: #555; }
         .btn-del { background: #d9534f; }
-        .btn-mini:hover { transform: scale(1.15); filter: brightness(1.2); }
-
-        .status-tag { padding: 3px 7px; border-radius: 5px; font-size: 10px; font-weight: bold; }
-        .status-new { color: #ffc107; border: 1px solid #ffc107; }
-        .status-shipped { color: var(--green); border: 1px solid var(--green); }
     </style>
 </head>
 <body>
 
     <nav class="top-nav">
-        <h1>HOTEP <span style="font-weight:100; font-size:12px;">| CONTROL PANEL</span></h1>
-        <div id="liveTime" style="font-size: 11px; color: #888;"></div>
+        <h1>HOTEP <span style="font-weight:100">| إدارة المخزن والطلبات</span></h1>
     </nav>
 
+    <div class="inventory-bar" id="inventoryInputs">
+        <div class="inv-item"><label>مخزن M</label><input type="number" id="inv-M" value="0" onchange="updateInvManually('M', this.value)"></div>
+        <div class="inv-item"><label>مخزن L</label><input type="number" id="inv-L" value="0" onchange="updateInvManually('L', this.value)"></div>
+        <div class="inv-item"><label>مخزن XL</label><input type="number" id="inv-XL" value="0" onchange="updateInvManually('XL', this.value)"></div>
+        <div class="inv-item"><label>مخزن XXL</label><input type="number" id="inv-XXL" value="0" onchange="updateInvManually('XXL', this.value)"></div>
+        <div class="inv-item"><label>مخزن XXXL</label><input type="number" id="inv-XXXL" value="0" onchange="updateInvManually('XXXL', this.value)"></div>
+    </div>
+
     <div class="stats-container">
-        <div class="stat-card"><div class="stat-label">إجمالي الطلبات</div><span id="sAll">0</span></div>
-        <div class="stat-card"><div class="stat-label">طلبات جديدة</div><span id="sNew">0</span></div>
-        <div class="stat-card"><div class="stat-label">تم الشحن</div><span id="sShipped">0</span></div>
-        <div class="stat-card"><div class="stat-label">إجمالي التحصيل</div><span id="sMoney">0</span></div>
+        <div class="stat-card"><div class="stat-label">أوردرات نشطة</div><span id="sActive">0</span></div>
+        <div class="stat-card"><div class="stat-label">تم التسليم</div><span id="sDone">0</span></div>
+        <div class="stat-card"><div class="stat-label">إجمالي المبيعات</div><span id="sMoney">0</span></div>
     </div>
 
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th>الوقت</th>
-                    <th style="text-align:right">بيانات العميل</th>
-                    <th style="text-align:right">العنوان التفصيلي</th>
-                    <th>الطلب والمقاس</th>
-                    <th>المبلغ الإجمالي</th>
+                    <th>العميل</th>
+                    <th>العنوان</th>
+                    <th>المقاس</th>
+                    <th>الكمية</th>
+                    <th>الإجمالي</th>
                     <th>الحالة</th>
-                    <th>أدوات التحكم</th>
+                    <th>التحكم</th>
                 </tr>
             </thead>
             <tbody id="ordersBody"></tbody>
@@ -81,84 +80,80 @@
     <script>
         const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database().ref('orders');
+        const db = firebase.database();
+        
+        // جلب المخزن وتحديثه
+        db.ref('inventory').on('value', s => {
+            const data = s.val() || {};
+            ['M','L','XL','XXL','XXXL'].forEach(size => {
+                document.getElementById('inv-'+size).value = data[size] || 0;
+            });
+        });
 
-        db.on('value', (snapshot) => {
+        function updateInvManually(size, val) {
+            db.ref('inventory/' + size).set(parseInt(val));
+        }
+
+        // جلب الطلبات
+        db.ref('orders').on('value', (snapshot) => {
             const tbody = document.getElementById('ordersBody');
             tbody.innerHTML = '';
-            let s = { all: 0, new: 0, shipped: 0, money: 0 };
+            let s = { active: 0, done: 0, money: 0 };
 
             snapshot.forEach((child) => {
                 const o = child.val();
                 const id = child.key;
-                s.all++;
-                (o.الحاله === 'تم الشحن') ? s.shipped++ : s.new++;
-                
-                // التأكد من جلب رقم الحساب بشكل صحيح
-                const finalAmount = parseInt(o.الاجمالي) || (parseInt(o.الحساب) + parseInt(o.الشحن)) || 0;
-                s.money += finalAmount;
 
-                // تحضير رسالة الواتساب مع الحساب الصحيح
-                const waMsg = encodeURIComponent(
-                    `✅ تأكيد أوردر HOTEP\n` +
-                    `أستاذ ${o.الاسم}، طلبك (${o.الكمية}) مقاس (${o.المقاس}) جاهز للشحن.\n` +
-                    `💰 إجمالي الحساب: ${finalAmount} جنيه.\n` +
-                    `يرجى الرد بكلمة (تم) لتأكيد شحن الطلب اليوم.`
-                );
+                if (o.الحاله === 'تم التسليم') {
+                    s.done++;
+                    s.money += (parseInt(o.الاجمالي) || 0);
+                    return; // إخفاء الأوردر من الجدول
+                }
 
-                const billCopy = `بوليصة شحن HOTEP\n---\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالمحافظة: ${o.المحافظة}\nالعنوان: ${o.العنوان}\nالطلب: ${o.الكمية} - مقاس ${o.المقاس}\nالحساب: ${finalAmount} ج`;
+                s.active++;
+                const amount = parseInt(o.الاجمالي) || 0;
 
                 const row = `
                     <tr>
-                        <td style="color:#666; font-size:10px">${o.التاريخ ? o.التاريخ.split(',')[0] : '-'}</td>
-                        <td style="text-align:right">
-                            <span class="c-name">${o.الاسم}</span>
-                            <span class="c-phone">${o.الهاتف}</span>
-                        </td>
-                        <td style="text-align:right">
-                            <b style="color:var(--gold)">${o.المحافظة}</b>
-                            <span class="c-address">${o.العنوان}</span>
-                        </td>
-                        <td><div class="highlight-box">مقاس ${o.المقاس}<br>${o.الكمية}</div></td>
-                        <td><span class="price-total">${finalAmount} ج</span></td>
-                        <td><span class="status-tag ${o.الحاله === 'تم الشحن' ? 'status-shipped' : 'status-new'}">${o.الحاله || 'جديد'}</span></td>
+                        <td style="text-align:right"><b>${o.الاسم}</b><br>${o.الهاتف}</td>
+                        <td style="text-align:right">${o.المحافظة}</td>
+                        <td><b style="color:var(--gold)">${o.المقاس}</b></td>
+                        <td>${o.الكمية}</td>
+                        <td style="color:var(--green)">${amount} ج</td>
+                        <td><small>${o.الحاله || 'جديد'}</small></td>
                         <td>
-                            <div class="action-group">
-                                <button onclick="markShipped('${id}')" class="btn-mini btn-shipped" title="تم الشحن"><i class="fas fa-check"></i></button>
-                                <a href="https://wa.me/2${o.الهاتف}?text=${waMsg}" target="_blank" class="btn-mini btn-wa" title="واتساب"><i class="fab fa-whatsapp"></i></a>
-                                <button onclick="copyToClip('${billCopy.replace(/\n/g, '\\n')}')" class="btn-mini btn-share" title="نسخ البوليصة"><i class="fas fa-copy"></i></button>
-                                <button onclick="printRow('${id}')" class="btn-mini btn-print" title="طباعة"><i class="fas fa-print"></i></button>
-                                <button onclick="deleteRow('${id}')" class="btn-mini btn-del" title="حذف"><i class="fas fa-trash-alt"></i></button>
+                            <div style="display:flex; gap:4px; justify-content:center">
+                                <button onclick="deliverOrder('${id}', '${o.المقاس}', ${o.الكمية})" class="btn-mini btn-delivered" title="تم التسليم ونقص المخزن"><i class="fas fa-hand-holding-usd"></i></button>
+                                <button onclick="markStatus('${id}', 'تم الشحن')" class="btn-mini btn-shipped"><i class="fas fa-truck"></i></button>
+                                <a href="https://wa.me/2${o.الهاتف}" target="_blank" class="btn-mini btn-wa"><i class="fab fa-whatsapp"></i></a>
+                                <button onclick="del('${id}')" class="btn-mini btn-del"><i class="fas fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>`;
                 tbody.insertAdjacentHTML('afterbegin', row);
             });
-            document.getElementById('sAll').innerText = s.all;
-            document.getElementById('sNew').innerText = s.new;
-            document.getElementById('sShipped').innerText = s.shipped;
+            document.getElementById('sActive').innerText = s.active;
+            document.getElementById('sDone').innerText = s.done;
             document.getElementById('sMoney').innerText = s.money + " ج";
         });
 
-        function markShipped(id) { db.child(id).update({ الحاله: 'تم الشحن' }); }
-        function copyToClip(t) { navigator.clipboard.writeText(t.replace(/\\n/g, '\n')).then(() => alert("✅ تم نسخ البوليصة بنجاح")); }
-        function deleteRow(id) { if(confirm('هل أنت متأكد من الحذف النهائي؟')) db.child(id).remove(); }
-        function printRow(id) {
-            db.child(id).once('value', s => {
-                const o = s.val();
-                const amt = parseInt(o.الاجمالي) || (parseInt(o.الحساب) + parseInt(o.الشحن)) || 0;
-                const w = window.open('', '', 'width=500,height=500');
-                w.document.write(`<div dir="rtl" style="font-family:sans-serif; border:3px solid #000; padding:20px; text-align:right;">
-                    <h2 style="text-align:center; border-bottom:2px solid #000;">HOTEP BILL</h2>
-                    <p><b>العميل:</b> ${o.الاسم} | ${o.الهاتف}</p>
-                    <p><b>العنوان:</b> ${o.المحافظة} - ${o.العنوان}</p>
-                    <p><b>الطلب:</b> ${o.الكمية} (مقاس ${o.المقاس})</p>
-                    <h2 style="text-align:center; background:#eee; padding:10px;">المطلوب: ${amt} جنيه</h2>
-                </div>`);
-                w.print(); w.close();
-            });
+        function markStatus(id, status) { db.ref('orders/' + id).update({ الحاله: status }); }
+
+        function deliverOrder(id, size, qty) {
+            if(confirm('تأكيد استلام العميل؟ سيتم إخفاء الأوردر وخصم الكمية من المخزن.')) {
+                // 1. تحديث حالة الأوردر
+                db.ref('orders/' + id).update({ الحاله: 'تم التسليم' });
+                
+                // 2. خصم من المخزن
+                const invRef = db.ref('inventory/' + size);
+                invRef.once('value', s => {
+                    let current = s.val() || 0;
+                    invRef.set(Math.max(0, current - parseInt(qty)));
+                });
+            }
         }
-        setInterval(() => { document.getElementById('liveTime').innerText = new Date().toLocaleTimeString('ar-EG'); }, 1000);
+
+        function del(id) { if(confirm('حذف؟')) db.ref('orders/' + id).remove(); }
     </script>
 </body>
 </html>
