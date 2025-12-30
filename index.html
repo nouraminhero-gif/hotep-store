@@ -1,52 +1,92 @@
+
 <!DOCTYPE html>
 <html dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | طلب سريع</title>
+    <title>HOTEP | إتمام الطلب</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        .card { background: #111; border: 1px solid #D4AF37; padding: 30px; border-radius: 20px; max-width: 400px; margin: auto; box-shadow: 0 0 20px rgba(212,175,55,0.2); }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 10px; box-sizing: border-box; }
-        button { width: 100%; padding: 18px; background: #D4AF37; color: #000; border: none; border-radius: 10px; font-weight: bold; font-size: 18px; cursor: pointer; }
+        .container { max-width: 450px; margin: auto; background: #111; border: 1px solid #D4AF37; border-radius: 20px; padding: 20px; box-shadow: 0 0 15px #d4af3733; }
+        .product-img { width: 100%; border-radius: 15px; margin-bottom: 15px; border: 1px solid #333; }
+        h1 { color: #D4AF37; margin: 10px 0; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 15px; background: #D4AF37; color: #000; border: none; border-radius: 8px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 15px; }
+        label { display: block; text-align: right; margin-top: 10px; color: #D4AF37; font-size: 14px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1 style="color:#D4AF37; letter-spacing:5px;">HOTEP</h1>
-        <p style="color:#666">سجل بياناتك وسنتصل بك لتأكيد الأوردر</p>
-        <input type="text" id="name" placeholder="الاسم بالكامل">
-        <input type="tel" id="phone" placeholder="رقم الموبايل">
-        <input type="text" id="address" placeholder="عنوان الشحن بالتفصيل">
-        <button onclick="sendOrder()">تأكيد الطلب الآن</button>
-        <p id="msg" style="display:none; color:#D4AF37; margin-top:15px;">✅ تم استلام طلبك!</p>
-    </div>
 
-    <script>
-        // تم ربط الكود برابط قاعدة بياناتك HOTEP بنجاح
-        const config = { databaseURL: "https://hotep-f423e-default-rtdb.firebaseio.com/" };
-        firebase.initializeApp(config);
-        const database = firebase.database();
+<div class="container">
+    <h1>HOTEP</h1>
+    <img src="https://via.placeholder.com/400x300/111/D4AF37?text=HOTEP+PRODUCT" class="product-img" alt="Product">
+    
+    <p>سجل بياناتك لتأكيد الأوردر</p>
 
-        function sendOrder() {
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
+    <input type="text" id="name" placeholder="الاسم بالكامل">
+    <input type="tel" id="phone" placeholder="رقم الموبايل">
+    <input type="text" id="address" placeholder="العنوان بالتفصيل">
 
-            if(name && phone && address) {
-                database.ref('orders/').push({
-                    customerName: name,
-                    customerPhone: phone,
-                    customerAddress: address,
-                    orderDate: new Date().toLocaleString()
-                }).then(() => {
-                    document.getElementById('msg').style.display = 'block';
-                    document.querySelector('button').style.display = 'none';
-                });
-            } else { alert("برجاء إدخال كافة البيانات"); }
+    <label>اختر المقاس:</label>
+    <select id="size">
+        <option value="M">Medium (M)</option>
+        <option value="L">Large (L)</option>
+        <option value="XL">X-Large (XL)</option>
+        <option value="XXL">XX-Large (XXL)</option>
+    </select>
+
+    <label>اختر اللون:</label>
+    <select id="color">
+        <option value="أسود">أسود</option>
+        <option value="أبيض">أبيض</option>
+        <option value="كحلي">كحلي</option>
+    </select>
+
+    <button id="sendBtn" onclick="sendOrder()">تأكيد الطلب الآن</button>
+</div>
+
+<script>
+    // إعدادات الربط بمشروعك HOTEP
+    const firebaseConfig = {
+        databaseURL: "https://hotep-f423e-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function sendOrder() {
+        const btn = document.getElementById('sendBtn');
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const size = document.getElementById('size').value;
+        const color = document.getElementById('color').value;
+
+        if(name && phone && address) {
+            btn.disabled = true;
+            btn.innerText = "جاري الإرسال...";
+
+            db.ref('orders/').push({
+                الاسم: name,
+                الهاتف: phone,
+                العنوان: address,
+                المقاس: size,
+                اللون: color,
+                الوقت: new Date().toLocaleString()
+            }).then(() => {
+                alert("✅ تم استلام طلبك بنجاح! سنتصل بك قريباً.");
+                location.reload();
+            }).catch((err) => {
+                alert("خطأ: " + err.message);
+                btn.disabled = false;
+                btn.innerText = "تأكيد الطلب الآن";
+            });
+        } else {
+            alert("يرجى ملء كافة البيانات المطلوبة");
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
