@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | Dashboard</title>
+    <title>HOTEP | Dashboard V3</title>
     <style>
         :root { --gold: #D4AF37; --new: #28a745; --shipped: #555; }
         body { background: #000; color: #fff; font-family: sans-serif; padding: 10px; text-align: center; }
@@ -11,18 +11,27 @@
         .order-card { background: #111; border: 1px solid #333; border-right: 6px solid var(--new); border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: right; position: relative; }
         .order-card.shipped { border-right-color: var(--shipped); opacity: 0.6; }
         .status-badge { position: absolute; left: 10px; top: 10px; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; background: var(--new); }
-        .shipped .status-badge { background: var(--shipped); }
         .info b { color: var(--gold); font-size: 18px; }
         .info p { margin: 4px 0; font-size: 14px; color: #ccc; }
         .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-        .btn { padding: 8px 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 12px; color: #fff; }
+        .btn { padding: 8px 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 12px; color: #fff; display: flex; align-items: center; justify-content: center; }
         .btn-call { background: #007bff; }
         .btn-wa { background: #25d366; }
+        .btn-print { background: #6f42c1; } /* لون البنفسجي للطباعة */
         .btn-status { background: var(--gold); color: #000; }
         .btn-del { background: #ff4444; }
+
+        /* تنسيق الطباعة */
+        @media print {
+            body * { visibility: hidden; }
+            .print-area, .print-area * { visibility: visible; }
+            .print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; border: 2px solid #000; text-align: right; }
+        }
     </style>
 </head>
 <body>
+    <div id="printSection" class="print-area" style="display:none;"></div>
+
     <h2>إدارة طلبات HOTEP</h2>
     <div id="stats" style="margin-bottom: 15px; color: var(--gold);"></div>
     <div id="ordersContainer" style="max-width: 600px; margin: auto;"></div>
@@ -43,6 +52,14 @@
                 const key = child.key;
                 const isDone = data.الحالة === "تم الشحن";
                 count++;
+
+                // حساب مصاريف الشحن
+                const shipCost = (data.المحافظة === "القاهرة" || data.المحافظة === "الجيزة") ? 50 : 70;
+                const total = 200 + shipCost;
+
+                // رسالة الواتساب الشاملة
+                const waMsg = `أهلاً أستاذ ${data.الاسم}، بخصوص طلبك من HOTEP:%0A📍 العنوان: ${data.المحافظة} - ${data.العنوان}%0A📏 المقاس: ${data.المقاس}%0A💰 سعر المنتج: 200 ج%0A🚚 شحن: ${shipCost} ج%0A💵 الإجمالي المطلوب: ${total} ج%0Aهل البيانات صحيحة لتأكيد الشحن؟`;
+
                 container.innerHTML = `
                     <div class="order-card ${isDone ? 'shipped' : ''}">
                         <div class="status-badge">${data.الحالة || 'جديد'}</div>
@@ -54,7 +71,8 @@
                         </div>
                         <div class="actions">
                             <a href="tel:${data.الهاتف}" class="btn btn-call">اتصال</a>
-                            <a href="https://wa.me/2${data.الهاتف}" class="btn btn-wa" target="_blank">واتساب</a>
+                            <a href="https://wa.me/2${data.الهاتف}?text=${waMsg}" class="btn btn-wa" target="_blank">واتساب</a>
+                            <button onclick="printOrder('${key}')" class="btn btn-print">طباعة البينات</button>
                             <button onclick="toggleStatus('${key}', '${data.الحالة}')" class="btn btn-status">${isDone ? 'إعادة للجديد' : 'تم الشحن'}</button>
                             <button onclick="deleteOrder('${key}')" class="btn btn-del">حذف</button>
                         </div>
@@ -62,6 +80,30 @@
             });
             document.getElementById('stats').innerText = "إجمالي الطلبات: " + count;
         });
+
+        function printOrder(key) {
+            db.child(key).once('value', (s) => {
+                const d = s.val();
+                const ship = (d.المحافظة === "القاهرة" || d.المحافظة === "الجيزة") ? 50 : 70;
+                const area = document.getElementById('printSection');
+                area.innerHTML = `
+                    <h1 style="text-align:center;">HOTEP STORE - بوليصة شحن</h1>
+                    <hr>
+                    <p><b>العميل:</b> ${d.الاسم}</p>
+                    <p><b>الهاتف:</b> ${d.الهاتف}</p>
+                    <p><b>المحافظة:</b> ${d.المحافظة}</p>
+                    <p><b>العنوان:</b> ${d.العنوان}</p>
+                    <p><b>المقاس:</b> ${d.المقاس}</p>
+                    <hr>
+                    <p><b>ثمن المنتج:</b> 200 جنيه</p>
+                    <p><b>مصاريف الشحن:</b> ${ship} جنيه</p>
+                    <h2 style="text-align:left;">الإجمالي: ${200 + ship} جنيه</h2>
+                `;
+                area.style.display = 'block';
+                window.print();
+                area.style.display = 'none';
+            });
+        }
 
         function toggleStatus(key, current) {
             const next = current === "تم الشحن" ? "جديد" : "تم الشحن";
@@ -71,19 +113,4 @@
     </script>
 </body>
 </html>
-        });
 
-        function markShipped(key) {
-            db.child(key).update({ الحالة: "تم الشحن" });
-        }
-
-        function markNew(key) {
-            db.child(key).update({ الحالة: "جديد" });
-        }
-
-        function deleteOrder(key) {
-            if(confirm("هل تود حذف هذا الطلب نهائياً؟")) db.child(key).remove();
-        }
-    </script>
-</body>
-</html>
