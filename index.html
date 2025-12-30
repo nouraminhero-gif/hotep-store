@@ -9,14 +9,13 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
-        .container { max-width: 450px; margin: 10px auto; background: #111; border: 2px solid #D4AF37; border-radius: 30px; padding: 20px; box-shadow: 0 0 25px rgba(212,175,55,0.3); }
-        .brand-header { color: #D4AF37; font-size: 35px; font-weight: bold; letter-spacing: 5px; margin-bottom: 10px; }
-        .product-img { width: 100%; border-radius: 20px; border: 1px solid #333; }
+        .container { max-width: 450px; margin: 10px auto; background: #111; border: 2px solid #D4AF37; border-radius: 30px; padding: 20px; }
+        .brand-header { color: #D4AF37; font-size: 35px; font-weight: bold; margin-bottom: 10px; }
+        .product-img { width: 100%; border-radius: 20px; border: 1px solid #333; height: auto; display: block; }
         .price-badge { background: #D4AF37; color: #000; font-size: 26px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -20px; position: relative; }
-        input, select { width: 100%; padding: 15px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; outline: none; }
-        label { display: block; text-align: right; margin-top: 10px; color: #D4AF37; font-size: 14px; font-weight: bold; }
+        input, select { width: 100%; padding: 15px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; }
         button { width: 100%; padding: 18px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 22px; cursor: pointer; margin-top: 20px; }
-        button:disabled { background: #555; color: #888; }
+        button:disabled { background: #555; }
     </style>
 </head>
 <body>
@@ -24,7 +23,8 @@
 <div class="container">
     <div class="brand-header">HOTEP</div>
     
-    <img src="https://i.ibb.co/h74mX2S/hotep-product.jpg" class="product-img">
+    <img src="https://i.postimg.cc/85M0L6m8/1000066988.jpg" class="product-img">
+    
     <div class="price-badge">200 جنيهاً</div>
 
     <p style="margin-top:15px; color:#ccc;">سجل بياناتك وسيتم شحن الطلب فوراً</p>
@@ -33,7 +33,7 @@
     <input type="tel" id="phone" placeholder="رقم الهاتف">
     <input type="text" id="address" placeholder="عنوان التوصيل بالتفصيل">
 
-    <label>اختر المقاس:</label>
+    <label style="display:block; text-align:right; color:#D4AF37; margin-top:10px;">اختر المقاس:</label>
     <select id="size">
         <option value="M">Medium (M)</option>
         <option value="L">Large (L)</option>
@@ -41,17 +41,14 @@
         <option value="XXL">XX-Large (XXL)</option>
     </select>
 
-    <label>اختر اللون:</label>
-    <select id="color">
-        <option value="أسود">أسود ملكي</option>
-    </select>
-
     <button id="sendBtn" onclick="sendOrder()">تأكيد الطلب الآن</button>
 </div>
 
 <script>
-    // إعدادات Firebase الخاصة بك
-    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.firebaseio.com/" };
+    // تأكد أنك تستخدم Realtime Database في Firebase
+    const firebaseConfig = {
+        databaseURL: "https://hotep-f423e-default-rtdb.firebaseio.com/"
+    };
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
 
@@ -61,7 +58,6 @@
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
         const size = document.getElementById('size').value;
-        const color = document.getElementById('color').value;
 
         if(name && phone && address) {
             btn.disabled = true;
@@ -72,14 +68,13 @@
                 الهاتف: phone,
                 العنوان: address,
                 المقاس: size,
-                اللون: color,
                 السعر: "200 ج",
                 التاريخ: new Date().toLocaleString('ar-EG')
             }).then(() => {
                 alert("✅ تم استلام طلبك بنجاح!");
                 window.location.reload();
             }).catch((e) => {
-                alert("خطأ: " + e.message);
+                alert("خطأ: تأكد من تفعيل Realtime Database Rules");
                 btn.disabled = false;
                 btn.innerText = "تأكيد الطلب الآن";
             });
