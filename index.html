@@ -4,18 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | طلب سريع</title>
+    <title>HOTEP | تأكيد الطلب</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
-        .container { max-width: 450px; margin: 10px auto; background: #111; border: 2px solid #D4AF37; border-radius: 30px; padding: 20px; }
+        .container { max-width: 450px; margin: 10px auto; background: #111; border: 2px solid #D4AF37; border-radius: 30px; padding: 20px; box-shadow: 0 0 25px rgba(212,175,55,0.3); }
         .brand-header { color: #D4AF37; font-size: 35px; font-weight: bold; margin-bottom: 10px; }
-        .product-img { width: 100%; border-radius: 20px; border: 1px solid #333; height: auto; display: block; }
-        .price-badge { background: #D4AF37; color: #000; font-size: 26px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -20px; position: relative; }
-        input, select { width: 100%; padding: 15px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; }
+        .product-img { width: 100%; border-radius: 20px; border: 1px solid #333; display: block; height: auto; }
+        .price-badge { background: #D4AF37; color: #000; font-size: 26px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -25px; position: relative; z-index: 5; }
+        input, select { width: 100%; padding: 15px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; outline: none; }
+        label { display: block; text-align: right; margin-top: 10px; color: #D4AF37; font-size: 14px; font-weight: bold; }
         button { width: 100%; padding: 18px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 22px; cursor: pointer; margin-top: 20px; }
-        button:disabled { background: #555; }
+        button:disabled { background: #555; color: #888; }
     </style>
 </head>
 <body>
@@ -23,17 +24,19 @@
 <div class="container">
     <div class="brand-header">HOTEP</div>
     
-    <img src="https://i.postimg.cc/85M0L6m8/1000066988.jpg" class="product-img">
+    <div style="position: relative;">
+        <img src="https://raw.githubusercontent.com/nouraminhero-gif/hotep-store/main/product.jpg" id="pImg" class="product-img" onerror="this.src='https://i.ibb.co/hR8jH6v/product.jpg'">
+    </div>
     
     <div class="price-badge">200 جنيهاً</div>
 
-    <p style="margin-top:15px; color:#ccc;">سجل بياناتك وسيتم شحن الطلب فوراً</p>
+    <p style="margin-top:20px; color:#ccc;">سجل بياناتك وسيتم شحن الطلب فوراً</p>
 
     <input type="text" id="name" placeholder="الاسم بالكامل">
     <input type="tel" id="phone" placeholder="رقم الهاتف">
     <input type="text" id="address" placeholder="عنوان التوصيل بالتفصيل">
 
-    <label style="display:block; text-align:right; color:#D4AF37; margin-top:10px;">اختر المقاس:</label>
+    <label>اختر المقاس:</label>
     <select id="size">
         <option value="M">Medium (M)</option>
         <option value="L">Large (L)</option>
@@ -45,7 +48,7 @@
 </div>
 
 <script>
-    // تأكد أنك تستخدم Realtime Database في Firebase
+    // إعدادات الربط المباشر
     const firebaseConfig = {
         databaseURL: "https://hotep-f423e-default-rtdb.firebaseio.com/"
     };
@@ -63,23 +66,24 @@
             btn.disabled = true;
             btn.innerText = "جاري الحفظ...";
 
-            db.ref('orders/').push({
-                الاسم: name,
-                الهاتف: phone,
-                العنوان: address,
-                المقاس: size,
-                السعر: "200 ج",
-                التاريخ: new Date().toLocaleString('ar-EG')
+            // إرسال البيانات للقاعدة
+            db.ref('orders').push({
+                customer_name: name,
+                customer_phone: phone,
+                customer_address: address,
+                product_size: size,
+                price: "200 LE",
+                time: new Date().toLocaleString('ar-EG')
             }).then(() => {
-                alert("✅ تم استلام طلبك بنجاح!");
+                alert("✅ تم استلام طلبك بنجاح! شكراً لثقتك في HOTEP.");
                 window.location.reload();
-            }).catch((e) => {
-                alert("خطأ: تأكد من تفعيل Realtime Database Rules");
+            }).catch((error) => {
+                alert("حدث خطأ في الاتصال: " + error.message);
                 btn.disabled = false;
                 btn.innerText = "تأكيد الطلب الآن";
             });
         } else {
-            alert("يرجى إكمال البيانات");
+            alert("يرجى ملء جميع البيانات المطلوبة");
         }
     }
 </script>
