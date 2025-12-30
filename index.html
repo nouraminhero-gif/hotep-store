@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -7,175 +6,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HOTEP | Official Store</title>
     <style>
-        :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #222; }
+        :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #1a1a1a; }
         
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 20px; box-sizing: border-box; }
         
-        /* Brand Name English Only */
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
         
-        /* Advanced Slider */
-        .slider { position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden; border: 1px solid var(--gray); background: #000; }
-        .slides { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .slide { min-width: 100%; height: 100%; }
+        /* إصلاح السلايدر */
+        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
+        .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease; }
+        .slide { min-width: 100%; height: 100%; flex-shrink: 0; }
         .slide img { width: 100%; height: 100%; object-fit: contain; }
         
-        /* Slider Controls */
-        .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.2); color: var(--gold); border: none; padding: 15px 10px; cursor: pointer; font-weight: bold; font-size: 20px; border-radius: 5px; z-index: 10; }
-        .prev { right: 5px; } .next { left: 5px; }
-        .dots { position: absolute; bottom: 15px; width: 100%; display: flex; justify-content: center; gap: 8px; }
-        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; cursor: pointer; }
-        .dot.active { background: var(--gold); width: 22px; border-radius: 10px; }
-
-        .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
-        .price { background: var(--gold); color: #000; font-size: 28px; font-weight: 900; padding: 12px 45px; border-radius: 50px; display: inline-block; box-shadow: 0 5px 20px rgba(212,175,55,0.4); }
-        .offer-text { color: var(--gold); font-size: 16px; margin-top: 12px; font-weight: bold; display: block; }
-
-        /* Fancy Size Table */
-        .size-section { margin: 25px 0; background: var(--gray); border-radius: 15px; padding: 15px; }
-        .size-table { width: 100%; border-collapse: collapse; }
-        .size-table th { color: var(--gold); border-bottom: 1px solid #444; padding: 10px; font-size: 14px; }
-        .size-table td { padding: 12px; border-bottom: 1px solid #333; font-size: 15px; color: #ddd; }
-        .size-table tr:last-child td { border: none; }
-
-        /* Form Styling */
-        .form-group { margin-bottom: 15px; text-align: right; }
-        label { display: block; color: var(--gold); margin-bottom: 7px; font-size: 13px; font-weight: bold; margin-right: 5px; }
-        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; transition: border 0.3s; }
-        input:focus { border-color: var(--gold); }
+        /* أزرار التحكم */
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.4); color: #fff; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 5px; font-size: 18px; }
+        .prev { left: 10px; } .next { right: 10px; }
         
-        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(212,175,55,0.3); transition: 0.3s; }
-        #orderBtn:active { transform: scale(0.96); }
+        .dots { position: absolute; bottom: 10px; width: 100%; display: flex; justify-content: center; gap: 8px; }
+        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; cursor: pointer; }
+        .dot.active { background: var(--gold); width: 20px; border-radius: 10px; }
 
-        /* Success Modal */
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 40px; border-radius: 25px; text-align: center; width: 80%; max-width: 350px; }
+        .price-box { text-align: center; margin-top: -35px; position: relative; z-index: 20; }
+        .price { background: var(--gold); color: #000; font-size: 26px; font-weight: 900; padding: 10px 40px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
+
+        .description-card { background: var(--gray); border-radius: 15px; padding: 15px; margin: 25px 0 15px 0; text-align: right; border-right: 4px solid var(--gold); }
+        .description-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
+        .description-card p { font-size: 14px; line-height: 1.5; color: #ccc; margin: 0; }
+
+        /* جدول المقاسات المربعات */
+        .size-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 10px; overflow: hidden; margin: 15px 0; }
+        .size-header { background: var(--gold); color: #000; padding: 8px; font-weight: bold; font-size: 14px; text-align: center; }
+        .size-item { background: var(--black); padding: 10px; font-size: 14px; text-align: center; }
+
+        input, select { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; text-align: center; box-sizing: border-box; }
+        label { color: var(--gold); font-size: 12px; display: block; text-align: right; margin-top: 10px; }
+        
+        #orderBtn { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: 900; cursor: pointer; margin-top: 15px; }
+        
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 80%; }
     </style>
 </head>
 <body>
 
-<div id="successModal">
-    <div class="modal-content">
-        <h2 style="color:var(--gold); margin-top:0;">HOTEP</h2>
-        <p style="font-size: 18px;">✅ تم تسجيل طلبك بنجاح!</p>
-        <p style="color:#888; font-size:14px;">سنتواصل معك هاتفياً لتأكيد الشحن</p>
-        <button onclick="location.reload()" style="background:var(--gold); border:none; padding:12px 30px; border-radius:10px; font-weight:bold; margin-top:20px; cursor:pointer;">إغلاق</button>
-    </div>
-</div>
+<div id="successModal"><div class="modal-content"><h2 style="color:var(--gold)">HOTEP</h2><p>✅ تم تسجيل طلبك بنجاح</p><button onclick="location.reload()" style="background:var(--gold); border:none; padding:10px 20px; border-radius:5px; font-weight:bold; cursor:pointer;">موافق</button></div></div>
 
 <div class="container">
     <div class="brand">HOTEP</div>
     
-    <div class="slider">
-        <button class="prev" onclick="changeSlide(-1)">&#10095;</button>
-        <button class="next" onclick="changeSlide(1)">&#10094;</button>
-        <div class="slides" id="sliderWrapper">
-            <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg" alt="1"></div>
-            <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg" alt="2"></div>
+    <div class="slider-container">
+        <button class="nav-btn next" onclick="changeSlide(1)">&#10094;</button>
+        <button class="nav-btn prev" onclick="changeSlide(-1)">&#10095;</button>
+        <div class="slider-wrapper" id="sliderWrapper">
+            <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div>
+            <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div>
         </div>
-        <div class="dots">
-            <span class="dot active" onclick="setSlide(0)"></span>
-            <span class="dot" onclick="setSlide(1)"></span>
-        </div>
+        <div class="dots"><span class="dot active"></span><span class="dot"></span></div>
     </div>
     
-    <div class="price-box">
-        <div class="price">200 EGP</div>
-        <span class="offer-text">علبة بوكسر ملكي قطن (2 قطعة)</span>
+    <div class="price-box"><div class="price">200 EGP</div></div>
+
+    <div class="description-card">
+        <h3>✨ الخامة والجودة</h3>
+        <p>بوكسر HOTEP مصنوع من <b>القطن المصري 100%</b>. العلبة بها 2 قطعة لون أسود ملكي.</p>
+        <p style="margin-top:10px; font-weight:bold;">🚚 الشحن: القاهرة 50ج | محافظات 70ج</p>
     </div>
 
-    <div class="size-section">
-        <table class="size-table">
-            <thead>
-                <tr><th>المقاس</th><th>الوزن المناسب</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>Medium (M)</td><td>55 - 65 كجم</td></tr>
-                <tr><td>Large (L)</td><td>65 - 75 كجم</td></tr>
-                <tr><td>X-Large (XL)</td><td>75 - 85 كجم</td></tr>
-                <tr><td>2X-Large (2XL)</td><td>85 - 95 كجم</td></tr>
-                <tr><td>3X-Large (3XL)</td><td>95 - 110 كجم</td></tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="form-group">
-        <input type="text" id="name" placeholder="الاسم بالكامل">
-    </div>
-    <div class="form-group">
-        <input type="tel" id="phone" placeholder="رقم الهاتف">
-    </div>
-    <div class="form-group">
-        <label>المحافظة</label>
-        <select id="province">
-            <option>القاهرة</option><option>الجيزة</option>
-            <option>الإسكندرية</option><option>باقي المحافظات</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <input type="text" id="address" placeholder="العنوان بالتفصيل">
-    </div>
-    <div class="form-group">
-        <label>اللون</label>
-        <select id="color">
-            <option value="أسود">الأسود الملكي (متوفر)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label>المقاس</label>
-        <select id="size">
-            <option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option>
-        </select>
-    </div>
-    
-    <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-<script>
-    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-    
-    // --- Slider Logic ---
-    let currentIdx = 0;
-    const slidesCont = document.getElementById('sliderWrapper');
-    const dots = document.querySelectorAll('.dot');
-    
-    function updateSlider() {
-        slidesCont.style.transform = `translateX(${currentIdx * 100}%)`;
-        dots.forEach((d, i) => d.classList.toggle('active', i === currentIdx));
-    }
-    
-    function changeSlide(step) {
-        currentIdx = (currentIdx + step + 2) % 2;
-        updateSlider();
-    }
-    
-    function setSlide(idx) {
-        currentIdx = idx;
-        updateSlider();
-    }
-    
-    // Auto Move every 5 seconds
-    setInterval(() => changeSlide(1), 5000);
-
-    // --- Order Logic ---
-    function submitOrder() {
-        const n = document.getElementById('name').value.trim();
-        const p = document.getElementById('phone').value.trim();
-        const a = document.getElementById('address').value.trim();
-        
-        if(!n || !p || !a) { alert("يرجى ملء الاسم والهاتف والعنوان"); return; }
-        
-        const btn = document.getElementById('orderBtn');
-        btn.disabled = true; btn.innerText = "جاري التأكيد...";
-
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        
-        firebase.database().ref('orders').push({
-            الاسم: n, الهاتف: p, العنوان: a,
-            المحافظة: document.getElementById('province').value,
-            اللون: document.getElementById('color').value,
-            المقاس: document.getElementById('
+    <div class="size-grid">
+        <div class="size-header">المقاس</div> <div class="size-header">الوزن</div>
+        <div class="size-item">M</div> <div class="size-item">55 - 65 كجم</div>
+        <div class="size-item">L</div> <div class="size-item">65 - 75 كجم</div>
+        <div class="size-item">
