@@ -11,7 +11,7 @@
         .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
 
-        /* السلايدر - إصلاح شامل */
+        /* السلايدر */
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
@@ -26,12 +26,10 @@
         .description-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
         .description-card p { font-size: 14px; margin: 5px 0; color: #ccc; }
 
-        /* جدول المقاسات */
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 12px; overflow: hidden; margin: 20px 0; }
         .size-header { background: var(--gold); color: #000; padding: 8px 2px; font-weight: bold; font-size: 11px; text-align: center; }
         .size-item { background: var(--black); padding: 10px 2px; font-size: 11px; text-align: center; }
 
-        /* الحقول */
         .form-group { margin-bottom: 15px; text-align: right; }
         label { display: block; color: var(--gold); margin-bottom: 7px; font-size: 13px; font-weight: bold; padding-right: 5px; }
         input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; }
@@ -41,19 +39,26 @@
 
         #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; }
 
-        /* نافذة النجاح */
+        /* نافذة النجاح المطورة لتشمل السعر */
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px; border-radius: 25px; text-align: center; max-width: 300px; width: 80%; }
-        .modal-content button { background: var(--gold); border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; margin-top: 20px; cursor: pointer; }
+        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px; border-radius: 25px; text-align: center; max-width: 300px; width: 85%; }
+        .modal-info { background: rgba(212,175,55,0.1); padding: 15px; border-radius: 15px; margin: 15px 0; border: 1px solid #333; }
+        .modal-content button { background: var(--gold); border: none; padding: 12px 40px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div id="successModal">
     <div class="modal-content">
-        <h2 style="color:var(--gold)">HOTEP</h2>
-        <p>✅ تم استلام طلبك بنجاح!</p>
-        <p style="font-size:12px">سنتواصل معك هاتفياً لتأكيد الشحن</p>
+        <h2 style="color:var(--gold); margin-bottom: 5px;">HOTEP</h2>
+        <p style="color: #25d366; font-weight: bold; margin-bottom: 15px;">✅ تم استلام طلبك بنجاح!</p>
+        
+        <div class="modal-info">
+            <p style="margin: 5px 0; font-size: 14px;">حساب المنتجات: <b id="finalPriceDisplay">0</b> ج.م</p>
+            <p style="margin: 5px 0; font-size: 13px; color: var(--gold);">+ مصاريف الشحن لـ <span id="finalProvDisplay"></span>: <b id="finalShipDisplay">0</b> ج.م</p>
+        </div>
+        
+        <p style="font-size:12px; color: #bbb;">سنتواصل معك هاتفياً لتأكيد الأوردر</p>
         <button onclick="window.location.reload()">حسناً</button>
     </div>
 </div>
@@ -73,10 +78,9 @@
     <div class="price-box"><div class="price">سعر العلبة: 200 ج.م</div></div>
 
     <div class="description-card">
-        <h3>✨ عرض HOTEP</h3>
+        <h3>✨ تفاصيل المنتج</h3>
         <p>• العلبة تحتوي على <b>قطعتين</b> (أسود ملكي).</p>
-        <p>• الخامة: قطن مصري 100%.</p>
-        <p>• شحن القاهرة 50ج | محافظات 70ج.</p>
+        <p>• الشحن: القاهرة 50ج | محافظات 70ج.</p>
     </div>
 
     <div class="size-grid">
@@ -92,16 +96,14 @@
     <div class="form-group">
         <label>المحافظة</label>
         <select id="province">
-            <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>باقي المحافظات</option>
+            <option value="50">القاهرة (شحن 50ج)</option>
+            <option value="50">الجيزة (شحن 50ج)</option>
+            <option value="70">الإسكندرية (شحن 70ج)</option>
+            <option value="70">باقي المحافظات (شحن 70ج)</option>
         </select>
     </div>
     <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
     
-    <div class="form-group">
-        <label>اللون</label>
-        <select id="color"><option>الأسود الملكي</option></select>
-    </div>
-
     <div class="form-group">
         <label>عدد العلب (العلبة بها 2 قطعة)</label>
         <select id="quantity" onchange="updateTotal()">
@@ -131,17 +133,14 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // تهيئة Firebase - تأكد من الرابط الخاص بك
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-    // تحديث السعر
     function updateTotal() {
         const qty = document.getElementById('quantity').value;
         document.getElementById('totalDisplay').innerText = qty * 200;
     }
 
-    // حركة السلايدر
     let currentIdx = 0;
     const slider = document.getElementById('mainSlider');
     function moveSlide(direction) {
@@ -150,29 +149,36 @@
     }
     setInterval(() => moveSlide(1), 5000);
 
-    // إرسال الطلب
     function submitOrder() {
         const n = document.getElementById('name').value.trim();
         const p = document.getElementById('phone').value.trim();
         const a = document.getElementById('address').value.trim();
-        
-        if(!n || !p || !a) return alert("يرجى إكمال البيانات المطلوبة");
+        const provSelect = document.getElementById('province');
+        const shipPrice = provSelect.value;
+        const provName = provSelect.options[provSelect.selectedIndex].text.split(' ')[0];
+        const totalPrice = document.getElementById('totalDisplay').innerText;
+
+        if(!n || !p || !a) return alert("يرجى إكمال البيانات");
         
         const btn = document.getElementById('orderBtn');
         btn.disabled = true; btn.innerText = "جاري الحفظ...";
 
         firebase.database().ref('orders').push({
             الاسم: n, الهاتف: p, 
-            المحافظة: document.getElementById('province').value,
+            المحافظة: provName,
             العنوان: a,
-            اللون: document.getElementById('color').value,
             الكمية: document.getElementById('quantity').value + " علبة",
             المقاس: document.getElementById('size').value, 
-            الاجمالي: document.getElementById('totalDisplay').innerText + " جنيه",
+            الحساب: totalPrice + " جنيه",
+            الشحن: shipPrice + " جنيه",
             التاريخ: new Date().toLocaleString('ar-EG'), الحاله: "جديد"
         }).then(() => {
+            // تحديث بيانات رسالة النجاح
+            document.getElementById('finalPriceDisplay').innerText = totalPrice;
+            document.getElementById('finalProvDisplay').innerText = provName;
+            document.getElementById('finalShipDisplay').innerText = shipPrice;
             document.getElementById('successModal').style.display = 'flex';
-        }).catch(err => {
+        }).catch(() => {
             alert("خطأ في الاتصال");
             btn.disabled = false;
         });
