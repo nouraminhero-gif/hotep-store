@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP | Exclusive Store</title>
+    <title>HOTEP | Store</title>
     <link rel="icon" href="https://l.top4top.io/p_36510goa90.jpg">
     <link rel="apple-touch-icon" href="https://l.top4top.io/p_36510goa90.jpg">
     
@@ -53,19 +52,24 @@
             background: #1a1a1a; 
             border-top: 3px solid var(--gold); 
             padding: 15px; 
-            margin: 20px 0; 
+            margin: 15px 0; 
             border-radius: 12px; 
         }
         .info-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
-        .info-card p { font-size: 15px; margin: 8px 0; color: #ccc; line-height: 1.6; }
+        .info-card p { font-size: 15px; margin: 5px 0; color: #ccc; line-height: 1.6; }
 
-        /* تنسيق صورة جدول المقاسات */
-        .size-chart-img {
-            width: 100%;
-            border-radius: 15px;
-            margin: 20px 0;
-            border: 1px solid var(--gold);
+        /* تنسيق جدول المقاسات الكتابي */
+        .size-chart { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            background: #1a1a1a; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            border: 1px solid #333;
         }
+        .size-chart th { background: var(--gold); color: #000; padding: 10px; font-size: 14px; }
+        .size-chart td { border: 1px solid #333; padding: 10px; font-size: 14px; text-align: center; }
 
         input, select { 
             width: 100%; 
@@ -127,14 +131,21 @@
         <p>صبغات أصلية ثابتة لا تتغير</p>
     </div>
 
-    <h3 style="color:var(--gold); font-size: 16px; margin-top: 20px;">جدول المقاسات</h3>
-    <img src="https://k.top4top.io/p_3651p5g3k0.jpg" class="size-chart-img" alt="Size Chart">
-
     <div class="info-card" style="border-top-color: #28a745;">
         <h3>🚚 عرض خاص</h3>
         <p>العلبة بها <b>2 قطعة</b> بـ 200ج فقط</p>
         <p>شحن القاهرة/جيزة 50ج - باقي المحافظات 70ج</p>
     </div>
+
+    <h3 style="color:var(--gold); font-size: 16px; margin-top: 10px;">جدول المقاسات</h3>
+    <table class="size-chart">
+        <tr><th>المقاس</th><th>الخصر (سم)</th><th>الطول (سم)</th></tr>
+        <tr><td>M</td><td>34</td><td>30</td></tr>
+        <tr><td>L</td><td>36</td><td>32</td></tr>
+        <tr><td>XL</td><td>38</td><td>35</td></tr>
+        <tr><td>2XL</td><td>40</td><td>38</td></tr>
+        <tr><td>3XL</td><td>42</td><td>40</td></tr>
+    </table>
 
     <div style="width: 100%;">
         <input type="text" id="name" placeholder="الاسم بالكامل">
@@ -201,3 +212,4 @@
 </script>
 </body>
 </html>
+
