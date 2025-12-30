@@ -3,32 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | Exclusive Collection</title>
+    <title>HOTEP | Exclusive</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
-        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding: 10px; }
-        .container { max-width: 450px; margin: 0 auto; background: #111; border: 2px solid #D4AF37; border-radius: 25px; padding: 15px; box-shadow: 0 0 20px rgba(212,175,55,0.2); }
-        .brand { color: #D4AF37; font-size: 32px; font-weight: bold; margin-bottom: 10px; letter-spacing: 3px; }
+        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 10px; }
+        .container { max-width: 450px; margin: 0 auto; background: #111; border: 2px solid #D4AF37; border-radius: 25px; padding: 15px; }
+        .brand { color: #D4AF37; font-size: 32px; font-weight: bold; margin-bottom: 15px; letter-spacing: 2px; }
 
-        /* ستايل السلايدر (تقليب الصور) */
-        .slider-container { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: 20px; border: 1px solid #333; }
+        /* ستايل السلايدر بمقاس ثابت */
+        .slider-wrapper { position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 20px; border: 1px solid #333; background: #000; }
         .slides { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
-        .slides img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
+        .slides img { width: 100%; height: 100%; object-fit: contain; flex-shrink: 0; }
         
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212,175,55,0.7); border: none; color: #000; font-size: 20px; padding: 10px; cursor: pointer; border-radius: 50%; z-index: 10; }
+        /* أزرار التنقل */
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.6); border: none; color: white; padding: 12px; cursor: pointer; border-radius: 50%; z-index: 10; font-weight: bold; }
         .prev { left: 10px; } .next { right: 10px; }
         
-        .dots { margin-top: 10px; }
-        .dot { height: 10px; width: 10px; margin: 0 5px; background-color: #444; border-radius: 50%; display: inline-block; cursor: pointer; }
-        .active-dot { background-color: #D4AF37; }
-
-        .price-tag { background: #D4AF37; color: #000; font-size: 24px; font-weight: bold; padding: 5px 20px; border-radius: 50px; display: inline-block; margin-top: -20px; position: relative; z-index: 15; }
+        .price-tag { background: #D4AF37; color: #000; font-size: 24px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -25px; position: relative; z-index: 15; }
         
-        input, select { width: 95%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; outline: none; }
-        label { display: block; text-align: right; margin-right: 15px; color: #D4AF37; font-size: 13px; font-weight: bold; }
-        button#orderBtn { width: 95%; padding: 15px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-        button:disabled { background: #555; }
+        input, select { width: 95%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; }
+        label { display: block; text-align: right; margin: 10px 15px 0 0; color: #D4AF37; font-size: 14px; font-weight: bold; }
+        #orderBtn { width: 95%; padding: 16px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -36,93 +32,42 @@
 <div class="container">
     <div class="brand">HOTEP</div>
 
-    <div class="slider-container">
-        <button class="nav-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+    <div class="slider-wrapper">
+        <button class="nav-btn prev" onclick="changeSlide(-1)">&#10094;</button>
         <div class="slides" id="slides">
-            <img src="https://l.top4top.io/p_36510goa90.jpg"> <img src="https://i.ibb.co/mD8m8zXb/HOTEP-Size-Chart.png"> </div>
-        <button class="nav-btn next" onclick="moveSlide(1)">&#10095;</button>
+            <img src="https://l.top4top.io/p_36510goa90.jpg"> <img src="https://d.top4top.io/p_3651ytrr50.jpg"> </div>
+        <button class="nav-btn next" onclick="changeSlide(1)">&#10095;</button>
     </div>
     
-    <div class="dots" id="dots">
-        <span class="dot active-dot" onclick="currentSlide(0)"></span>
-        <span class="dot" onclick="currentSlide(1)"></span>
-    </div>
-
-    <div class="price-tag">200 EGP</div>
+    <div class="price-tag">200 جنيهاً</div>
 
     <div style="margin-top:20px;">
         <input type="text" id="name" placeholder="الاسم بالكامل">
-        <input type="tel" id="phone" placeholder="رقم الموبايل">
-        <input type="text" id="address" placeholder="عنوان التوصيل">
+        <input type="tel" id="phone" placeholder="رقم الهاتف">
+        <input type="text" id="address" placeholder="العنوان بالتفصيل">
 
         <label>اللون:</label>
         <select id="color">
-            <option value="Black">Black Gold</option>
-            <option value="Blue">Navy Blue</option>
-            <option value="Grey">Classic Grey</option>
+            <option value="Black">Black</option>
+            <option value="Navy">Navy Blue</option>
+            <option value="Grey">Grey</option>
         </select>
 
         <label>المقاس:</label>
         <select id="size">
-            <option value="M">Medium (M)</option>
-            <option value="L">Large (L)</option>
-            <option value="XL">X-Large (XL)</option>
-            <option value="XXL">XX-Large (XXL)</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
         </select>
 
-        <button id="orderBtn" onclick="sendToFirebase()">تأكيد الطلب الآن</button>
+        <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
     </div>
 </div>
 
 <script>
-    // برمجة السلايدر
-    let index = 0;
-    const slides = document.getElementById('slides');
-    const dots = document.querySelectorAll('.dot');
-
-    function showSlide(n) {
-        const total = document.querySelectorAll('.slides img').length;
-        if (n >= total) index = 0;
-        else if (n < 0) index = total - 1;
-        else index = n;
-        
-        slides.style.transform = `translateX(${index * 100}%)`; // التحريك لليسار
-        dots.forEach(d => d.classList.remove('active-dot'));
-        dots[index].classList.add('active-dot');
-    }
-
-    function moveSlide(n) { showSlide(index + n); }
-    function currentSlide(n) { showSlide(n); }
-    setInterval(() => moveSlide(1), 4000); // تقليب تلقائي كل 4 ثواني
-
-    // ربط Firebase سيرفر بلجيكا
-    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-    const db = firebase.database();
-
-    function sendToFirebase() {
-        const btn = document.getElementById('orderBtn');
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const color = document.getElementById('color').value;
-        const size = document.getElementById('size').value;
-
-        if(name && phone && address) {
-            btn.disabled = true; btn.innerText = "جاري الحفظ...";
-            db.ref('orders').push({
-                Name: name, Phone: phone, Address: address, Color: color, Size: size, Time: new Date().toLocaleString('ar-EG')
-            }).then(() => {
-                alert("تم استلام طلبك"); // التنبيه المطلوب
-                location.reload();
-            }).catch(() => {
-                alert("خطأ! حاول مرة أخرى");
-                btn.disabled = false;
-            });
-        } else { alert("من فضلك أكمل البيانات"); }
-    }
-</script>
-
-</body>
-</html>
+    // برمجة حركة الصور
+    let currentIdx = 0;
+    function changeSlide(dir) {
+        const slider = document.getElementById('
 
