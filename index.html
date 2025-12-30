@@ -10,22 +10,23 @@
         
         .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
         
-        /* تنسيق البراند مع اللوجو */
+        /* تنسيق الهيدر مع اللوجو المختار */
         .brand { 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             color: var(--gold); 
-            font-size: 38px; 
+            font-size: 35px; 
             font-weight: 900; 
-            letter-spacing: 5px; 
-            margin-bottom: 20px; 
+            letter-spacing: 4px; 
+            margin-bottom: 25px; 
             text-transform: uppercase; 
         }
-        .brand svg {
-            height: 45px; /* نفس ارتفاع الخط تقريباً */
-            margin-left: 10px;
+        .scarab-logo {
+            height: 50px; /* حجم اللوجو */
+            margin-left: 15px;
             fill: var(--gold);
+            filter: drop-shadow(0px 0px 2px rgba(212, 175, 55, 0.5));
         }
 
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
@@ -68,16 +69,15 @@
         <h2 style="color:var(--gold); margin:0;">HOTEP</h2>
         <p style="color: #25d366; font-weight: bold; margin: 10px 0;">✅ تم استلام طلبك بنجاح!</p>
         <div class="modal-info" id="confirmDetails"></div>
-        <p style="font-size:12px; color: #bbb;">سنتواصل معك هاتفياً خلال 48 ساعة لتأكيد الجاهزية.</p>
         <button onclick="window.location.reload()">حسناً</button>
     </div>
 </div>
 
 <div class="container">
     <div class="brand">
-        <svg viewBox="0 0 100 100">
-            <path d="M50 10c-15 0-22 10-22 25 0 5 2 10 5 15-5 5-8 12-8 20 0 15 11 25 25 25s25-10 25-25c0-8-3-15-8-20 3-5 5-10 5-15 0-15-7-25-22-25zm0 10c10 0 12 8 12 15s-2 15-12 15-12-8-12-15 2-15 12-15zm-15 40c0-10 7-18 15-18s15 8 15 18-7 18-15 18-15-8-15-18z"/>
-            <path d="M22 35c-5 0-10 5-10 10s5 10 10 10M78 35c5 0 10 5 10 10s-5 10-10 10M18 70c-5 2-8 8-8 15M82 70c5 2 8 8 8 15"/>
+        <svg class="scarab-logo" viewBox="0 0 100 100">
+            <path d="M50 5C38 5 30 15 30 30c0 5 2 10 5 13-6 4-10 12-10 22 0 18 11 30 25 30s25-12 25-30c0-10-4-18-10-22 3-3 5-8 5-13 0-15-8-25-20-25zm0 8c8 0 10 7 10 17s-2 17-10 17-10-7-10-17 2-17 10-17zm-18 47c0-10 8-18 18-18s18 8 18 18-8 18-18 18-18-8-18-18zM15 35c4 0 7 4 7 8s-3 8-7 8-7-4-7-8 3-8 7-8zm70 0c4 0 7 4 7 8s-3 8-7 8-7-4-7-8 3-8 7-8zM12 75c0-8 5-12 10-12m56 0c5 0 10 4 10 12"/>
+            <rect x="48" y="20" width="4" height="15" rx="2" />
         </svg>
         <span>HOTEP</span>
     </div>
@@ -122,11 +122,6 @@
 
     <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
     
-    <div class="form-group">
-        <label>اللون</label>
-        <select id="color"><option>الأسود الملكي</option></select>
-    </div>
-
     <div class="form-group">
         <label>الكمية (العلبة بها 2 قطعة)</label>
         <select id="quantity" onchange="updateTotal()">
@@ -198,8 +193,6 @@
             document.getElementById('confirmDetails').innerHTML = `
                 <b>أستاذ ${name}،</b><br>
                 تم تجهيز أوردرك (${qty} علبة) مقاس ${document.getElementById('size').value}.<br>
-                سعر المنتجات: ${productTotal} ج.<br>
-                مصاريف الشحن (${provName}): ${shipCost} ج.<br>
                 <b>الإجمالي مع الشحن: ${finalTotal} ج.</b>
             `;
             document.getElementById('successModal').style.display = 'flex';
@@ -208,4 +201,4 @@
 </script>
 </body>
 </html>
- 
+
