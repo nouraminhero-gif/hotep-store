@@ -4,24 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | Dashboard V5</title>
+    <title>HOTEP | Dashboard V6</title>
     <style>
-        :root { --gold: #D4AF37; --new: #28a745; --shipped: #555; }
+        :root { --gold: #D4AF37; --new: #28a745; --confirm: #fd7e14; --shipped: #555; }
         body { background: #000; color: #fff; font-family: sans-serif; padding: 10px; margin: 0; }
-        .header { text-align: center; color: var(--gold); padding: 20px 0; }
+        .header { text-align: center; color: var(--gold); padding: 20px 0; border-bottom: 1px solid #333; margin-bottom: 15px; }
         .order-card { background: #111; border: 1px solid #333; border-right: 6px solid var(--new); border-radius: 12px; padding: 15px; margin: 10px auto; max-width: 500px; text-align: right; position: relative; }
         .order-card.shipped { border-right-color: var(--shipped); opacity: 0.7; }
         .status-badge { position: absolute; left: 10px; top: 10px; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; background: var(--new); }
         .info b { color: var(--gold); font-size: 20px; display: block; margin-bottom: 8px; }
         .info p { margin: 5px 0; font-size: 14px; color: #ccc; }
-        .actions { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
-        .btn { flex: 1; min-width: 90px; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 12px; color: #fff; text-align: center; }
+        .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 15px; }
+        .btn { padding: 10px 5px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 11px; color: #fff; text-align: center; }
         .btn-call { background: #007bff; }
+        .btn-confirm { background: var(--confirm); } /* زر التأكيد البرتقالي */
         .btn-wa { background: #25d366; }
-        .btn-share { background: #17a2b8; } /* لون زر المشاركة */
+        .btn-share { background: #17a2b8; }
         .btn-print { background: #6f42c1; }
         .btn-status { background: var(--gold); color: #000; }
-        .btn-del { background: #ff4444; }
+        .btn-del { background: #ff4444; grid-column: span 3; margin-top: 5px; }
         #printArea { display: none; background: #fff; color: #000; padding: 30px; border: 3px solid #000; }
         @media print { body * { display: none !important; } #printArea, #printArea * { display: block !important; } #printArea { position: absolute; left: 0; top: 0; width: 100%; } }
     </style>
@@ -29,8 +30,8 @@
 <body>
     <div id="printArea"></div>
     <div class="header">
-        <h1>إدارة طلبات HOTEP</h1>
-        <div id="stats">جاري التحميل...</div>
+        <h1>HOTEP Dashboard</h1>
+        <div id="stats">جاري تحميل الطلبات...</div>
     </div>
     <div id="ordersContainer"></div>
 
@@ -54,6 +55,8 @@
                 const shipCost = (data.المحافظة === "القاهرة" || data.المحافظة === "الجيزة") ? 50 : 70;
                 const total = 200 + shipCost;
 
+                const confirmMsg = `تأكيد طلب HOTEP ✅%0Aأستاذ ${data.الاسم}، تم تجهيز أوردرك (علبة 2 قطعة) مقاس ${data.المقاس}.%0Aالإجمالي مع الشحن: ${total} ج.%0Aسيتم التواصل معك من خلال المندوب خلال 48 ساعة. يرجى تأكيد الجاهزية للاستلام بالرد على هذه الرسالة.`;
+
                 container.innerHTML = `
                     <div class="order-card ${isDone ? 'shipped' : ''}">
                         <div class="status-badge">${data.الحالة || 'جديد'}</div>
@@ -61,48 +64,42 @@
                             <b>${data.الاسم}</b>
                             <p>📞 ${data.الهاتف} | 📍 ${data.المحافظة}</p>
                             <p>🏠 ${data.العنوان}</p>
-                            <p>📏 المقاس: ${data.المقاس} | 🕒 ${data.التاريخ}</p>
+                            <p>📏 المقاس: ${data.المقاس}</p>
                         </div>
                         <div class="actions">
                             <a href="tel:${data.الهاتف}" class="btn btn-call">اتصال</a>
+                            <a href="https://wa.me/2${data.الهاتف}?text=${confirmMsg}" class="btn btn-confirm">تأكيد العميل</a>
                             <button onclick="shareOrder('${key}')" class="btn btn-share">مشاركة</button>
                             <button onclick="preparePrint('${key}')" class="btn btn-print">طباعة</button>
-                            <button onclick="toggleStatus('${key}', '${data.الحالة}')" class="btn btn-status">${isDone ? 'للجديد' : 'شحن'}</button>
-                            <button onclick="deleteOrder('${key}')" class="btn btn-del">حذف</button>
+                            <button onclick="toggleStatus('${key}', '${data.الحالة}')" class="btn btn-status">${isDone ? 'للجديد' : 'تم الشحن'}</button>
+                            <button onclick="deleteOrder('${key}')" class="btn btn-del">حذف الطلب نهائياً</button>
                         </div>
                     </div>` + container.innerHTML;
             });
             document.getElementById('stats').innerText = "إجمالي الطلبات: " + count;
         });
 
-        // وظيفة مشاركة البيانات عبر التطبيقات (واتساب، ماسنجر، إلخ)
         function shareOrder(key) {
             db.child(key).once('value', (s) => {
                 const d = s.val();
                 const ship = (d.المحافظة === "القاهرة" || d.المحافظة === "الجيزة") ? 50 : 70;
-                const text = `📦 بوليصة شحن HOTEP\n------------------\n👤 العميل: ${d.الاسم}\n📞 الهاتف: ${d.الهاتف}\n📍 العنوان: ${d.المحافظة} - ${d.العنوان}\n📏 المقاس: ${d.المقاس}\n------------------\n💰 السعر: 200 ج\n🚚 الشحن: ${ship} ج\n💵 الإجمالي: ${200 + ship} ج`;
-
-                if (navigator.share) {
-                    navigator.share({ title: 'بيانات العميل', text: text }).catch(console.error);
-                } else {
-                    alert("المتصفح لا يدعم المشاركة، سيتم نسخ النص بدلاً من ذلك");
-                    navigator.clipboard.writeText(text);
-                }
+                const text = `📦 بوليصة شحن HOTEP\n👤 العميل: ${d.الاسم}\n📞 الهاتف: ${d.الهاتف}\n📍 العنوان: ${d.المحافظة} - ${d.العنوان}\n📏 المقاس: ${d.المقاس}\n💵 الإجمالي: ${200 + ship} ج`;
+                if (navigator.share) navigator.share({ text: text });
+                else alert("تم نسخ البيانات: " + text);
             });
         }
 
         function preparePrint(key) {
             db.child(key).once('value', (s) => {
                 const d = s.val();
-                const ship = (d.المحافظة === "القاهرة" || d.المحافظة === "الجيزة") ? 50 : 70;
                 const p = document.getElementById('printArea');
-                p.innerHTML = `<div style="text-align:center;"><h1>HOTEP</h1><hr><p>الاسم: ${d.الاسم}</p><p>الهاتف: ${d.الهاتف}</p><p>العنوان: ${d.المحافظة} - ${d.العنوان}</p><p>المقاس: ${d.المقاس}</p><hr><h3>الإجمالي: ${200 + ship} ج</h3></div>`;
+                p.innerHTML = `<div style="text-align:right;"><h2>HOTEP STORE</h2><hr><p>العميل: ${d.الاسم}</p><p>العنوان: ${d.المحافظة} - ${d.العنوان}</p><p>المقاس: ${d.المقاس}</p></div>`;
                 window.print();
             });
         }
 
         function toggleStatus(key, current) { db.child(key).update({ الحالة: current === "تم الشحن" ? "جديد" : "تم الشحن" }); }
-        function deleteOrder(key) { if(confirm("حذف الطلب؟")) db.child(key).remove(); }
+        function deleteOrder(key) { if(confirm("حذف؟")) db.child(key).remove(); }
     </script>
 </body>
 </html>
