@@ -4,34 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP Admin | لوحة التحكم المطورة</title>
+    <title>لوحة إدارة HOTEP | واتساب احترافي</title>
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #121212; --green: #25d366; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
-        
         .header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
-        .header h1 { color: var(--gold); margin: 0; font-size: 24px; letter-spacing: 2px; }
-
-        .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: var(--dark); border: 1px solid #333; padding: 15px; border-radius: 12px; text-align: center; }
-        .stat-card span { display: block; font-size: 20px; font-weight: bold; color: var(--gold); }
-
-        .table-container { overflow-x: auto; background: var(--dark); border-radius: 15px; border: 1px solid #333; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .header h1 { color: var(--gold); margin: 0; font-size: 24px; }
+        .table-container { overflow-x: auto; background: var(--dark); border-radius: 15px; border: 1px solid #333; }
         table { width: 100%; border-collapse: collapse; min-width: 1100px; }
         th { background: var(--gold); color: #000; padding: 12px; font-size: 13px; }
-        td { padding: 12px; border-bottom: 1px solid #222; text-align: center; font-size: 13px; vertical-align: middle; }
-        
-        .client-info { text-align: right; min-width: 180px; }
+        td { padding: 12px; border-bottom: 1px solid #222; text-align: center; font-size: 13px; }
         .highlight { color: var(--gold); font-weight: bold; }
-        .price-tag { background: rgba(37, 211, 102, 0.1); padding: 4px 8px; border-radius: 5px; color: var(--green); border: 1px solid rgba(37, 211, 102, 0.3); font-weight: bold; }
-        
         .btn { padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; text-decoration: none; font-size: 11px; display: inline-block; margin: 2px; }
-        .btn-call { background: #007bff; }
         .btn-wa { background: var(--green); }
         .btn-del { background: #dc3545; }
-        
-        tr:hover { background: #1a1a1a; }
-        .date-text { font-size: 10px; color: #888; }
     </style>
 </head>
 <body>
@@ -40,29 +26,19 @@
         <h1>HOTEP | إدارة الطلبات</h1>
     </div>
 
-    <div class="stats-bar">
-        <div class="stat-card">إجمالي الطلبات<span id="totalOrders">0</span></div>
-        <div class="stat-card">مبيعات المنتجات<span id="totalSales">0</span></div>
-        <div class="stat-card">إجمالي التحصيل<span id="totalCollection">0</span></div>
-    </div>
-
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th>التاريخ</th>
-                    <th>بيانات العميل</th>
-                    <th>العنوان</th>
+                    <th>العميل</th>
+                    <th>الهاتف</th>
                     <th>المقاس</th>
                     <th>الكمية</th>
-                    <th>سعر المنتج</th>
-                    <th>الشحن</th>
-                    <th>الإجمالي المطلوب</th>
+                    <th>إجمالي الحساب</th>
                     <th>الإجراءات</th>
                 </tr>
             </thead>
-            <tbody id="ordersBody">
-                </tbody>
+            <tbody id="ordersBody"></tbody>
         </table>
     </div>
 
@@ -77,58 +53,38 @@
         db.on('value', (snapshot) => {
             const tbody = document.getElementById('ordersBody');
             tbody.innerHTML = '';
-            let count = 0;
-            let productSales = 0;
-            let totalWithShipping = 0;
 
             snapshot.forEach((child) => {
                 const order = child.val();
                 const id = child.key;
-                count++;
 
-                // تحويل القيم لنصوص وأرقام لضمان عدم حدوث خطأ في الحساب
-                const pPrice = parseInt(order.سعر_المنتجات) || 0;
-                const sPrice = parseInt(order.سعر_الشحن) || 0;
-                const fTotal = parseInt(order.الاجمالي) || (pPrice + sPrice);
-
-                productSales += pPrice;
-                totalWithShipping += fTotal;
+                // تحضير رسالة الواتساب بالبيانات الصحيحة
+                const whatsappMessage = encodeURIComponent(
+                    `✅ تأكيد طلب HOTEP\n` +
+                    `أستاذ ${order.الاسم}، تم تجهيز أوردرك (${order.الكمية}) مقاس ${order.المقاس}.\n` +
+                    `الإجمالي مع الشحن: ${order.الاجمالي}.\n` +
+                    `سيتم التواصل معك من خلال المندوب خلال 48 ساعة. يرجى تأكيد الجاهزية للاستلام بالرد على هذه الرسالة.`
+                );
 
                 const row = `
                     <tr>
-                        <td class="date-text">${order.التاريخ || '-'}</td>
-                        <td class="client-info">
-                            <b>${order.الاسم}</b><br>
-                            <small>${order.الهاتف}</small>
-                        </td>
-                        <td>
-                            <small>${order.المحافظة}</small><br>
-                            <small style="color:#888">${order.العنوان}</small>
-                        </td>
+                        <td><b>${order.الاسم}</b></td>
+                        <td>${order.الهاتف}</td>
                         <td class="highlight">${order.المقاس}</td>
                         <td>${order.الكمية}</td>
-                        <td>${pPrice} ج</td>
-                        <td>${sPrice} ج</td>
-                        <td><span class="price-tag">${fTotal} ج.م</span></td>
+                        <td class="highlight">${order.الاجمالي}</td>
                         <td>
-                            <a href="tel:${order.الهاتف}" class="btn btn-call">اتصال</a>
-                            <a href="https://wa.me/2${order.الهاتف}" target="_blank" class="btn btn-wa">واتساب</a>
+                            <a href="https://wa.me/2${order.الهاتف}?text=${whatsappMessage}" target="_blank" class="btn btn-wa">إرسال تأكيد واتساب</a>
                             <button onclick="deleteOrder('${id}')" class="btn btn-del">حذف</button>
                         </td>
                     </tr>
                 `;
                 tbody.insertAdjacentHTML('afterbegin', row);
             });
-
-            document.getElementById('totalOrders').innerText = count;
-            document.getElementById('totalSales').innerText = productSales + " ج";
-            document.getElementById('totalCollection').innerText = totalWithShipping + " ج";
         });
 
         function deleteOrder(id) {
-            if(confirm('هل تريد حذف هذا الطلب نهائياً؟')) {
-                db.child(id).remove();
-            }
+            if(confirm('حذف الطلب؟')) db.child(id).remove();
         }
     </script>
 </body>
