@@ -7,41 +7,34 @@
     <title>HOTEP | Official Store</title>
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #1a1a1a; }
-        
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
-        
-        /* السلايدر */
+
+        /* ستايل السلايدر الجديد والأكثر استقراراً */
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
-        .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease-in-out; }
-        .slide { min-width: 100%; height: 100%; }
+        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
+        .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; }
         
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.4); color: #fff; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 5px; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.6); color: #fff; border: none; padding: 12px 10px; cursor: pointer; z-index: 10; border-radius: 5px; font-weight: bold; }
         .prev { left: 10px; } .next { right: 10px; }
 
         .price-box { text-align: center; margin-top: -35px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 28px; font-weight: 900; padding: 12px 45px; border-radius: 50px; display: inline-block; box-shadow: 0 5px 20px rgba(212,175,55,0.4); }
 
-        /* وصف الخامة */
         .description-card { background: var(--gray); border-radius: 15px; padding: 20px; margin: 25px 0 15px 0; text-align: right; border-right: 4px solid var(--gold); }
-        .description-card h3 { color: var(--gold); margin-top: 0; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 8px; margin-bottom: 12px; }
-        .description-card li { font-size: 14px; margin-bottom: 8px; color: #ccc; display: flex; align-items: center; }
-        .description-card li::before { content: "✨"; margin-left: 8px; }
+        .description-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
+        .description-card p { font-size: 14px; margin: 5px 0; color: #ccc; }
 
-        /* جدول المقاسات المحدث (4 مقاسات مع التفاصيل) */
-        .size-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 12px; overflow: hidden; margin: 20px 0; }
-        .size-header { background: var(--gold); color: #000; padding: 8px 2px; font-weight: bold; font-size: 12px; text-align: center; }
-        .size-item { background: var(--black); padding: 10px 2px; font-size: 11px; text-align: center; border-bottom: 0.1px solid #222; }
+        /* جدول المقاسات الرباعي (M, L, XL, XXL) */
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 12px; overflow: hidden; margin: 20px 0; }
+        .size-header { background: var(--gold); color: #000; padding: 8px 2px; font-weight: bold; font-size: 11px; text-align: center; }
+        .size-item { background: var(--black); padding: 10px 2px; font-size: 11px; text-align: center; }
 
-        /* الحقول */
         .form-group { margin-bottom: 15px; text-align: right; }
-        label { display: block; color: var(--gold); margin-bottom: 7px; font-size: 13px; font-weight: bold; }
-        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; }
-        
-        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 10px; }
+        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; }
+        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -52,7 +45,7 @@
     <div class="slider-container">
         <button class="nav-btn next" onclick="moveSlide(1)">&#10094;</button>
         <button class="nav-btn prev" onclick="moveSlide(-1)">&#10095;</button>
-        <div class="slider-wrapper" id="slider">
+        <div class="slides-wrapper" id="mainSlider">
             <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div>
             <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div>
         </div>
@@ -61,39 +54,29 @@
     <div class="price-box"><div class="price">200 EGP</div></div>
 
     <div class="description-card">
-        <h3>تفاصيل المنتج</h3>
-        <ul>
-            <li>خامة من القطن المصري الفاخر 100%.</li>
-            <li>العلبة تحتوي على 2 قطعة لون أسود ملكي.</li>
-        </ul>
-        <p style="font-size: 13px; margin-top: 10px;">🚚 القاهرة والجيزة: <b>50ج</b> | المحافظات: <b>70ج</b></p>
+        <h3>✨ تفاصيل المنتج</h3>
+        <p>• قطن مصري فاخر 100%.</p>
+        <p>• علبة بها 2 قطعة لون أسود ملكي.</p>
+        <p>• شحن القاهرة 50ج | محافظات 70ج.</p>
     </div>
 
-    <div style="text-align: center; color: var(--gold); font-weight: bold; font-size: 14px; margin-bottom: 5px;">جدول المقاسات الدقيق</div>
+    <div style="text-align: center; color: var(--gold); font-weight: bold; font-size: 13px; margin-bottom: 5px;">جدول المقاسات</div>
     <div class="size-grid">
         <div class="size-header">المقاس</div> <div class="size-header">العرض</div> <div class="size-header">الطول</div> <div class="size-header">الوزن</div>
-        
-        <div class="size-item">M</div> <div class="size-item">34 سم</div> <div class="size-item">26 سم</div> <div class="size-item">55-65ك</div>
-        <div class="size-item">L</div> <div class="size-item">36 سم</div> <div class="size-item">27 سم</div> <div class="size-item">65-75ك</div>
-        <div class="size-item">XL</div> <div class="size-item">38 سم</div> <div class="size-item">28 سم</div> <div class="size-item">75-85ك</div>
-        <div class="size-item">XXL</div> <div class="size-item">40 سم</div> <div class="size-item">29 سم</div> <div class="size-item">85-100ك</div>
+        <div class="size-item">M</div> <div class="size-item">34سم</div> <div class="size-item">26سم</div> <div class="size-item">55-65ك</div>
+        <div class="size-item">L</div> <div class="size-item">36سم</div> <div class="size-item">27سم</div> <div class="size-item">65-75ك</div>
+        <div class="size-item">XL</div> <div class="size-item">38سم</div> <div class="size-item">28سم</div> <div class="size-item">75-85ك</div>
+        <div class="size-item">XXL</div> <div class="size-item">40سم</div> <div class="size-item">29سم</div> <div class="size-item">85-100ك</div>
     </div>
 
-    <div class="form-group">
-        <input type="text" id="name" placeholder="الاسم بالكامل">
-    </div>
-    <div class="form-group">
-        <input type="tel" id="phone" placeholder="رقم الهاتف">
-    </div>
+    <div class="form-group"><input type="text" id="name" placeholder="الاسم بالكامل"></div>
+    <div class="form-group"><input type="tel" id="phone" placeholder="رقم الهاتف"></div>
     <div class="form-group">
         <select id="province">
-            <option>القاهرة</option><option>الجيزة</option>
-            <option>الإسكندرية</option><option>باقي المحافظات</option>
+            <option>القاهرة</option><option>الجيزة</option><option>باقي المحافظات</option>
         </select>
     </div>
-    <div class="form-group">
-        <input type="text" id="address" placeholder="العنوان بالتفصيل">
-    </div>
+    <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
     <div class="form-group">
         <select id="size">
             <option>M</option><option>L</option><option>XL</option><option>XXL</option>
@@ -103,4 +86,44 @@
     <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
 
-<script src="https://www.gstatic.com/firebase
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    
+    // سكريبت السلايدر المضمون
+    let currentPos = 0;
+    const slider = document.getElementById('mainSlider');
+
+    function moveSlide(direction) {
+        currentPos += direction;
+        if (currentPos > 1) currentPos = 0;
+        if (currentPos < 0) currentPos = 1;
+        // تم استخدام النسبة المئوية المباشرة لضمان التوافق مع RTL
+        slider.style.transform = `translateX(${currentPos * 100}%)`;
+    }
+
+    // حركة تلقائية كل 5 ثواني
+    setInterval(() => moveSlide(1), 5000);
+
+    function submitOrder() {
+        const n = document.getElementById('name').value.trim();
+        const p = document.getElementById('phone').value.trim();
+        if(!n || !p) return alert("أكمل البيانات");
+        
+        const btn = document.getElementById('orderBtn');
+        btn.disabled = true; btn.innerText = "جاري الحفظ...";
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        firebase.database().ref('orders').push({
+            الاسم: n, الهاتف: p, 
+            المحافظة: document.getElementById('province').value,
+            العنوان: document.getElementById('address').value,
+            المقاس: document.getElementById('size').value, 
+            التاريخ: new Date().toLocaleString('ar-EG'), الحالة: "جديد"
+        }).then(() => { alert("تم استلام طلبك بنجاح!"); location.reload(); });
+    }
+</script>
+</body>
+</html>
