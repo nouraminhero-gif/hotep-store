@@ -66,4 +66,80 @@
     <div style="text-align: center; color: var(--gold); font-weight: bold; font-size: 13px; margin-bottom: 5px;">جدول المقاسات</div>
     <div class="size-grid">
         <div class="size-header">المقاس</div> <div class="size-header">العرض</div> <div class="size-header">الطول</div> <div class="size-header">الوزن</div>
-        <div class="size-item">M</div> <div class="size-item">34سم</div> <div
+        <div class="size-item">M</div> <div class="size-item">34سم</div> <div class="size-item">26سم</div> <div class="size-item">55-65ك</div>
+        <div class="size-item">L</div> <div class="size-item">36سم</div> <div class="size-item">27سم</div> <div class="size-item">65-75ك</div>
+        <div class="size-item">XL</div> <div class="size-item">38سم</div> <div class="size-item">28سم</div> <div class="size-item">75-85ك</div>
+        <div class="size-item">XXL</div> <div class="size-item">40سم</div> <div class="size-item">29سم</div> <div class="size-item">85-100ك</div>
+    </div>
+
+    <div class="form-group"><input type="text" id="name" placeholder="الاسم بالكامل"></div>
+    <div class="form-group"><input type="tel" id="phone" placeholder="رقم الهاتف"></div>
+    
+    <div class="form-group">
+        <label>المحافظة</label>
+        <select id="province">
+            <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>باقي المحافظات</option>
+        </select>
+    </div>
+
+    <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
+
+    <div class="form-group">
+        <label>اللون المطلوب</label>
+        <select id="color">
+            <option value="الأسود الملكي">الأسود الملكي</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>المقاس</label>
+        <select id="size">
+            <option>M</option><option>L</option><option>XL</option><option>XXL</option>
+        </select>
+    </div>
+    
+    <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    
+    let currentPos = 0;
+    const slider = document.getElementById('mainSlider');
+
+    function moveSlide(direction) {
+        currentPos += direction;
+        if (currentPos > 1) currentPos = 0;
+        if (currentPos < 0) currentPos = 1;
+        slider.style.transform = `translateX(${currentPos * 100}%)`;
+    }
+
+    setInterval(() => moveSlide(1), 5000);
+
+    function submitOrder() {
+        const n = document.getElementById('name').value.trim();
+        const p = document.getElementById('phone').value.trim();
+        const a = document.getElementById('address').value.trim();
+        if(!n || !p || !a) return alert("يرجى إكمال جميع البيانات الأساسية");
+        
+        const btn = document.getElementById('orderBtn');
+        btn.disabled = true; btn.innerText = "جاري الحفظ...";
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        firebase.database().ref('orders').push({
+            الاسم: n, 
+            الهاتف: p, 
+            المحافظة: document.getElementById('province').value,
+            العنوان: a,
+            اللون: document.getElementById('color').value,
+            المقاس: document.getElementById('size').value, 
+            التاريخ: new Date().toLocaleString('ar-EG'), 
+            الحالة: "جديد"
+        }).then(() => { alert("تم استلام طلبك بنجاح!"); location.reload(); });
+    }
+</script>
+</body>
+</html>
