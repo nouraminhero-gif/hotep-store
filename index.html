@@ -7,26 +7,8 @@
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #1a1a1a; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        
         .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
-        
-        /* تنسيق الهيدر مع اللوجو المختار بدقة */
-        .brand { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: var(--gold); 
-            font-size: 32px; 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            margin-bottom: 25px; 
-            text-transform: uppercase; 
-        }
-        .scarab-logo {
-            height: 55px; /* ارتفاع اللوجو ليناسب الكلمة */
-            margin-left: 12px;
-            fill: var(--gold);
-        }
+        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
 
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
@@ -67,18 +49,17 @@
     <div class="modal-content">
         <h2 style="color:var(--gold); margin:0;">HOTEP</h2>
         <p style="color: #25d366; font-weight: bold; margin: 10px 0;">✅ تم استلام طلبك بنجاح!</p>
-        <div class="modal-info" id="confirmDetails"></div>
+        
+        <div class="modal-info" id="confirmDetails">
+            </div>
+        
+        <p style="font-size:12px; color: #bbb;">سنتواصل معك هاتفياً خلال 48 ساعة لتأكيد الجاهزية.</p>
         <button onclick="window.location.reload()">حسناً</button>
     </div>
 </div>
 
 <div class="container">
-    <div class="brand">
-        <svg class="scarab-logo" viewBox="0 0 512 512">
-            <path d="M256,0C178.6,0,111.4,46.1,80.7,112.3c-2,4.4-0.1,9.6,4.3,11.6c4.4,2,9.6,0.1,11.6-4.3C124.6,58.3,186.2,16.8,256,16.8s131.4,41.5,159.4,102.8c2,4.4,7.2,6.3,11.6,4.3c4.4-2,6.3-7.2,4.3-11.6C400.6,46.1,333.4,0,256,0z M256,84c-35.3,0-64,28.7-64,64s28.7,64,64,64s64-28.7,64-64S291.3,84,256,84z M256,100.8c26.1,0,47.2,21.1,47.2,47.2S282.1,195.2,256,195.2S208.8,174.1,208.8,148S229.9,100.8,256,100.8z M256,224c-53,0-96,43-96,96s43,96,96,96s96-43,96-96S309,224,256,224z M256,240.8c41.5,0,75.2,33.7,75.2,75.2s-33.7,75.2-75.2,75.2s-75.2-33.7-75.2-75.2S214.5,240.8,256,240.8z M128.4,160.4c-4.8,0-8.6,3.9-8.6,8.6c0,13.4-4.8,26.4-13.4,36.5c-3.1,3.7-2.7,9.1,1,12.2c3.7,3.1,9.1,2.7,12.2-1c11.4-13.4,17.8-30.7,17.8-48.6C137.1,163.6,133.2,159.7,128.4,160.4z M383.6,160.4c-4.8-0.7-8.6,3.2-8.6,8c0,17.9,6.4,35.2,17.8,48.6c3.1,3.7,8.5,4.1,12.2,1s4.1-8.5,1-12.2c-8.6-10.1-13.4-23.1-13.4-36.5C392.2,164.3,388.4,160.4,383.6,160.4z M96,288c-4.8,0-8.6,3.9-8.6,8.6c0,51,33.4,94,80.1,108.8c4.6,1.4,9.4-1.1,10.8-5.7c1.4-4.6-1.1-9.4-5.7-10.8C134.4,377.3,112.8,340.2,112.8,296.6C112.8,291.9,108.9,288,96,288z M416,288c-12.9,0-16.8,3.9-16.8,8.6c0,43.6-21.6,80.7-59.8,92.8c-4.6,1.4-7.2,6.2-5.7,10.8c1.4,4.6,6.2,7.2,10.8,5.7c46.7-14.8,80.1-57.8,80.1-108.8C424.6,291.9,420.8,288,416,288z"/>
-        </svg>
-        <span>HOTEP</span>
-    </div>
+    <div class="brand">HOTEP</div>
     
     <div class="slider-container">
         <button class="nav-btn next" onclick="moveSlide(1)">&#10094;</button>
@@ -120,6 +101,11 @@
 
     <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
     
+    <div class="form-group">
+        <label>اللون</label>
+        <select id="color"><option>الأسود الملكي</option></select>
+    </div>
+
     <div class="form-group">
         <label>الكمية (العلبة بها 2 قطعة)</label>
         <select id="quantity" onchange="updateTotal()">
@@ -191,6 +177,8 @@
             document.getElementById('confirmDetails').innerHTML = `
                 <b>أستاذ ${name}،</b><br>
                 تم تجهيز أوردرك (${qty} علبة) مقاس ${document.getElementById('size').value}.<br>
+                سعر المنتجات: ${productTotal} ج.<br>
+                مصاريف الشحن (${provName}): ${shipCost} ج.<br>
                 <b>الإجمالي مع الشحن: ${finalTotal} ج.</b>
             `;
             document.getElementById('successModal').style.display = 'flex';
@@ -199,4 +187,3 @@
 </script>
 </body>
 </html>
- 
