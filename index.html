@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | Exclusive</title>
+    <title>HOTEP | الجودة الملكية</title>
     <link rel="icon" type="image/png" href="https://l.top4top.io/p_36510goa90.jpg">
     <link rel="apple-touch-icon" href="https://l.top4top.io/p_36510goa90.jpg">
     
@@ -14,117 +14,20 @@
         .container { max-width: 450px; margin: 0 auto; background: #111; border: 2px solid #D4AF37; border-radius: 25px; padding: 15px; }
         .brand { color: #D4AF37; font-size: 32px; font-weight: bold; margin-bottom: 15px; letter-spacing: 2px; }
         
-        /* وصف المنتج الجديد */
-        .product-desc { background: #1a1a1a; padding: 15px; border-radius: 15px; margin: 15px 0; border: 1px dashed #D4AF37; text-align: right; }
-        .product-desc p { margin: 5px 0; font-size: 14px; line-height: 1.6; }
-        .price-highlight { color: #D4AF37; font-weight: bold; font-size: 18px; }
+        /* قسم جودة الخامة */
+        .quality-box { background: #1a1a1a; border-right: 4px solid #D4AF37; padding: 15px; margin: 20px 0; text-align: right; border-radius: 5px; }
+        .quality-box h3 { color: #D4AF37; margin-top: 0; font-size: 18px; }
+        .quality-box ul { padding-right: 20px; margin-bottom: 0; }
+        .quality-box li { margin-bottom: 8px; font-size: 14px; color: #ccc; }
 
-        .slider-wrapper { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: 20px; background: #000; }
-        .slides { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease; }
-        .slides img { width: 100%; height: 100%; object-fit: contain; flex-shrink: 0; }
-        
+        .product-img { width: 100%; border-radius: 20px; margin-bottom: 10px; }
         .price-tag { background: #D4AF37; color: #000; font-size: 24px; font-weight: bold; padding: 8px 25px; border-radius: 50px; display: inline-block; margin-top: -25px; position: relative; z-index: 15; }
-        
+
+        .promo-box { border: 1px dashed #D4AF37; border-radius: 15px; padding: 15px; margin: 20px 0; text-align: right; background: #1a1a1a; }
+        .size-chart { width: 100%; border-collapse: collapse; margin: 20px 0; background: #1a1a1a; border-radius: 10px; overflow: hidden; }
+        .size-chart th { background: #D4AF37; color: #000; padding: 10px; }
+        .size-chart td { border: 1px solid #333; padding: 10px; font-size: 14px; }
+
         input, select { width: 95%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; }
-        label { display: block; text-align: right; margin: 10px 15px 0 0; color: #D4AF37; font-size: 14px; }
-        #orderBtn { width: 95%; padding: 16px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-
-        /* نافذة النجاح */
-        #successModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; }
-        .modal-content { background: #111; border: 2px solid #D4AF37; padding: 30px; border-radius: 20px; width: 80%; max-width: 300px; }
-    </style>
-</head>
-<body>
-
-<div id="successModal">
-    <div class="modal-content">
-        <h2 style="color:#D4AF37">HOTEP</h2>
-        <p>✅ تم استلام طلبك بنجاح</p>
-        <button onclick="location.reload()" style="background:#D4AF37; border:none; padding:10px 20px; width:100%; border-radius:10px; font-weight:bold;">موافق</button>
-    </div>
-</div>
-
-<div class="container">
-    <div class="brand">HOTEP</div>
-
-    <div class="slider-wrapper">
-        <div class="slides">
-            <img src="https://l.top4top.io/p_36510goa90.jpg">
-        </div>
-    </div>
-    
-    <div class="price-tag">200 جنيهاً</div>
-
-    <div class="product-desc">
-        <p>⭐ <span class="price-highlight">عرض خاص:</span> العلبة تحتوي على <span style="text-decoration: underline;">2 قطعة</span> بسعر 200 جنيه فقط.</p>
-        <hr style="border: 0.5px dotted #333;">
-        <p>🚚 <b style="color:#D4AF37">مصاريف الشحن:</b></p>
-        <p>• القاهرة والجيزة: <b>50 جنيه</b></p>
-        <p>• باقي المحافظات: <b>70 جنيه</b></p>
-    </div>
-
-    <div style="margin-top:10px;">
-        <input type="text" id="name" placeholder="الاسم بالكامل">
-        <input type="tel" id="phone" placeholder="رقم الهاتف">
-        
-        <label>المحافظة:</label>
-        <select id="province">
-            <option value="القاهرة">القاهرة</option>
-            <option value="الجيزة">الجيزة</option>
-            <option value="الإسكندرية">الإسكندرية</option>
-            <option value="باقي المحافظات">باقي المحافظات</option>
-        </select>
-
-        <input type="text" id="address" placeholder="العنوان بالتفصيل">
-
-        <label>اللون المتوفر:</label>
-        <select id="color" disabled>
-            <option value="أسود">أسود فقط</option>
-        </select>
-
-        <label>المقاس:</label>
-        <select id="size">
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-            <option value="XXL">XXL</option>
-            <option value="XXXL">XXXL</option>
-        </select>
-
-        <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
-    </div>
-</div>
-
-<script>
-    // ربط قاعدة البيانات
-    const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-    if (!firebase.apps.length) firebase.initializeApp(config);
-    const db = firebase.database();
-
-    function submitOrder() {
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const addr = document.getElementById('address').value;
-        const prov = document.getElementById('province').value;
-
-        if(name && phone && addr) {
-            document.getElementById('orderBtn').disabled = true;
-            document.getElementById('orderBtn').innerText = "جاري الإرسال...";
-            
-            db.ref('orders').push({
-                الاسم: name,
-                الهاتف: phone,
-                المحافظة: prov,
-                العنوان: addr,
-                اللون: "أسود",
-                المقاس: document.getElementById('size').value,
-                التاريخ: new Date().toLocaleString('ar-EG')
-            }).then(() => {
-                document.getElementById('successModal').style.display = 'flex';
-            });
-        } else { alert("يرجى إكمال البيانات"); }
-    }
-</script>
-</body>
-</html>
+        label { display: block; text-align: right; margin: 10px 15px 0 0; color: #D4
 
