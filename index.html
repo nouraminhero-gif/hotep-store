@@ -7,74 +7,91 @@
     <title>HOTEP | Official Store</title>
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #1a1a1a; }
-        
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        body { background: var(--black); color: #fff; font-family: sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
         .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 20px; box-sizing: border-box; }
+        .brand { color: var(--gold); font-size: 35px; font-weight: bold; letter-spacing: 4px; margin-bottom: 20px; text-align: center; }
         
-        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
-        
-        /* إصلاح السلايدر */
-        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
-        .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease; }
-        .slide { min-width: 100%; height: 100%; flex-shrink: 0; }
+        /* إصلاح السلايدر ليعمل يقيناً */
+        .slider-box { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; }
+        .slider-wrapper { display: flex; width: 200%; height: 100%; transition: transform 0.5s ease; }
+        .slide { width: 50%; height: 100%; flex-shrink: 0; }
         .slide img { width: 100%; height: 100%; object-fit: contain; }
         
-        /* أزرار التحكم */
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.4); color: #fff; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 5px; font-size: 18px; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.5); color: #fff; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 5px; }
         .prev { left: 10px; } .next { right: 10px; }
-        
-        .dots { position: absolute; bottom: 10px; width: 100%; display: flex; justify-content: center; gap: 8px; }
-        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; cursor: pointer; }
-        .dot.active { background: var(--gold); width: 20px; border-radius: 10px; }
 
-        .price-box { text-align: center; margin-top: -35px; position: relative; z-index: 20; }
-        .price { background: var(--gold); color: #000; font-size: 26px; font-weight: 900; padding: 10px 40px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
+        .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
+        .price { background: var(--gold); color: #000; font-size: 26px; font-weight: bold; padding: 10px 40px; border-radius: 50px; display: inline-block; }
 
-        .description-card { background: var(--gray); border-radius: 15px; padding: 15px; margin: 25px 0 15px 0; text-align: right; border-right: 4px solid var(--gold); }
-        .description-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
-        .description-card p { font-size: 14px; line-height: 1.5; color: #ccc; margin: 0; }
-
-        /* جدول المقاسات المربعات */
-        .size-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 10px; overflow: hidden; margin: 15px 0; }
-        .size-header { background: var(--gold); color: #000; padding: 8px; font-weight: bold; font-size: 14px; text-align: center; }
-        .size-item { background: var(--black); padding: 10px; font-size: 14px; text-align: center; }
+        .desc-card { background: var(--gray); border-radius: 15px; padding: 15px; margin: 25px 0; border-right: 4px solid var(--gold); text-align: right; }
+        .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 10px; overflow: hidden; }
+        .size-header { background: var(--gold); color: #000; padding: 8px; font-weight: bold; text-align: center; }
+        .size-item { background: var(--black); padding: 10px; text-align: center; }
 
         input, select { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; text-align: center; box-sizing: border-box; }
-        label { color: var(--gold); font-size: 12px; display: block; text-align: right; margin-top: 10px; }
-        
-        #orderBtn { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: 900; cursor: pointer; margin-top: 15px; }
-        
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 80%; }
+        #orderBtn { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div id="successModal"><div class="modal-content"><h2 style="color:var(--gold)">HOTEP</h2><p>✅ تم تسجيل طلبك بنجاح</p><button onclick="location.reload()" style="background:var(--gold); border:none; padding:10px 20px; border-radius:5px; font-weight:bold; cursor:pointer;">موافق</button></div></div>
-
 <div class="container">
     <div class="brand">HOTEP</div>
     
-    <div class="slider-container">
-        <button class="nav-btn next" onclick="changeSlide(1)">&#10094;</button>
-        <button class="nav-btn prev" onclick="changeSlide(-1)">&#10095;</button>
-        <div class="slider-wrapper" id="sliderWrapper">
+    <div class="slider-box">
+        <button class="nav-btn next" onclick="move(1)">&#10094;</button>
+        <button class="nav-btn prev" onclick="move(-1)">&#10095;</button>
+        <div class="slider-wrapper" id="sw">
             <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div>
             <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div>
         </div>
-        <div class="dots"><span class="dot active"></span><span class="dot"></span></div>
     </div>
     
     <div class="price-box"><div class="price">200 EGP</div></div>
 
-    <div class="description-card">
-        <h3>✨ الخامة والجودة</h3>
-        <p>بوكسر HOTEP مصنوع من <b>القطن المصري 100%</b>. العلبة بها 2 قطعة لون أسود ملكي.</p>
-        <p style="margin-top:10px; font-weight:bold;">🚚 الشحن: القاهرة 50ج | محافظات 70ج</p>
+    <div class="desc-card">
+        <p>✨ <b>الخامة:</b> قطن مصري 100%</p>
+        <p>📦 <b>العرض:</b> علبة بها 2 قطعة لون أسود</p>
+        <p>🚚 <b>الشحن:</b> القاهرة 50ج | محافظات 70ج</p>
     </div>
 
     <div class="size-grid">
-        <div class="size-header">المقاس</div> <div class="size-header">الوزن</div>
-        <div class="size-item">M</div> <div class="size-item">55 - 65 كجم</div>
-        <div class="size-item">L</div> <div class="size-item">65 - 75 كجم</div>
-        <div class="size-item">
+        <div class="size-header">المقاس</div><div class="size-header">الوزن</div>
+        <div class="size-item">M</div><div class="size-item">55-65 كجم</div>
+        <div class="size-item">L</div><div class="size-item">65-75 كجم</div>
+        <div class="size-item">XL</div><div class="size-item">75-85 كجم</div>
+        <div class="size-item">2XL</div><div class="size-item">85-95 كجم</div>
+        <div class="size-item">3XL</div><div class="size-item">95-110 كجم</div>
+    </div>
+
+    <input type="text" id="name" placeholder="الاسم بالكامل">
+    <input type="tel" id="phone" placeholder="رقم الهاتف">
+    <input type="text" id="address" placeholder="العنوان بالتفصيل">
+    <select id="size"><option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option></select>
+    
+    <button id="orderBtn" onclick="send()">تأكيد الطلب</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script>
+    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    let idx = 0;
+    function move(n) {
+        idx = (idx + n + 2) % 2;
+        document.getElementById('sw').style.transform = `translateX(${idx * 50}%)`;
+    }
+    setInterval(() => move(1), 4000);
+
+    function send() {
+        const n = document.getElementById('name').value;
+        const p = document.getElementById('phone').value;
+        if(!n || !p) return alert("أكمل البيانات");
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        firebase.database().ref('orders').push({
+            الاسم: n, الهاتف: p, العنوان: document.getElementById('address').value,
+            المقاس: document.getElementById('size').value, التاريخ: new Date().toLocaleString()
+        }).then(() => alert("تم الطلب بنجاح"));
+    }
+</script>
+</body>
+</html>
