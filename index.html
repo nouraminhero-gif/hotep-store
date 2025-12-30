@@ -8,10 +8,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 10px; }
-        .container { max-width: 450px; margin: 0 auto; background: #111; border: 2px solid #D4AF37; border-radius: 25px; padding: 15px; }
+        .container { max-width: 450px; margin: 0 auto; background: #111; border: 2px solid #D4AF37; border-radius: 25px; padding: 15px; position: relative; }
         .brand { color: #D4AF37; font-size: 32px; font-weight: bold; margin-bottom: 15px; letter-spacing: 2px; }
 
-        /* ستايل السلايدر بمقاس ثابت */
+        /* ستايل معرض الصور الثابت */
         .slider-wrapper { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: 20px; border: 1px solid #333; background: #000; }
         .slides { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
         .slides img { width: 100%; height: 100%; object-fit: contain; flex-shrink: 0; }
@@ -24,9 +24,23 @@
         input, select { width: 95%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; outline: none; }
         label { display: block; text-align: right; margin: 10px 15px 0 0; color: #D4AF37; font-size: 14px; font-weight: bold; }
         #orderBtn { width: 95%; padding: 16px; background: #D4AF37; color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+
+        /* نافذة النجاح المخصصة (بدلاً من المربع الأبيض) */
+        #successModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; }
+        .modal-content { background: #111; border: 2px solid #D4AF37; padding: 30px; border-radius: 20px; width: 80%; max-width: 300px; }
+        .modal-content h2 { color: #D4AF37; margin-top: 0; }
+        .modal-content button { background: #D4AF37; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; }
     </style>
 </head>
 <body>
+
+<div id="successModal">
+    <div class="modal-content">
+        <h2>HOTEP</h2>
+        <p>✅ تم استلام طلبك بنجاح</p>
+        <button onclick="closeModal()">موافق</button>
+    </div>
+</div>
 
 <div class="container">
     <div class="brand">HOTEP</div>
@@ -34,7 +48,9 @@
     <div class="slider-wrapper">
         <button class="nav-btn prev" onclick="changeSlide(-1)">&#10094;</button>
         <div class="slides" id="slides">
-            <img src="https://l.top4top.io/p_36510goa90.jpg"> <img src="https://d.top4top.io/p_3651ytrr50.jpg"> </div>
+            <img src="https://l.top4top.io/p_36510goa90.jpg">
+            <img src="https://d.top4top.io/p_3651ytrr50.jpg">
+        </div>
         <button class="nav-btn next" onclick="changeSlide(1)">&#10095;</button>
     </div>
     
@@ -66,16 +82,14 @@
 </div>
 
 <script>
-    // برمجة حركة الصور
     let currentIdx = 0;
     function changeSlide(dir) {
         const slider = document.getElementById('slides');
-        const total = 2; // عدد الصور
+        const total = 2;
         currentIdx = (currentIdx + dir + total) % total;
         slider.style.transform = `translateX(${currentIdx * 100}%)`;
     }
 
-    // ربط Firebase بسيرفر بلجيكا الصحيح
     const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(config);
     const db = firebase.database();
@@ -85,8 +99,6 @@
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
         const addr = document.getElementById('address').value;
-        const clr = document.getElementById('color').value;
-        const sz = document.getElementById('size').value;
 
         if(name && phone && addr) {
             btn.disabled = true; 
@@ -96,20 +108,21 @@
                 الاسم: name,
                 الهاتف: phone,
                 العنوان: addr,
-                اللون: clr,
-                المقاس: sz,
+                اللون: document.getElementById('color').value,
+                المقاس: document.getElementById('size').value,
                 التاريخ: new Date().toLocaleString('ar-EG')
             }).then(() => {
-                alert("تم استلام طلبك"); // رسالة النجاح كما طلبت
-                location.reload();
-            }).catch((err) => {
-                alert("حدث خطأ، يرجى التأكد من الضغط على Publish في Firebase");
+                // إظهار النافذة المخصصة بدلاً من Alert
+                document.getElementById('successModal').style.display = 'flex';
+            }).catch(() => {
+                alert("حدث خطأ، حاول ثانية");
                 btn.disabled = false;
-                btn.innerText = "تأكيد الطلب الآن";
             });
-        } else { 
-            alert("يرجى إكمال جميع البيانات"); 
-        }
+        } else { alert("يرجى إكمال البيانات"); }
+    }
+
+    function closeModal() {
+        location.reload();
     }
 </script>
 </body>
