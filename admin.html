@@ -27,12 +27,12 @@
     <div id="ordersContainer">انتظر قليلاً...</div>
 
 <script>
-    // إعدادات قاعدة بياناتك في بلجيكا
+    // إعدادات قاعدة البيانات الخاصة بك
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // جلب الطلبات وعرضها تلقائياً
+    // جلب الطلبات وعرضها تلقائياً عند حدوث أي جديد
     db.ref('orders').on('value', (snapshot) => {
         const container = document.getElementById('ordersContainer');
         const countBox = document.getElementById('orderCount');
@@ -62,12 +62,13 @@
         }
     });
 
-    // وظيفة حذف الطلب بعد التنفيذ
+    // وظيفة حذف الطلب من قاعدة البيانات بعد تنفيذه
     function deleteOrder(id) {
-        if(confirm("هل تريد مسح هذا الطلب من القائمة؟")) {
+        if(confirm("هل تريد مسح هذا الطلب نهائياً من القائمة؟")) {
             db.ref('orders').child(id).remove();
         }
     }
 </script>
 </body>
 </html>
+
