@@ -3,21 +3,128 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP | Official Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOTEP Admin | لوحة التحكم</title>
     <style>
-        :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #1a1a1a; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
-        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
+        :root { --gold: #D4AF37; --black: #000; --dark: #121212; --green: #25d366; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
+        
+        .header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
+        .header h1 { color: var(--gold); margin: 0; font-size: 24px; letter-spacing: 2px; }
 
-        /* السلايدر */
-        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
-        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
-        .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .slide img { width: 100%; height: 100%; object-fit: contain; }
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.6); color: #fff; border: none; padding: 12px 10px; cursor: pointer; z-index: 10; border-radius: 5px; }
-        .prev { left: 10px; } .next { right: 10px; }
+        .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .stat-card { background: var(--dark); border: 1px solid #333; padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-card span { display: block; font-size: 20px; font-weight: bold; color: var(--gold); }
 
-        .price-box { text-align: center; margin-top: -35px; position: relative; z-index: 20; }
-        .price { background: var(--gold); color: #000; font-size: 22px
+        .table-container { overflow-x: auto; background: var(--dark); border-radius: 15px; border: 1px solid #333; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+        th { background: var(--gold); color: #000; padding: 12px; font-size: 13px; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #222; text-align: center; font-size: 13px; vertical-align: middle; }
+        
+        .client-info { text-align: right; min-width: 150px; }
+        .highlight { color: var(--gold); font-weight: bold; }
+        .price-tag { background: rgba(212, 175, 55, 0.1); padding: 4px 8px; border-radius: 5px; color: var(--gold); border: 1px solid rgba(212, 175, 55, 0.3); }
+        
+        .action-btns { display: flex; gap: 5px; justify-content: center; }
+        .btn { padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; text-decoration: none; font-size: 11px; }
+        .btn-call { background: #007bff; }
+        .btn-wa { background: var(--green); }
+        .btn-del { background: #dc3545; }
+        
+        .status-new { color: #25d366; font-size: 11px; border: 1px solid #25d366; padding: 2px 5px; border-radius: 4px; }
+        tr:hover { background: #1a1a1a; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>HOTEP | Orders Management</h1>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-card">عدد الطلبات<span id="totalOrders">0</span></div>
+        <div class="stat-card">إجمالي المبيعات<span id="totalSales">0</span></div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>التاريخ</th>
+                    <th>العميل</th>
+                    <th>المحافظة والعنوان</th>
+                    <th>المقاس</th>
+                    <th>الكمية</th>
+                    <th>حساب المنتج</th>
+                    <th>الشحن</th>
+                    <th>الإجمالي</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="ordersBody">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database().ref('orders');
+
+        db.on('value', (snapshot) => {
+            const tbody = document.getElementById('ordersBody');
+            tbody.innerHTML = '';
+            let count = 0;
+            let sales = 0;
+
+            snapshot.forEach((child) => {
+                const order = child.val();
+                const id = child.key;
+                count++;
+
+                // معالجة الأرقام للحساب الإجمالي في الإحصائيات
+                const itemPrice = parseInt(order.الحساب) || 0;
+                const shipPrice = parseInt(order.الشحن) || 0;
+                const finalTotal = itemPrice + shipPrice;
+                sales += itemPrice;
+
+                const row = `
+                    <tr>
+                        <td style="font-size:10px; color:#888">${order.التاريخ || '-'}</td>
+                        <td class="client-info">
+                            <b>${order.الاسم}</b><br>
+                            <small>${order.الهاتف}</small>
+                        </td>
+                        <td>${order.المحافظة}<br><small style="color:#888">${order.العنوان}</small></td>
+                        <td class="highlight">${order.المقاس}</td>
+                        <td>${order.الكمية}</td>
+                        <td>${order.الحساب}</td>
+                        <td>${order.الشحن}</td>
+                        <td><span class="price-tag">${finalTotal} ج.م</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="tel:${order.الهاتف}" class="btn btn-call">اتصال</a>
+                                <a href="https://wa.me/2${order.الهاتف}" target="_blank" class="btn btn-wa">واتساب</a>
+                                <button onclick="deleteOrder('${id}')" class="btn btn-del">حذف</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('afterbegin', row);
+            });
+
+            document.getElementById('totalOrders').innerText = count;
+            document.getElementById('totalSales').innerText = sales + " ج.م";
+        });
+
+        function deleteOrder(id) {
+            if(confirm('هل أنت متأكد من حذف هذا الأوردر؟')) {
+                db.child(id).remove();
+            }
+        }
+    </script>
+</body>
+</html>
