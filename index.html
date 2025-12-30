@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -7,52 +8,54 @@
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #1a1a1a; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; position: relative; }
+        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
 
-        /* السلايدر المتحرك */
+        /* السلايدر */
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; }
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.6); color: #fff; border: none; padding: 12px 10px; cursor: pointer; z-index: 10; border-radius: 5px; font-weight: bold; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.6); color: #fff; border: none; padding: 12px 10px; cursor: pointer; z-index: 10; border-radius: 5px; }
         .prev { left: 10px; } .next { right: 10px; }
 
+        /* عرض السعر */
         .price-box { text-align: center; margin-top: -35px; position: relative; z-index: 20; }
-        .price { background: var(--gold); color: #000; font-size: 28px; font-weight: 900; padding: 12px 45px; border-radius: 50px; display: inline-block; box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); }
+        .price { background: var(--gold); color: #000; font-size: 24px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 5px 20px rgba(212,175,55,0.4); }
 
         .description-card { background: var(--gray); border-radius: 15px; padding: 20px; margin: 25px 0 15px 0; text-align: right; border-right: 4px solid var(--gold); }
         .description-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
         .description-card p { font-size: 14px; margin: 5px 0; color: #ccc; }
 
-        /* جدول المقاسات الرباعي المقسم */
+        /* جدول المقاسات */
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 12px; overflow: hidden; margin: 20px 0; }
         .size-header { background: var(--gold); color: #000; padding: 8px 2px; font-weight: bold; font-size: 11px; text-align: center; }
         .size-item { background: var(--black); padding: 10px 2px; font-size: 11px; text-align: center; }
 
-        /* الحقول والتنسيق */
+        /* الحقول */
         .form-group { margin-bottom: 15px; text-align: right; }
         label { display: block; color: var(--gold); margin-bottom: 7px; font-size: 13px; font-weight: bold; padding-right: 5px; }
-        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--gold); }
+        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; }
         
-        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 10px; }
+        /* إجمالي الحساب الملون */
+        .total-banner { background: #1a1a1a; border: 1px dashed var(--gold); padding: 15px; border-radius: 12px; text-align: center; margin-top: 10px; }
+        .total-amount { color: var(--gold); font-size: 22px; font-weight: bold; }
 
-        /* نافذة النجاح المخصصة - بديلة للـ Alert البشعة */
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; }
+
+        /* نافذة النجاح */
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px; border-radius: 25px; text-align: center; max-width: 300px; width: 100%; }
-        .modal-content h2 { color: var(--gold); margin-top: 0; }
-        .modal-content button { background: var(--gold); border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .modal-content button { background: var(--gold); border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; margin-top: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div id="successModal">
     <div class="modal-content">
-        <h2>HOTEP</h2>
+        <h2 style="color:var(--gold)">HOTEP</h2>
         <p>✅ تم استلام طلبك بنجاح!</p>
-        <p style="font-size: 12px; color: #888;">سنتواصل معك هاتفياً لتأكيد الشحن</p>
-        <button onclick="closeModal()">حسناً</button>
+        <button onclick="location.reload()">حسناً</button>
     </div>
 </div>
 
@@ -68,13 +71,13 @@
         </div>
     </div>
     
-    <div class="price-box"><div class="price">EGP 200</div></div>
+    <div class="price-box"><div class="price">العلبة: 200 EGP</div></div>
 
     <div class="description-card">
-        <h3>✨ الخامة والجودة</h3>
-        <p>• بوكسر HOTEP مصنوع من القطن المصري 100%.</p>
-        <p>• العلبة بها 2 قطعة لون أسود ملكي.</p>
-        <p>• الشحن: القاهرة 50ج | محافظات 70ج.</p>
+        <h3>✨ تفاصيل العرض</h3>
+        <p>• العلبة تحتوي على <b>2 قطعة</b> (أسود ملكي).</p>
+        <p>• قطن مصري فاخر 100%.</p>
+        <p>• شحن القاهرة 50ج | محافظات 70ج.</p>
     </div>
 
     <div class="size-grid">
@@ -88,7 +91,6 @@
     <div class="form-group"><input type="text" id="name" placeholder="الاسم بالكامل"></div>
     <div class="form-group"><input type="tel" id="phone" placeholder="رقم الهاتف"></div>
     <div class="form-group">
-        <label>المحافظة</label>
         <select id="province">
             <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>باقي المحافظات</option>
         </select>
@@ -96,9 +98,13 @@
     <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
     
     <div class="form-group">
-        <label>اللون المطلوب</label>
-        <select id="color">
-            <option>الأسود الملكي</option>
+        <label>عدد العلب المطلوبة (العلبة بها 2 قطعة)</label>
+        <select id="quantity" onchange="calculateTotal()">
+            <option value="1">علبة واحدة (2 قطعة)</option>
+            <option value="2">علبتين (4 قطع)</option>
+            <option value="3">3 علب (6 قطع)</option>
+            <option value="4">4 علب (8 قطع)</option>
+            <option value="5">5 علب (10 قطع)</option>
         </select>
     </div>
 
@@ -107,6 +113,11 @@
         <select id="size">
             <option>M</option><option>L</option><option>XL</option><option>XXL</option>
         </select>
+    </div>
+
+    <div class="total-banner">
+        إجمالي سعر المنتج: <span class="total-amount" id="totalDisplay">200</span> جنيه
+        <div style="font-size: 11px; color: #888; margin-top: 5px;">* السعر لا يشمل مصاريف الشحن</div>
     </div>
     
     <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
@@ -118,29 +129,23 @@
 <script>
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     
+    function calculateTotal() {
+        const qty = document.getElementById('quantity').value;
+        document.getElementById('totalDisplay').innerText = qty * 200;
+    }
+
     let currentPos = 0;
     const slider = document.getElementById('mainSlider');
-
     function moveSlide(direction) {
-        currentPos += direction;
-        if (currentPos > 1) currentPos = 0;
-        if (currentPos < 0) currentPos = 1;
+        currentPos = (currentPos + direction + 2) % 2;
         slider.style.transform = `translateX(${currentPos * 100}%)`;
     }
-
     setInterval(() => moveSlide(1), 5000);
-
-    function closeModal() {
-        document.getElementById('successModal').style.display = 'none';
-        location.reload();
-    }
 
     function submitOrder() {
         const n = document.getElementById('name').value.trim();
         const p = document.getElementById('phone').value.trim();
-        const a = document.getElementById('address').value.trim();
-        
-        if(!n || !p || !a) return alert("يرجى ملء كافة البيانات الأساسية");
+        if(!n || !p) return alert("يرجى إكمال البيانات");
         
         const btn = document.getElementById('orderBtn');
         btn.disabled = true; btn.innerText = "جاري الحفظ...";
@@ -149,17 +154,13 @@
         firebase.database().ref('orders').push({
             الاسم: n, الهاتف: p, 
             المحافظة: document.getElementById('province').value,
-            العنوان: a,
-            اللون: document.getElementById('color').value,
+            العنوان: document.getElementById('address').value,
+            الكمية: document.getElementById('quantity').value + " علبة",
             المقاس: document.getElementById('size').value, 
-            التاريخ: new Date().toLocaleString('ar-EG'), 
-            الحالة: "جديد"
+            الاجمالي: document.getElementById('totalDisplay').innerText + " جنيهاً",
+            التاريخ: new Date().toLocaleString('ar-EG'), الحالة: "جديد"
         }).then(() => {
             document.getElementById('successModal').style.display = 'flex';
-        }).catch(() => {
-            alert("حدث خطأ في الاتصال، حاول مرة أخرى");
-            btn.disabled = false;
-            btn.innerText = "تأكيد الطلب الآن";
         });
     }
 </script>
