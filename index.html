@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -8,39 +7,54 @@
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #1a1a1a; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
+        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; position: relative; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
 
-        /* السلايدر */
+        /* السلايدر المتحرك */
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; }
-        
         .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.6); color: #fff; border: none; padding: 12px 10px; cursor: pointer; z-index: 10; border-radius: 5px; font-weight: bold; }
         .prev { left: 10px; } .next { right: 10px; }
 
         .price-box { text-align: center; margin-top: -35px; position: relative; z-index: 20; }
-        .price { background: var(--gold); color: #000; font-size: 28px; font-weight: 900; padding: 12px 45px; border-radius: 50px; display: inline-block; box-shadow: 0 5px 20px rgba(212,175,55,0.4); }
+        .price { background: var(--gold); color: #000; font-size: 28px; font-weight: 900; padding: 12px 45px; border-radius: 50px; display: inline-block; box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); }
 
         .description-card { background: var(--gray); border-radius: 15px; padding: 20px; margin: 25px 0 15px 0; text-align: right; border-right: 4px solid var(--gold); }
         .description-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
         .description-card p { font-size: 14px; margin: 5px 0; color: #ccc; }
 
-        /* جدول المقاسات الرباعي */
+        /* جدول المقاسات الرباعي المقسم */
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 12px; overflow: hidden; margin: 20px 0; }
         .size-header { background: var(--gold); color: #000; padding: 8px 2px; font-weight: bold; font-size: 11px; text-align: center; }
         .size-item { background: var(--black); padding: 10px 2px; font-size: 11px; text-align: center; }
 
+        /* الحقول والتنسيق */
         .form-group { margin-bottom: 15px; text-align: right; }
         label { display: block; color: var(--gold); margin-bottom: 7px; font-size: 13px; font-weight: bold; padding-right: 5px; }
-        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; }
-        input:focus, select:focus { border-color: var(--gold); }
+        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--gold); }
         
         #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 10px; }
+
+        /* نافذة النجاح المخصصة - بديلة للـ Alert البشعة */
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px; border-radius: 25px; text-align: center; max-width: 300px; width: 100%; }
+        .modal-content h2 { color: var(--gold); margin-top: 0; }
+        .modal-content button { background: var(--gold); border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
+
+<div id="successModal">
+    <div class="modal-content">
+        <h2>HOTEP</h2>
+        <p>✅ تم استلام طلبك بنجاح!</p>
+        <p style="font-size: 12px; color: #888;">سنتواصل معك هاتفياً لتأكيد الشحن</p>
+        <button onclick="closeModal()">حسناً</button>
+    </div>
+</div>
 
 <div class="container">
     <div class="brand">HOTEP</div>
@@ -54,16 +68,15 @@
         </div>
     </div>
     
-    <div class="price-box"><div class="price">200 EGP</div></div>
+    <div class="price-box"><div class="price">EGP 200</div></div>
 
     <div class="description-card">
-        <h3>✨ تفاصيل المنتج</h3>
-        <p>• قطن مصري فاخر 100%.</p>
-        <p>• علبة بها 2 قطعة لون أسود ملكي.</p>
-        <p>• شحن القاهرة والجيزة 50ج | باقي المحافظات 70ج.</p>
+        <h3>✨ الخامة والجودة</h3>
+        <p>• بوكسر HOTEP مصنوع من القطن المصري 100%.</p>
+        <p>• العلبة بها 2 قطعة لون أسود ملكي.</p>
+        <p>• الشحن: القاهرة 50ج | محافظات 70ج.</p>
     </div>
 
-    <div style="text-align: center; color: var(--gold); font-weight: bold; font-size: 13px; margin-bottom: 5px;">جدول المقاسات</div>
     <div class="size-grid">
         <div class="size-header">المقاس</div> <div class="size-header">العرض</div> <div class="size-header">الطول</div> <div class="size-header">الوزن</div>
         <div class="size-item">M</div> <div class="size-item">34سم</div> <div class="size-item">26سم</div> <div class="size-item">55-65ك</div>
@@ -74,20 +87,18 @@
 
     <div class="form-group"><input type="text" id="name" placeholder="الاسم بالكامل"></div>
     <div class="form-group"><input type="tel" id="phone" placeholder="رقم الهاتف"></div>
-    
     <div class="form-group">
         <label>المحافظة</label>
         <select id="province">
             <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>باقي المحافظات</option>
         </select>
     </div>
-
     <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
-
+    
     <div class="form-group">
         <label>اللون المطلوب</label>
         <select id="color">
-            <option value="الأسود الملكي">الأسود الملكي</option>
+            <option>الأسود الملكي</option>
         </select>
     </div>
 
@@ -119,26 +130,37 @@
 
     setInterval(() => moveSlide(1), 5000);
 
+    function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+        location.reload();
+    }
+
     function submitOrder() {
         const n = document.getElementById('name').value.trim();
         const p = document.getElementById('phone').value.trim();
         const a = document.getElementById('address').value.trim();
-        if(!n || !p || !a) return alert("يرجى إكمال جميع البيانات الأساسية");
+        
+        if(!n || !p || !a) return alert("يرجى ملء كافة البيانات الأساسية");
         
         const btn = document.getElementById('orderBtn');
         btn.disabled = true; btn.innerText = "جاري الحفظ...";
 
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         firebase.database().ref('orders').push({
-            الاسم: n, 
-            الهاتف: p, 
+            الاسم: n, الهاتف: p, 
             المحافظة: document.getElementById('province').value,
             العنوان: a,
             اللون: document.getElementById('color').value,
             المقاس: document.getElementById('size').value, 
             التاريخ: new Date().toLocaleString('ar-EG'), 
             الحالة: "جديد"
-        }).then(() => { alert("تم استلام طلبك بنجاح!"); location.reload(); });
+        }).then(() => {
+            document.getElementById('successModal').style.display = 'flex';
+        }).catch(() => {
+            alert("حدث خطأ في الاتصال، حاول مرة أخرى");
+            btn.disabled = false;
+            btn.innerText = "تأكيد الطلب الآن";
+        });
     }
 </script>
 </body>
