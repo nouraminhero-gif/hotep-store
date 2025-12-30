@@ -11,7 +11,7 @@
         .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
 
-        /* ستايل السلايدر الجديد والأكثر استقراراً */
+        /* السلايدر */
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
@@ -27,14 +27,17 @@
         .description-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
         .description-card p { font-size: 14px; margin: 5px 0; color: #ccc; }
 
-        /* جدول المقاسات الرباعي (M, L, XL, XXL) */
+        /* جدول المقاسات الرباعي */
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 12px; overflow: hidden; margin: 20px 0; }
         .size-header { background: var(--gold); color: #000; padding: 8px 2px; font-weight: bold; font-size: 11px; text-align: center; }
         .size-item { background: var(--black); padding: 10px 2px; font-size: 11px; text-align: center; }
 
         .form-group { margin-bottom: 15px; text-align: right; }
-        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; }
-        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; }
+        label { display: block; color: var(--gold); margin-bottom: 7px; font-size: 13px; font-weight: bold; padding-right: 5px; }
+        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; }
+        input:focus, select:focus { border-color: var(--gold); }
+        
+        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -57,73 +60,10 @@
         <h3>✨ تفاصيل المنتج</h3>
         <p>• قطن مصري فاخر 100%.</p>
         <p>• علبة بها 2 قطعة لون أسود ملكي.</p>
-        <p>• شحن القاهرة 50ج | محافظات 70ج.</p>
+        <p>• شحن القاهرة والجيزة 50ج | باقي المحافظات 70ج.</p>
     </div>
 
     <div style="text-align: center; color: var(--gold); font-weight: bold; font-size: 13px; margin-bottom: 5px;">جدول المقاسات</div>
     <div class="size-grid">
         <div class="size-header">المقاس</div> <div class="size-header">العرض</div> <div class="size-header">الطول</div> <div class="size-header">الوزن</div>
-        <div class="size-item">M</div> <div class="size-item">34سم</div> <div class="size-item">26سم</div> <div class="size-item">55-65ك</div>
-        <div class="size-item">L</div> <div class="size-item">36سم</div> <div class="size-item">27سم</div> <div class="size-item">65-75ك</div>
-        <div class="size-item">XL</div> <div class="size-item">38سم</div> <div class="size-item">28سم</div> <div class="size-item">75-85ك</div>
-        <div class="size-item">XXL</div> <div class="size-item">40سم</div> <div class="size-item">29سم</div> <div class="size-item">85-100ك</div>
-    </div>
-
-    <div class="form-group"><input type="text" id="name" placeholder="الاسم بالكامل"></div>
-    <div class="form-group"><input type="tel" id="phone" placeholder="رقم الهاتف"></div>
-    <div class="form-group">
-        <select id="province">
-            <option>القاهرة</option><option>الجيزة</option><option>باقي المحافظات</option>
-        </select>
-    </div>
-    <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
-    <div class="form-group">
-        <select id="size">
-            <option>M</option><option>L</option><option>XL</option><option>XXL</option>
-        </select>
-    </div>
-    
-    <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-<script>
-    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-    
-    // سكريبت السلايدر المضمون
-    let currentPos = 0;
-    const slider = document.getElementById('mainSlider');
-
-    function moveSlide(direction) {
-        currentPos += direction;
-        if (currentPos > 1) currentPos = 0;
-        if (currentPos < 0) currentPos = 1;
-        // تم استخدام النسبة المئوية المباشرة لضمان التوافق مع RTL
-        slider.style.transform = `translateX(${currentPos * 100}%)`;
-    }
-
-    // حركة تلقائية كل 5 ثواني
-    setInterval(() => moveSlide(1), 5000);
-
-    function submitOrder() {
-        const n = document.getElementById('name').value.trim();
-        const p = document.getElementById('phone').value.trim();
-        if(!n || !p) return alert("أكمل البيانات");
-        
-        const btn = document.getElementById('orderBtn');
-        btn.disabled = true; btn.innerText = "جاري الحفظ...";
-
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        firebase.database().ref('orders').push({
-            الاسم: n, الهاتف: p, 
-            المحافظة: document.getElementById('province').value,
-            العنوان: document.getElementById('address').value,
-            المقاس: document.getElementById('size').value, 
-            التاريخ: new Date().toLocaleString('ar-EG'), الحالة: "جديد"
-        }).then(() => { alert("تم استلام طلبك بنجاح!"); location.reload(); });
-    }
-</script>
-</body>
-</html>
+        <div class="size-item">M</div> <div class="size-item">34سم</div> <div
