@@ -1,170 +1,190 @@
-
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | استلهمنا من قوة الحضارة المصرية القديمة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HOTEP | Official Store</title>
     <style>
-        :root {
-            --gold: #D4AF37;
-            --black: #000000;
-            --dark-grey: #121212;
-        }
+        :root { --gold: #D4AF37; --black: #000; --dark: #121212; --gray: #1a1a1a; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid var(--gold); border-radius: 30px; padding: 25px; box-sizing: border-box; }
+        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: var(--black);
-            color: white;
-            padding-top: 60px; /* مساحة للنقش العلوي */
-            padding-bottom: 60px; /* مساحة للنقش السفلي */
-        }
+        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; border: 1px solid var(--gold); overflow: hidden; background: #000; margin-bottom: 20px; }
+        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
+        .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        .slide img { width: 100%; height: 100%; object-fit: contain; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.6); color: #fff; border: none; padding: 12px 10px; cursor: pointer; z-index: 10; border-radius: 5px; }
+        .prev { left: 10px; } .next { right: 10px; }
 
-        /* إضافة إطار النقوش الفرعونية في الأعلى والأسفل (التعديل القديم) */
-        body::before, body::after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 50px;
-            background-image: url('https://i.ibb.co/jkqHBwM2/1767051970601-edit-1243566144551275.jpg');
-            background-size: contain;
-            background-repeat: repeat-x;
-            position: fixed;
-            left: 0;
-            z-index: 1000;
-        }
+        .price-box { text-align: center; margin-top: -35px; position: relative; z-index: 20; }
+        .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; }
 
-        body::before { top: 0; border-bottom: 2px solid var(--gold); }
-        body::after { bottom: 0; border-top: 2px solid var(--gold); }
+        .description-card { background: var(--gray); border-radius: 15px; padding: 20px; margin: 25px 0 15px 0; text-align: right; border-right: 4px solid var(--gold); }
+        .description-card h3 { color: var(--gold); font-size: 18px; margin: 0 0 10px 0; }
+        .description-card p { font-size: 14px; margin: 5px 0; color: #ccc; }
 
-        /* الهيدر المحتوي على الجعران بجانب الاسم */
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: var(--black);
-        }
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gold); border: 1px solid var(--gold); border-radius: 12px; overflow: hidden; margin: 20px 0; }
+        .size-header { background: var(--gold); color: #000; padding: 8px 2px; font-weight: bold; font-size: 11px; text-align: center; }
+        .size-item { background: var(--black); padding: 10px 2px; font-size: 11px; text-align: center; }
 
-        .brand-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px; /* المسافة بين الجعران والاسم */
-        }
+        .form-group { margin-bottom: 15px; text-align: right; }
+        label { display: block; color: var(--gold); margin-bottom: 7px; font-size: 13px; font-weight: bold; }
+        input, select { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; text-align: center; outline: none; }
+        
+        .total-banner { background: #1a1a1a; border: 1px dashed var(--gold); padding: 15px; border-radius: 12px; text-align: center; margin-top: 10px; }
+        .total-amount { color: var(--gold); font-size: 22px; font-weight: bold; }
 
-        .scarab-icon {
-            height: 50px; /* ارتفاع الجعران متناسب مع ارتفاع الخط */
-            width: auto;
-            filter: drop-shadow(0px 0px 5px rgba(212, 175, 55, 0.5));
-        }
+        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; }
 
-        .brand-name {
-            color: var(--gold);
-            font-size: 50px; /* حجم الخط */
-            font-weight: bold;
-            margin: 0;
-            line-height: 1;
-            letter-spacing: 2px;
-        }
-
-        .slogan {
-            color: #888;
-            font-size: 14px;
-            margin-top: 10px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-        }
-
-        /* تنسيق الأقسام والمنتجات */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .product-card {
-            background-color: var(--dark-grey);
-            border: 1px solid #222;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .product-card:hover {
-            border-color: var(--gold);
-            transform: translateY(-10px);
-        }
-
-        .price {
-            color: var(--gold);
-            font-size: 1.3rem;
-            font-weight: bold;
-            display: block;
-            margin: 15px 0;
-        }
-
-        .buy-button {
-            background-color: var(--gold);
-            color: black;
-            padding: 12px 35px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        footer {
-            text-align: center;
-            padding: 60px 20px;
-            color: #444;
-            font-size: 0.9rem;
-        }
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 25px; border-radius: 25px; text-align: center; max-width: 320px; width: 85%; }
+        .modal-info { background: rgba(212,175,55,0.1); padding: 12px; border-radius: 15px; margin: 15px 0; border: 1px solid #333; text-align: right; line-height: 1.6; }
+        .modal-content button { background: var(--gold); border: none; padding: 12px 40px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand-wrapper">
-            <img src="https://i.ibb.co/jkqHBwM2/1767051970601-edit-1243566144551275.jpg" alt="Scarab" class="scarab-icon">
-            <h1 class="brand-name">HOTEP</h1>
-        </div>
-        <div class="slogan">MEN'S UNDERWEAR</div>
-    </header>
-
-    <div class="container">
-        <h2 style="text-align: center; color: var(--gold); border-bottom: 1px solid #333; padding-bottom: 15px;">التشكيلة الملكية</h2>
+<div id="successModal">
+    <div class="modal-content">
+        <h2 style="color:var(--gold); margin:0;">HOTEP</h2>
+        <p style="color: #25d366; font-weight: bold; margin: 10px 0;">✅ تم استلام طلبك بنجاح!</p>
         
-        <div class="product-grid">
-            <div class="product-card">
-                <div style="height: 300px; background: #1a1a1a; margin-bottom: 15px; border: 1px solid #333;"></div>
-                <h3>المنتج الأول</h3>
-                <span class="price">150 EGP</span>
-                <button class="buy-button">اطلب الآن</button>
+        <div class="modal-info" id="confirmDetails">
             </div>
+        
+        <p style="font-size:12px; color: #bbb;">سنتواصل معك هاتفياً خلال 48 ساعة لتأكيد الجاهزية.</p>
+        <button onclick="window.location.reload()">حسناً</button>
+    </div>
+</div>
 
-            <div class="product-card">
-                <div style="height: 300px; background: #1a1a1a; margin-bottom: 15px; border: 1px solid #333;"></div>
-                <h3>المنتج الثاني</h3>
-                <span class="price">180 EGP</span>
-                <button class="buy-button">اطلب الآن</button>
-            </div>
+<div class="container">
+    <div class="brand">HOTEP</div>
+    
+    <div class="slider-container">
+        <button class="nav-btn next" onclick="moveSlide(1)">&#10094;</button>
+        <button class="nav-btn prev" onclick="moveSlide(-1)">&#10095;</button>
+        <div class="slides-wrapper" id="mainSlider">
+            <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div>
+            <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div>
         </div>
     </div>
+    
+    <div class="price-box"><div class="price">سعر العلبة: 200 ج.م</div></div>
 
-    <footer>
-        <p>© 2024 HOTEP - استلهمنا من قوة الحضارة المصرية القديمة</p>
-    </footer>
+    <div class="description-card">
+        <h3>✨ الخامة والجودة</h3>
+        <p>• بوكسر HOTEP من القطن المصري 100%.</p>
+        <p>• العلبة بها 2 قطعة لون أسود ملكي.</p>
+    </div>
 
+    <div class="size-grid">
+        <div class="size-header">المقاس</div> <div class="size-header">العرض</div> <div class="size-header">الطول</div> <div class="size-header">الوزن</div>
+        <div class="size-item">M</div> <div class="size-item">34سم</div> <div class="size-item">26سم</div> <div class="size-item">55-65ك</div>
+        <div class="size-item">L</div> <div class="size-item">36سم</div> <div class="size-item">27سم</div> <div class="size-item">65-75ك</div>
+        <div class="size-item">XL</div> <div class="size-item">38سم</div> <div class="size-item">28سم</div> <div class="size-item">75-85ك</div>
+        <div class="size-item">XXL</div> <div class="size-item">40سم</div> <div class="size-item">29سم</div> <div class="size-item">85-100ك</div>
+    </div>
+
+    <div class="form-group"><input type="text" id="name" placeholder="الاسم بالكامل"></div>
+    <div class="form-group"><input type="tel" id="phone" placeholder="رقم الهاتف"></div>
+    
+    <div class="form-group">
+        <label>المحافظة (سعر الشحن يضاف تلقائياً)</label>
+        <select id="province" onchange="updateTotal()">
+            <option value="50">القاهرة (50ج)</option>
+            <option value="50">الجيزة (50ج)</option>
+            <option value="70">الإسكندرية (70ج)</option>
+            <option value="70">باقي المحافظات (70ج)</option>
+        </select>
+    </div>
+
+    <div class="form-group"><input type="text" id="address" placeholder="العنوان بالتفصيل"></div>
+    
+    <div class="form-group">
+        <label>اللون</label>
+        <select id="color"><option>الأسود الملكي</option></select>
+    </div>
+
+    <div class="form-group">
+        <label>الكمية (العلبة بها 2 قطعة)</label>
+        <select id="quantity" onchange="updateTotal()">
+            <option value="1">1 علبة (قطعتين)</option>
+            <option value="2">2 علبة (4 قطع)</option>
+            <option value="3">3 علبة (6 قطع)</option>
+            <option value="4">4 علبة (8 قطع)</option>
+            <option value="5">5 علبة (10 قطع)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>المقاس</label>
+        <select id="size">
+            <option>M</option><option>L</option><option>XL</option><option>XXL</option>
+        </select>
+    </div>
+
+    <div class="total-banner">
+        إجمالي الحساب (شامل الشحن): <span class="total-amount" id="totalDisplay">250</span> جنيه
+    </div>
+    
+    <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+    function updateTotal() {
+        const qty = parseInt(document.getElementById('quantity').value);
+        const ship = parseInt(document.getElementById('province').value);
+        const productTotal = qty * 200;
+        document.getElementById('totalDisplay').innerText = productTotal + ship;
+    }
+
+    let currentIdx = 0;
+    function moveSlide(direction) {
+        currentIdx = (currentIdx + direction + 2) % 2;
+        document.getElementById('mainSlider').style.transform = `translateX(${currentIdx * 100}%)`;
+    }
+    setInterval(() => moveSlide(1), 5000);
+
+    function submitOrder() {
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const provElem = document.getElementById('province');
+        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
+        const shipCost = parseInt(provElem.value);
+        const qty = parseInt(document.getElementById('quantity').value);
+        const productTotal = qty * 200;
+        const finalTotal = productTotal + shipCost;
+
+        if(!name || !phone || !address) return alert("يرجى ملء كافة الحقول");
+
+        const btn = document.getElementById('orderBtn');
+        btn.disabled = true; btn.innerText = "جاري الحفظ...";
+
+        firebase.database().ref('orders').push({
+            الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
+            الكمية: qty + " علبة", المقاس: document.getElementById('size').value,
+            سعر_المنتجات: productTotal, سعر_الشحن: shipCost, الاجمالي: finalTotal,
+            التاريخ: new Date().toLocaleString('ar-EG'), الحاله: "جديد"
+        }).then(() => {
+            document.getElementById('confirmDetails').innerHTML = `
+                <b>أستاذ ${name}،</b><br>
+                تم تجهيز أوردرك (${qty} علبة) مقاس ${document.getElementById('size').value}.<br>
+                سعر المنتجات: ${productTotal} ج.<br>
+                مصاريف الشحن (${provName}): ${shipCost} ج.<br>
+                <b>الإجمالي مع الشحن: ${finalTotal} ج.</b>
+            `;
+            document.getElementById('successModal').style.display = 'flex';
+        });
+    }
+</script>
 </body>
 </html>
  
