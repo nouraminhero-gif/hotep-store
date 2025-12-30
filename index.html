@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP | Store</title>
+    <title>HOTEP | Exclusive Store</title>
     <link rel="icon" href="https://l.top4top.io/p_36510goa90.jpg">
     <link rel="apple-touch-icon" href="https://l.top4top.io/p_36510goa90.jpg">
     
@@ -58,6 +58,14 @@
         .info-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 18px; }
         .info-card p { font-size: 15px; margin: 8px 0; color: #ccc; line-height: 1.6; }
 
+        /* تنسيق صورة جدول المقاسات */
+        .size-chart-img {
+            width: 100%;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid var(--gold);
+        }
+
         input, select { 
             width: 100%; 
             padding: 14px; 
@@ -108,6 +116,90 @@
 </div>
 
 <div class="container">
+    <div class="brand">HOTEP</div>
+    <img src="https://l.top4top.io/p_36510goa90.jpg" class="product-img">
+    <div class="price-tag">200 جنيهاً</div>
+
+    <div class="info-card">
+        <h3>✨ الجودة والخامة</h3>
+        <p>قطن مصري 100% ليكرا - نعومة فائقة</p>
+        <p>صبغات أصلية ثابتة لا تتغير</p>
+    </div>
+
+    <h3 style="color:var(--gold); font-size: 16px; margin-top: 20px;">جدول المقاسات</h3>
+    <img src="https://k.top4top.io/p_3651p5g3k0.jpg" class="size-chart-img" alt="Size Chart">
+
+    <div class="info-card" style="border-top-color: #28a745;">
+        <h3>🚚 عرض خاص</h3>
+        <p>العلبة بها <b>2 قطعة</b> بـ 200ج فقط</p>
+        <p>شحن القاهرة/جيزة 50ج - باقي المحافظات 70ج</p>
+    </div>
+
+    <div style="width: 100%;">
+        <input type="text" id="name" placeholder="الاسم بالكامل">
+        <input type="tel" id="phone" placeholder="رقم الهاتف">
+        
+        <label>المحافظة</label>
+        <select id="province">
+            <option>القاهرة</option><option>الجيزة</option>
+            <option>الإسكندرية</option><option>باقي المحافظات</option>
+        </select>
+
+        <input type="text" id="address" placeholder="العنوان بالتفصيل">
+        
+        <label>المقاس المطلوب</label>
+        <select id="size">
+            <option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option>
+        </select>
+
+        <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    
+    function submitOrder() {
+        const n = document.getElementById('name').value;
+        const p = document.getElementById('phone').value;
+        const a = document.getElementById('address').value;
+
+        if(!n || !p || !a) {
+            alert("يرجى ملء البيانات");
+            return;
+        }
+
+        const btn = document.getElementById('orderBtn');
+        btn.disabled = true;
+        btn.innerText = "جاري الحفظ...";
+
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            firebase.database().ref('orders').push({
+                الاسم: n,
+                الهاتف: p,
+                المحافظة: document.getElementById('province').value,
+                العنوان: a,
+                المقاس: document.getElementById('size').value,
+                التاريخ: new Date().toLocaleString('ar-EG')
+            }).then(() => {
+                document.getElementById('successModal').style.display = 'flex';
+            }).catch(() => {
+                alert("حدث خطأ في الاتصال");
+                btn.disabled = false;
+                btn.innerText = "تأكيد الطلب الآن";
+            });
+        } catch(e) {
+            alert("فشل في تحميل السيرفر");
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
     <div class="brand">HOTEP</div>
     <img src="https://l.top4top.io/p_36510goa90.jpg" class="product-img">
     <div class="price-tag">200 جنيهاً</div>
@@ -189,4 +281,5 @@
 </script>
 </body>
 </html>
+
 
