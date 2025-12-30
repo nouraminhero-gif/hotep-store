@@ -1,56 +1,72 @@
+
 <!DOCTYPE html>
-<html dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدير HOTEP</title>
-    
-    <link rel="icon" type="image/png" href="https://l.top4top.io/p_36510goa90.jpg">
-    <link rel="apple-touch-icon" href="https://l.top4top.io/p_36510goa90.jpg">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="مدير HOTEP">
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <title>HOTEP | Dashboard</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; }
-        .header { text-align: center; color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 10px; margin-bottom: 20px; }
-        .order-card { background: #111; border: 1px solid #D4AF37; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
-        .btn-call { background: #28a745; color: white; text-decoration: none; padding: 12px; border-radius: 8px; display: inline-block; width: 45%; text-align: center; font-weight: bold; }
-        .btn-delete { background: #dc3545; color: white; padding: 12px; border-radius: 8px; display: inline-block; width: 45%; border: none; float: left; font-weight: bold; }
-        .info { margin: 10px 0; font-size: 16px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .info b { color: #D4AF37; }
+        body { background: #000; color: #fff; font-family: sans-serif; padding: 20px; }
+        h2 { color: #D4AF37; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #111; }
+        th, td { border: 1px solid #333; padding: 12px; text-align: center; font-size: 14px; }
+        th { background: #D4AF37; color: #000; }
+        .delete-btn { background: #ff4444; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>مدير HOTEP</h1>
-    </div>
-    <div id="ordersContainer">جاري تحميل الطلبات...</div>
+    <h2>إدارة طلبات HOTEP</h2>
+    <div id="stats" style="text-align: center; margin-bottom: 10px; color: #D4AF37;"></div>
+    <table>
+        <thead>
+            <tr>
+                <th>التاريخ</th>
+                <th>الاسم</th>
+                <th>الهاتف</th>
+                <th>المحافظة</th>
+                <th>العنوان</th>
+                <th>المقاس</th>
+                <th>اللون</th>
+                <th>إجراء</th>
+            </tr>
+        </thead>
+        <tbody id="ordersTable"></tbody>
+    </table>
 
-<script>
-    const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-    if (!firebase.apps.length) firebase.initializeApp(config);
-    const db = firebase.database();
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script>
+        const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database().ref('orders');
 
-    db.ref('orders').on('value', (snapshot) => {
-        const container = document.getElementById('ordersContainer');
-        container.innerHTML = '';
-        snapshot.forEach((child) => {
-            const val = child.val();
-            container.innerHTML += `
-                <div class="order-card">
-                    <div class="info">👤 العميل: <b>${val.الاسم}</b></div>
-                    <div class="info">📞 الهاتف: <b>${val.الهاتف}</b></div>
-                    <div class="info">📍 العنوان: <b>${val.العنوان}</b></div>
-                    <div class="info">📏 المقاس: <b>${val.المقاس}</b> | 🎨 اللون: <b>${val.اللون}</b></div>
-                    <a href="tel:${val.الهاتف}" class="btn-call">اتصال</a>
-                    <button onclick="if(confirm('حذف؟')) db.ref('orders').child('${child.key}').remove()" class="btn-delete">حذف</button>
-                </div>`;
+        db.on('value', (snapshot) => {
+            const tbody = document.getElementById('ordersTable');
+            tbody.innerHTML = '';
+            let count = 0;
+            snapshot.forEach((childSnapshot) => {
+                const data = childSnapshot.val();
+                const key = childSnapshot.key;
+                count++;
+                const row = `<tr>
+                    <td>${data.التاريخ || ''}</td>
+                    <td>${data.الاسم || ''}</td>
+                    <td>${data.الهاتف || ''}</td>
+                    <td style="font-weight:bold; color:#D4AF37;">${data.المحافظة || 'غير محدد'}</td>
+                    <td>${data.العنوان || ''}</td>
+                    <td>${data.المقاس || ''}</td>
+                    <td>أسود</td>
+                    <td><button class="delete-btn" onclick="deleteOrder('${key}')">حذف</button></td>
+                </tr>`;
+                tbody.innerHTML = row + tbody.innerHTML;
+            });
+            document.getElementById('stats').innerText = "إجمالي الطلبات: " + count;
         });
-        if (!snapshot.exists()) container.innerHTML = "لا توجد طلبات";
-    });
-</script>
+
+        function deleteOrder(key) {
+            if(confirm("هل أنت متأكد من حذف الطلب؟")) {
+                db.child(key).remove();
+            }
+        }
+    </script>
 </body>
 </html>
-
