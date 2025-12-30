@@ -1,93 +1,170 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | الصفحة الرئيسية</title>
+    <title>HOTEP | استلهمنا من قوة الحضارة المصرية القديمة</title>
     <style>
-        /* التنسيقات الأساسية */
         :root {
             --gold: #D4AF37;
             --black: #000000;
+            --dark-grey: #121212;
         }
 
         body {
             margin: 0;
             padding: 0;
+            font-family: 'Arial', sans-serif;
             background-color: var(--black);
             color: white;
-            font-family: 'Arial', sans-serif;
+            padding-top: 60px; /* مساحة للنقش العلوي */
+            padding-bottom: 60px; /* مساحة للنقش السفلي */
         }
 
-        /* تنسيق الهيدر */
+        /* إضافة إطار النقوش الفرعونية في الأعلى والأسفل (التعديل القديم) */
+        body::before, body::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 50px;
+            background-image: url('https://i.ibb.co/jkqHBwM2/1767051970601-edit-1243566144551275.jpg');
+            background-size: contain;
+            background-repeat: repeat-x;
+            position: fixed;
+            left: 0;
+            z-index: 1000;
+        }
+
+        body::before { top: 0; border-bottom: 2px solid var(--gold); }
+        body::after { bottom: 0; border-top: 2px solid var(--gold); }
+
+        /* الهيدر المحتوي على الجعران بجانب الاسم */
         header {
-            padding: 30px 20px;
             text-align: center;
-            border-bottom: 1px solid #222;
+            padding: 40px 20px;
+            background-color: var(--black);
         }
 
-        /* تنسيق اسم البرند مع الجعران */
-        .brand-container {
+        .brand-wrapper {
             display: flex;
-            align-items: center; /* لمحاذاة الجعران مع النص برأسياً */
-            justify-content: center; /* لتوسيط المحتوى في الصفحة */
-            gap: 10px; /* المسافة بين الجعران والاسم */
+            align-items: center;
+            justify-content: center;
+            gap: 15px; /* المسافة بين الجعران والاسم */
+        }
+
+        .scarab-icon {
+            height: 50px; /* ارتفاع الجعران متناسب مع ارتفاع الخط */
+            width: auto;
+            filter: drop-shadow(0px 0px 5px rgba(212, 175, 55, 0.5));
         }
 
         .brand-name {
             color: var(--gold);
-            font-size: 40px; /* حجم اسم البرند */
+            font-size: 50px; /* حجم الخط */
             font-weight: bold;
             margin: 0;
             line-height: 1;
-        }
-
-        .scarab-logo {
-            height: 40px; /* جعل ارتفاع الجعران نفس ارتفاع الخط */
-            width: auto;
-            display: block;
+            letter-spacing: 2px;
         }
 
         .slogan {
             color: #888;
             font-size: 14px;
-            margin-top: 5px;
-            letter-spacing: 3px;
+            margin-top: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
         }
 
-        /* منطقة المنتجات */
+        /* تنسيق الأقسام والمنتجات */
         .container {
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 0 20px;
-            text-align: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .product-placeholder {
-            border: 1px dashed var(--gold);
-            padding: 100px 20px;
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .product-card {
+            background-color: var(--dark-grey);
+            border: 1px solid #222;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        .price {
             color: var(--gold);
-            border-radius: 10px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: block;
+            margin: 15px 0;
+        }
+
+        .buy-button {
+            background-color: var(--gold);
+            color: black;
+            padding: 12px 35px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: #444;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand-container">
-            <img src="https://i.ibb.co/jkqHBwM2/1767051970601-edit-1243566144551275.jpg" alt="Scarab" class="scarab-logo">
+        <div class="brand-wrapper">
+            <img src="https://i.ibb.co/jkqHBwM2/1767051970601-edit-1243566144551275.jpg" alt="Scarab" class="scarab-icon">
             <h1 class="brand-name">HOTEP</h1>
         </div>
         <div class="slogan">MEN'S UNDERWEAR</div>
     </header>
 
     <div class="container">
-        <div class="product-placeholder">
-            قريباً.. تشكيلة HOTEP الجديدة
+        <h2 style="text-align: center; color: var(--gold); border-bottom: 1px solid #333; padding-bottom: 15px;">التشكيلة الملكية</h2>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div style="height: 300px; background: #1a1a1a; margin-bottom: 15px; border: 1px solid #333;"></div>
+                <h3>المنتج الأول</h3>
+                <span class="price">150 EGP</span>
+                <button class="buy-button">اطلب الآن</button>
+            </div>
+
+            <div class="product-card">
+                <div style="height: 300px; background: #1a1a1a; margin-bottom: 15px; border: 1px solid #333;"></div>
+                <h3>المنتج الثاني</h3>
+                <span class="price">180 EGP</span>
+                <button class="buy-button">اطلب الآن</button>
+            </div>
         </div>
     </div>
 
+    <footer>
+        <p>© 2024 HOTEP - استلهمنا من قوة الحضارة المصرية القديمة</p>
+    </footer>
+
 </body>
 </html>
-
+ 
