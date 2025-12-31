@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>НОТЕР Admin - Calculator Fix</title>
+    <title>НОТЕР Admin - Price Fix</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         .stats-bar { background: #000; padding: 10px; display: flex; justify-content: space-around; border-bottom: 1px solid #222; }
         .stat-item b { font-size: 18px; color: #fff; }
         .stat-item span { display: block; color: var(--gold); font-size: 10px; }
@@ -18,16 +18,12 @@
         .revenue-box { background: #151515; border: 1px solid var(--gold); margin: 10px; padding: 10px; border-radius: 15px; text-align: center; }
         .revenue-box span { color: var(--green); font-size: 20px; font-weight: bold; }
         .order-card { background: var(--dark); border-radius: 15px; padding: 15px; margin: 10px; position: relative; border-right: 4px solid var(--gold); }
-        .order-price { position: absolute; left: 15px; bottom: 65px; color: var(--green); font-weight: bold; font-size: 15px; }
+        .order-price { position: absolute; left: 15px; bottom: 65px; color: var(--green); font-weight: bold; font-size: 14px; } /* تصغير حجم السعر */
         .order-timestamp { font-size: 10px; color: #555; display: block; text-align: right; margin-bottom: 5px; }
-        .order-header { display: flex; justify-content: space-between; align-items: center; }
         .name-tag { background: #1a1a1a; color: #fff; padding: 5px 12px; border-radius: 8px; font-size: 16px; font-weight: bold; border: 1px solid #333; }
         .qty-tag { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 5px 12px; border-radius: 8px; font-size: 13px; border: 1px solid rgba(212, 175, 55, 0.3); }
-        .order-info { text-align: right; color: #999; font-size: 12px; line-height: 1.6; margin-top: 8px; }
-        .order-info i { color: var(--gold); margin-left: 5px; }
         .btns-row { display: flex; gap: 4px; margin-top: 12px; height: 38px; }
-        .btn { flex: 1; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; touch-action: manipulation; }
-        .btn-ship { background: #6f42c1; font-weight: bold; }
+        .btn { flex: 1; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; }
         .btn-wa { background: #25d366; max-width: 40px; }
         .btn-cpy { background: #ff8c00; max-width: 40px; }
         .btn-prnt { background: #fff; color: #000; max-width: 40px; }
@@ -53,22 +49,15 @@
         <div class="stat-item"><span>M</span><b id="sM">0</b></div>
     </div>
     <div class="reset-link" id="resetBtn">تصفير سجل المقاسات</div>
-
     <div class="tabs">
         <button class="tab-btn active" data-view="new">جديد (<span id="cN">0</span>)</button>
         <button class="tab-btn" data-view="ship">مشحون (<span id="cS">0</span>)</button>
         <button class="tab-btn" data-view="done">مستلم (<span id="cD">0</span>)</button>
     </div>
-
-    <div id="vNew">
-        <div class="revenue-box">إجمالي الجديد: <span id="totalNewDisplay">0</span> ج</div>
-        <div id="listNew"></div>
-    </div>
+    <div id="vNew"><div class="revenue-box">إجمالي الجديد: <span id="totalNew">0</span> ج</div><div id="listNew"></div></div>
     <div id="vShip" style="display:none;"><div id="listShip"></div></div>
     <div id="vDone" style="display:none;"><div id="listDone"></div></div>
 </div>
-
-<div id="print-area" style="display:none;"></div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -93,20 +82,15 @@ function startEngine() {
     });
 
     db.ref('orders').on('value', snap => {
-        let lists = {new: '', ship: '', done: ''};
-        let counters = {n:0, s:0, d:0};
-        let totalRevenueCalculated = 0;
+        let lists = {new: '', ship: '', done: ''}, counts = {n:0, s:0, d:0}, total = 0;
 
         snap.forEach(child => {
             const o = child.val();
-            const id = child.key;
-            
-            // إصلاح الحسابات: تحويل المدخلات لأرقام صحيحة
-            const itemPrice = Number(o.سعر_المنتج) || 0;
-            const shipping = 50;
-            const finalPrice = itemPrice + shipping;
-            const qty = Number(o.الكمية) || 1;
-            const sz = o.المقاس || 'M';
+            // كاشف السعر الذكي: يبحث في كل المسميات الممكنة للسعر في قاعدة بياناتك
+            const rawPrice = o.سعر_المنتج || o.سعر_المنتجات || o.Price || o.price || o.السعر || 0;
+            const itemPrice = parseInt(rawPrice);
+            const finalPrice = itemPrice + 50;
+            const q = o.الكمية || 1, sz = o.المقاس || 'M', id = child.key;
 
             const card = `
                 <div class="order-card">
@@ -114,17 +98,15 @@ function startEngine() {
                     <div class="order-price">${finalPrice} ج</div>
                     <div class="order-header">
                         <span class="name-tag">${o.الاسم}</span>
-                        <span class="qty-tag">${qty} علبة - ${sz}</span>
+                        <span class="qty-tag">${q} علبة - ${sz}</span>
                     </div>
                     <div class="order-info">
                         <i class="fas fa-phone"></i> ${o.الهاتف}<br>
                         <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}
                     </div>
-                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${finalPrice}" data-itemprice="${itemPrice}" data-qty="${qty}" data-addr="${o.العنوان}">
-                        ${o.الحالة === 'مشحون' ? 
-                            `<button class="btn btn-done" style="background:#0084ff; flex:2;">تم التسليم</button>` : 
-                            (o.الحالة === 'تم التسليم' ? `<div style="flex:2; text-align:center; color:var(--green); font-size:12px;">✅ مستلم</div>` : `<button class="btn btn-go-ship" style="background:#6f42c1; flex:2;">شحن الأوردر</button>`)
-                        }
+                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${finalPrice}" data-itemprice="${itemPrice}" data-qty="${q}" data-addr="${o.العنوان}">
+                        ${o.الحالة === 'مشحون' ? `<button class="btn btn-done" style="background:#0084ff; flex:2;">تم التسليم</button>` : 
+                        (o.الحالة === 'تم التسليم' ? `<div style="flex:2; text-align:center; color:var(--green); font-size:12px;">✅ مستلم</div>` : `<button class="btn btn-go-ship" style="background:#6f42c1; flex:2;">شحن الأوردر</button>`)}
                         <button class="btn btn-prnt"><i class="fas fa-print"></i></button>
                         <button class="btn btn-wa"><i class="fab fa-whatsapp"></i></button>
                         <button class="btn btn-cpy"><i class="fas fa-copy"></i></button>
@@ -132,74 +114,51 @@ function startEngine() {
                     </div>
                 </div>`;
 
-            if(o.الحالة === 'تم التسليم') { lists.done += card; counters.d++; }
-            else if(o.الحالة === 'مشحون') { lists.ship += card; counters.s++; }
-            else { 
-                lists.new += card; 
-                counters.n++; 
-                totalRevenueCalculated += finalPrice; // جمع الإجمالي لطلبات "جديد" فقط
-            }
+            if(o.الحالة === 'تم التسليم') { lists.done += card; counts.d++; }
+            else if(o.الحالة === 'مشحون') { lists.ship += card; counts.s++; }
+            else { lists.new += card; counts.n++; total += finalPrice; }
         });
 
         document.getElementById('listNew').innerHTML = lists.new;
         document.getElementById('listShip').innerHTML = lists.ship;
         document.getElementById('listDone').innerHTML = lists.done;
-        document.getElementById('cN').innerText = counters.n;
-        document.getElementById('cS').innerText = counters.s;
-        document.getElementById('cD').innerText = counters.d;
-        document.getElementById('totalNewDisplay').innerText = totalRevenueCalculated;
+        document.getElementById('cN').innerText = counts.n;
+        document.getElementById('cS').innerText = counts.s;
+        document.getElementById('cD').innerText = counts.d;
+        document.getElementById('totalNew').innerText = total;
     });
 }
 
-// المستمع العام للضغطات
 document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn');
-    const tab = e.target.closest('.tab-btn');
-    const reset = e.target.closest('#resetBtn');
-    
+    const btn = e.target.closest('.btn'), tab = e.target.closest('.tab-btn'), reset = e.target.closest('#resetBtn');
     if (tab) {
-        const view = tab.dataset.view;
-        document.getElementById('vNew').style.display = view === 'new' ? 'block' : 'none';
-        document.getElementById('vShip').style.display = view === 'ship' ? 'block' : 'none';
-        document.getElementById('vDone').style.display = view === 'done' ? 'block' : 'none';
+        const v = tab.dataset.view;
+        document.getElementById('vNew').style.display = v === 'new' ? 'block' : 'none';
+        document.getElementById('vShip').style.display = v === 'ship' ? 'block' : 'none';
+        document.getElementById('vDone').style.display = v === 'done' ? 'block' : 'none';
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         tab.classList.add('active');
     }
-
-    if (reset) {
-        if(confirm('تصفير سجل المقاسات؟')) db.ref('shipped_stats').set({M:0, L:0, XL:0, XXL:0});
-    }
-
+    if (reset && confirm('تصفير؟')) db.ref('shipped_stats').set({M:0, L:0, XL:0, XXL:0});
     if (btn) {
         const p = btn.parentElement.dataset;
         if (btn.classList.contains('btn-go-ship')) {
-            db.ref('shipped_stats/' + p.size).transaction(c => (Number(c) || 0) + Number(p.qty));
+            db.ref('shipped_stats/' + p.size).transaction(c => (parseInt(c) || 0) + parseInt(p.qty));
             db.ref('orders/' + p.id).update({ الحالة: 'مشحون' });
         }
-        if (btn.classList.contains('btn-done')) {
-            db.ref('orders/' + p.id).update({ الحالة: 'تم التسليم' });
-        }
-        if (btn.classList.contains('btn-del')) {
-            if(confirm('حذف الأوردر؟')) db.ref('orders/' + p.id).remove();
-        }
-        if (btn.classList.contains('btn-cpy')) {
-            const t = `الاسم: ${p.name}\nالهاتف: ${p.phone}\nالعنوان: ${p.addr}\nالمقاس: ${p.size}\nالحساب: ${p.price} ج`;
-            navigator.clipboard.writeText(t).then(() => alert('تم النسخ ✅'));
-        }
+        if (btn.classList.contains('btn-done')) db.ref('orders/' + p.id).update({ الحالة: 'تم التسليم' });
+        if (btn.classList.contains('btn-del') && confirm('حذف؟')) db.ref('orders/' + p.id).remove();
         if (btn.classList.contains('btn-wa')) {
             const m = encodeURIComponent(`مرحباً أ/ ${p.name}\nتم تأكيد أوردرك من НОТЕР 📦\n\nالكمية: ${p.qty} علبة (${p.size})\nسعر المنتج: ${p.itemprice} ج\nالشحن: 50 ج\nالإجمالي: ${p.price} ج\n\nسيصلك خلال 48 ساعة.`);
             window.open(`https://wa.me/2${p.phone}?text=${m}`, '_blank');
         }
-        if (btn.classList.contains('btn-prnt')) {
-            const pArea = document.getElementById('print-area');
-            pArea.style.display = 'block';
-            pArea.innerHTML = `<div style="direction:rtl; padding:20px; color:#000; font-family:Arial;"><h2>НОТЕР</h2><p>الاسم: ${p.name}</p><p>الهاتف: ${p.phone}</p><p>الطلب: ${p.qty} علبة (${p.size})</p><h3>الحساب: ${p.price} ج</h3></div>`;
-            window.print();
-            pArea.style.display = 'none';
+        if (btn.classList.contains('btn-cpy')) {
+            navigator.clipboard.writeText(`الاسم: ${p.name}\nالهاتف: ${p.phone}\nالعنوان: ${p.addr}\nالمقاس: ${p.size}\nالحساب: ${p.price} ج`).then(() => alert('تم النسخ'));
         }
+        if (btn.classList.contains('btn-prnt')) window.print();
     }
 });
 </script>
 </body>
 </html>
- 
+
