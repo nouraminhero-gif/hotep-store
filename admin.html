@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>НОТЕР Admin - Final Fix</title>
+    <title>НОТЕР Admin - Calculator Fix</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; }
@@ -34,7 +33,6 @@
         .btn-prnt { background: #fff; color: #000; max-width: 40px; }
         .btn-del { background: #d9534f; max-width: 40px; }
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000; }
-        #print-area { display: none; }
     </style>
 </head>
 <body>
@@ -63,14 +61,14 @@
     </div>
 
     <div id="vNew">
-        <div class="revenue-box">إجمالي الجديد: <span id="totalNew">0</span> ج</div>
+        <div class="revenue-box">إجمالي الجديد: <span id="totalNewDisplay">0</span> ج</div>
         <div id="listNew"></div>
     </div>
     <div id="vShip" style="display:none;"><div id="listShip"></div></div>
     <div id="vDone" style="display:none;"><div id="listDone"></div></div>
 </div>
 
-<div id="print-area"></div>
+<div id="print-area" style="display:none;"></div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -80,7 +78,6 @@ const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-w
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// مستمع ضغطات الدخول
 document.getElementById('loginBtn').addEventListener('click', () => {
     if(document.getElementById('passInput').value === "hero1") {
         document.getElementById('login-screen').style.display = 'none';
@@ -90,38 +87,40 @@ document.getElementById('loginBtn').addEventListener('click', () => {
 });
 
 function startEngine() {
-    // تحديث المقاسات
     db.ref('shipped_stats').on('value', snap => {
         const d = snap.val() || {M:0, L:0, XL:0, XXL:0};
         ['M','L','XL','XXL'].forEach(s => document.getElementById('s'+s).innerText = d[s] || 0);
     });
 
-    // تحديث الطلبات
     db.ref('orders').on('value', snap => {
         let lists = {new: '', ship: '', done: ''};
         let counters = {n:0, s:0, d:0};
-        let totalRev = 0;
+        let totalRevenueCalculated = 0;
 
         snap.forEach(child => {
             const o = child.val();
             const id = child.key;
-            const price = (parseInt(o.سعر_المنتج) || 0) + 50;
-            const q = o.الكمية || 1;
+            
+            // إصلاح الحسابات: تحويل المدخلات لأرقام صحيحة
+            const itemPrice = Number(o.سعر_المنتج) || 0;
+            const shipping = 50;
+            const finalPrice = itemPrice + shipping;
+            const qty = Number(o.الكمية) || 1;
             const sz = o.المقاس || 'M';
 
             const card = `
                 <div class="order-card">
                     <span class="order-timestamp">${o.التاريخ || ''}</span>
-                    <div class="order-price">${price} ج</div>
+                    <div class="order-price">${finalPrice} ج</div>
                     <div class="order-header">
                         <span class="name-tag">${o.الاسم}</span>
-                        <span class="qty-tag">${q} علبة - ${sz}</span>
+                        <span class="qty-tag">${qty} علبة - ${sz}</span>
                     </div>
                     <div class="order-info">
                         <i class="fas fa-phone"></i> ${o.الهاتف}<br>
                         <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}
                     </div>
-                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${price}" data-itemprice="${o.سعر_المنتج}" data-qty="${q}" data-addr="${o.العنوان}">
+                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${finalPrice}" data-itemprice="${itemPrice}" data-qty="${qty}" data-addr="${o.العنوان}">
                         ${o.الحالة === 'مشحون' ? 
                             `<button class="btn btn-done" style="background:#0084ff; flex:2;">تم التسليم</button>` : 
                             (o.الحالة === 'تم التسليم' ? `<div style="flex:2; text-align:center; color:var(--green); font-size:12px;">✅ مستلم</div>` : `<button class="btn btn-go-ship" style="background:#6f42c1; flex:2;">شحن الأوردر</button>`)
@@ -135,7 +134,11 @@ function startEngine() {
 
             if(o.الحالة === 'تم التسليم') { lists.done += card; counters.d++; }
             else if(o.الحالة === 'مشحون') { lists.ship += card; counters.s++; }
-            else { lists.new += card; counters.n++; totalRev += price; }
+            else { 
+                lists.new += card; 
+                counters.n++; 
+                totalRevenueCalculated += finalPrice; // جمع الإجمالي لطلبات "جديد" فقط
+            }
         });
 
         document.getElementById('listNew').innerHTML = lists.new;
@@ -144,11 +147,11 @@ function startEngine() {
         document.getElementById('cN').innerText = counters.n;
         document.getElementById('cS').innerText = counters.s;
         document.getElementById('cD').innerText = counters.d;
-        document.getElementById('totalNew').innerText = totalRev;
+        document.getElementById('totalNewDisplay').innerText = totalRevenueCalculated;
     });
 }
 
-// المستمع العام للضغطات داخل التطبيق (لحل مشكلة الأزرار نهائياً)
+// المستمع العام للضغطات
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('.btn');
     const tab = e.target.closest('.tab-btn');
@@ -170,7 +173,7 @@ document.addEventListener('click', (e) => {
     if (btn) {
         const p = btn.parentElement.dataset;
         if (btn.classList.contains('btn-go-ship')) {
-            db.ref('shipped_stats/' + p.size).transaction(c => (c || 0) + parseInt(p.qty));
+            db.ref('shipped_stats/' + p.size).transaction(c => (Number(c) || 0) + Number(p.qty));
             db.ref('orders/' + p.id).update({ الحالة: 'مشحون' });
         }
         if (btn.classList.contains('btn-done')) {
@@ -184,15 +187,19 @@ document.addEventListener('click', (e) => {
             navigator.clipboard.writeText(t).then(() => alert('تم النسخ ✅'));
         }
         if (btn.classList.contains('btn-wa')) {
-            const m = encodeURIComponent(`مرحباً أ/ ${p.name}\nتم تأكيد أوردرك من НОТЕР 📦\n\nالكمية: ${p.qty} علبة (${p.size})\nسعر المنتج: ${p.itemprice} ج\nالشحن: 50 ج\nالإجمالي: ${p.price} ج\n\nسيصلك الشحن خلال 48 ساعة.`);
+            const m = encodeURIComponent(`مرحباً أ/ ${p.name}\nتم تأكيد أوردرك من НОТЕР 📦\n\nالكمية: ${p.qty} علبة (${p.size})\nسعر المنتج: ${p.itemprice} ج\nالشحن: 50 ج\nالإجمالي: ${p.price} ج\n\nسيصلك خلال 48 ساعة.`);
             window.open(`https://wa.me/2${p.phone}?text=${m}`, '_blank');
         }
         if (btn.classList.contains('btn-prnt')) {
-            document.getElementById('print-area').innerHTML = `<div style="direction:rtl; padding:20px; color:#000;"><h2>НОТЕР</h2><p>الاسم: ${p.name}</p><p>الهاتف: ${p.phone}\nالطلب: ${p.qty} علبة (${p.size})\nالحساب: ${p.price} ج</p></div>`;
+            const pArea = document.getElementById('print-area');
+            pArea.style.display = 'block';
+            pArea.innerHTML = `<div style="direction:rtl; padding:20px; color:#000; font-family:Arial;"><h2>НОТЕР</h2><p>الاسم: ${p.name}</p><p>الهاتف: ${p.phone}</p><p>الطلب: ${p.qty} علبة (${p.size})</p><h3>الحساب: ${p.price} ج</h3></div>`;
             window.print();
+            pArea.style.display = 'none';
         }
     }
 });
 </script>
 </body>
 </html>
+ 
