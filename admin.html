@@ -1,75 +1,91 @@
-
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Pro</title>
+    <title>HOTEP Admin - Tabs System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --orange: #ff8c00; --red: #d9534f; --purple: #a333c8; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-box { background: var(--dark); padding: 30px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 80%; max-width: 300px; }
-        .login-box input { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; text-align: center; }
-        .login-box button { background: var(--gold); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+        /* واجهة دخول محسنة */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a1a1a 0%, #000 100%); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .login-box { background: var(--dark); padding: 40px 30px; border-radius: 25px; border: 2px solid var(--gold); text-align: center; width: 85%; max-width: 320px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        .login-box i { font-size: 50px; color: var(--gold); margin-bottom: 15px; }
+        .login-box input { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 12px; border: 1px solid #333; background: #000; color: var(--gold); text-align: center; font-size: 18px; outline: none; }
+        .login-box button { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        .login-box button:active { transform: scale(0.95); }
 
-        #admin-content { display: none; padding: 15px; }
-        .top-nav { background: var(--dark); padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; margin: -15px -15px 15px -15px; }
-        
-        /* تقسيم الأقسام */
-        .section-title { color: var(--gold); border-right: 4px solid var(--gold); padding-right: 10px; margin: 20px 0 10px; font-size: 18px; display: flex; justify-content: space-between; }
-        .section-count { background: var(--gold); color: #000; padding: 2px 10px; border-radius: 10px; font-size: 14px; }
+        /* الهيكل الداخلي - نظام الشرائح */
+        #admin-content { display: none; }
+        .top-nav { background: var(--dark); padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .top-nav h1 { color: var(--gold); margin: 0; font-size: 20px; letter-spacing: 1px; }
 
-        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 15px; padding: 15px; margin-bottom: 15px; position: relative; }
-        .order-price { position: absolute; left: 15px; top: 15px; color: var(--green); font-weight: bold; font-size: 18px; }
-        .order-info b { color: var(--gold); font-size: 17px; }
-        .order-details { font-size: 13px; color: #aaa; margin: 10px 0; }
+        .tabs-container { display: flex; background: #111; padding: 5px; margin: 15px; border-radius: 15px; border: 1px solid #333; position: sticky; top: 65px; z-index: 99; }
+        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: transparent; color: #777; font-weight: bold; cursor: pointer; border-radius: 10px; font-size: 13px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .tab-btn i { font-size: 16px; }
+        .tab-btn.active { background: var(--gold); color: #000; }
+        .tab-btn span.badge { background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 8px; font-size: 10px; }
+
+        /* كروت الأوردرات */
+        .tab-content { padding: 0 15px 100px; display: none; }
+        .tab-content.active { display: block; }
+        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 20px; padding: 18px; margin-bottom: 15px; position: relative; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .action-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-        .btn-m { padding: 8px 12px; border-radius: 6px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 11px; text-decoration: none; }
-        .btn-ship { background: var(--purple); } /* زر الشحن */
+        .order-price { position: absolute; left: 18px; top: 18px; color: var(--green); font-weight: bold; font-size: 20px; }
+        .order-info b { color: var(--gold); font-size: 18px; display: block; margin-bottom: 5px; }
+        .order-details { font-size: 13px; color: #aaa; line-height: 1.7; }
+        .order-details i { color: var(--gold); width: 20px; text-align: center; }
+        
+        .action-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px; border-top: 1px solid #222; padding-top: 15px; }
+        .btn-m { flex: 1; min-width: 80px; padding: 10px; border-radius: 10px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 11px; text-decoration: none; font-weight: bold; }
+        
+        .btn-ship { background: var(--purple); }
         .btn-delivered { background: var(--blue); }
-        .btn-print { background: #fff; color: #000; }
+        .btn-print { background: #eee; color: #000; }
         .btn-wa { background: #075e54; }
-        .btn-del { background: var(--red); }
+        .btn-del { background: var(--red); flex: 0.3; min-width: 40px; }
 
-        /* ستايل الطباعة */
-        @media print {
-            body * { visibility: hidden; }
-            .print-area, .print-area * { visibility: visible; }
-            .print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; }
-        }
+        @media print { body * { visibility: hidden; } .print-area, .print-area * { visibility: visible; } .print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; } }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-box">
+            <i class="fas fa-shield-alt"></i>
             <h2>HOTEP ADMIN</h2>
-            <input type="password" id="passInput" placeholder="كلمة السر">
-            <button onclick="checkPass()">دخول</button>
+            <input type="password" id="passInput" placeholder="أدخل كلمة السر">
+            <button onclick="checkPass()">دخول النظام</button>
         </div>
     </div>
 
     <div id="admin-content">
         <nav class="top-nav">
-            <h1>HOTEP <small>CONTROL</small></h1>
-            <div id="clock"></div>
+            <h1>HOTEP <small style="font-size:10px; color:#666;">DASHBOARD</small></h1>
+            <div id="clock" style="font-size: 12px; color: var(--gold);"></div>
         </nav>
 
-        <div class="section-title">طلبات جديدة <span class="section-count" id="countNew">0</span></div>
-        <div id="listNew"></div>
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="openTab(event, 'newOrders')">
+                <i class="fas fa-plus-circle"></i> طلبات جديدة <span class="badge" id="bNew">0</span>
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'shippedOrders')">
+                <i class="fas fa-truck-loading"></i> قيد الشحن <span class="badge" id="bShipped">0</span>
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'doneOrders')">
+                <i class="fas fa-check-circle"></i> تم التسليم <span class="badge" id="bDone">0</span>
+            </button>
+        </div>
 
-        <div class="section-title">قيد الشحن <span class="section-count" id="countShipped">0</span></div>
-        <div id="listShipped"></div>
-
-        <div class="section-title">تم التسليم (الأرباح) <span class="section-count" id="countDone">0</span></div>
-        <div id="listDone"></div>
+        <div id="newOrders" class="tab-content active"></div>
+        <div id="shippedOrders" class="tab-content"></div>
+        <div id="doneOrders" class="tab-content"></div>
     </div>
 
-    <div id="printSection" class="print-area" style="display:none"></div>
+    <div id="printArea" class="print-area" style="display:none"></div>
     <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -80,14 +96,23 @@
             if (document.getElementById('passInput').value === "hero1") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
-                initFirebase();
+                initApp();
             }
         }
 
-        let database;
-        let lastOrderCount = -1;
+        function openTab(evt, tabName) {
+            let contents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
 
-        function initFirebase() {
+        let database;
+        let lastCount = -1;
+
+        function initApp() {
             const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
             if (!firebase.apps.length) firebase.initializeApp(config);
             database = firebase.database();
@@ -100,9 +125,7 @@
                     const o = child.val();
                     const id = child.key;
                     const price = parseInt(o.الاجمالي) || parseInt(o.سعر_المنتجات) || 0;
-                    
-                    // تحضير بيانات الطباعة والبوليصة
-                    const bill = `📦 HOTEP STORE\nالعميل: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${o.العنوان}\nالمقاس: ${o.المقاس}\nالمطلوب: ${price + 50} ج`;
+                    const bill = `HOTEP STORE\n---------------\nالعميل: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${o.العنوان}\nالمقاس: ${o.المقاس}\nالمطلوب: ${price + 50} ج`;
 
                     const html = `
                         <div class="order-card">
@@ -111,17 +134,17 @@
                             <div class="order-details">
                                 <i class="fas fa-phone"></i> ${o.الهاتف}<br>
                                 <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}<br>
-                                <i class="fas fa-tshirt"></i> ${o.المقاس}
+                                <i class="fas fa-tshirt"></i> المقاس: ${o.المقاس} | ${o.التوقيت || ''}
                             </div>
                             <div class="action-btns">
                                 ${o.الحالة === 'مشحون' ? 
-                                    `<button onclick="updateStatus('${id}', 'تم التسليم')" class="btn-m btn-delivered"><i class="fas fa-check-double"></i> تم التسليم</button>` :
-                                    o.الحالة === 'تم التسليم' ? `<span style="color:var(--green)">✅ تم البيع</span>` :
-                                    `<button onclick="updateStatus('${id}', 'مشحون')" class="btn-m btn-ship"><i class="fas fa-truck"></i> شحن الآن</button>`
+                                    `<button onclick="updateStatus('${id}', 'تم التسليم')" class="btn-m btn-delivered"><i class="fas fa-check-double"></i> تسليم</button>` :
+                                    o.الحالة === 'تم التسليم' ? `<span style="color:var(--green); font-size:12px;">✅ اكتمل البيع</span>` :
+                                    `<button onclick="updateStatus('${id}', 'مشحون')" class="btn-m btn-ship"><i class="fas fa-truck"></i> شحن</button>`
                                 }
                                 <button onclick="printOrder(\`${bill}\`)" class="btn-m btn-print"><i class="fas fa-print"></i> طباعة</button>
                                 <a href="https://wa.me/2${o.الهاتف}" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
-                                <button onclick="deleteOrder('${id}')" class="btn-m btn-del"><i class="fas fa-trash"></i></button>
+                                <button onclick="delOrder('${id}')" class="btn-m btn-del"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>`;
 
@@ -130,36 +153,32 @@
                     else { counts.new++; lists.new += html; }
                 });
 
-                // تحديث الواجهة
-                document.getElementById('listNew').innerHTML = lists.new;
-                document.getElementById('listShipped').innerHTML = lists.shipped;
-                document.getElementById('listDone').innerHTML = lists.done;
-                document.getElementById('countNew').innerText = counts.new;
-                document.getElementById('countShipped').innerText = counts.shipped;
-                document.getElementById('countDone').innerText = counts.done;
+                document.getElementById('newOrders').innerHTML = lists.new || '<p style="text-align:center; color:#555;">لا توجد طلبات جديدة</p>';
+                document.getElementById('shippedOrders').innerHTML = lists.shipped || '<p style="text-align:center; color:#555;">لا توجد شحنات حالية</p>';
+                document.getElementById('doneOrders').innerHTML = lists.done || '<p style="text-align:center; color:#555;">لا توجد مبيعات مكتملة</p>';
+                
+                document.getElementById('bNew').innerText = counts.new;
+                document.getElementById('bShipped').innerText = counts.shipped;
+                document.getElementById('bDone').innerText = counts.done;
 
-                // صوت الإشعار للطلبات الجديدة فقط
-                if (lastOrderCount !== -1 && counts.new > lastOrderCount) document.getElementById('notifSound').play();
-                lastOrderCount = counts.new;
+                if (lastCount !== -1 && counts.new > lastCount) document.getElementById('notifSound').play();
+                lastCount = counts.new;
             });
         }
 
-        // الوظائف المحدثة
-        window.updateStatus = function(id, status) {
-            database.ref('orders/' + id).update({ الحالة: status });
-        };
-
-        window.printOrder = function(text) {
-            const p = document.getElementById('printSection');
-            p.innerHTML = `<pre style="font-size:20px; font-family:sans-serif;">${text}</pre>`;
+        window.updateStatus = (id, status) => database.ref('orders/'+id).update({ الحالة: status });
+        window.delOrder = (id) => { if(confirm('حذف الأوردر؟')) database.ref('orders/'+id).remove(); };
+        window.printOrder = (text) => {
+            const area = document.getElementById('printArea');
+            area.innerHTML = `<div style="padding:30px; border:2px dashed #000; direction:rtl; font-family:sans-serif;">
+                <h2 style="text-align:center;">HOTEP STORE</h2>
+                <pre style="white-space:pre-wrap; font-size:18px;">${text}</pre>
+            </div>`;
             window.print();
-        };
-
-        window.deleteOrder = function(id) {
-            if(confirm('حذف نهائي؟')) database.ref('orders/'+id).remove();
         };
 
         setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-EG'); }, 1000);
     </script>
 </body>
 </html>
+
