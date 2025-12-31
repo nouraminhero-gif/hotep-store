@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -11,44 +10,46 @@
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
         /* شريط المقاسات العلوي */
-        .stats-bar { background: #000; padding: 10px; display: flex; justify-content: space-around; border-bottom: 1px solid #222; }
+        .stats-bar { background: #000; padding: 15px; display: flex; justify-content: space-around; border-bottom: 1px solid #222; }
         .stat-item { text-align: center; }
-        .stat-item span { display: block; color: var(--gold); font-size: 10px; }
-        .stat-item b { font-size: 18px; color: #fff; }
+        .stat-item span { display: block; color: var(--gold); font-size: 10px; margin-bottom: 5px; }
+        .stat-item b { font-size: 20px; color: #fff; }
 
-        /* زر التصفير كما في الصورة */
-        .reset-link { text-align: center; padding: 5px; color: #555; font-size: 11px; cursor: pointer; text-decoration: underline; display: block; margin-bottom: 10px; }
+        /* زر التصفير - كما في الصورة 1000068091 */
+        .reset-link { text-align: center; padding: 5px; color: #fff; font-size: 11px; cursor: pointer; text-decoration: underline; display: block; opacity: 0.5; margin-bottom: 10px; }
 
         /* التبويبات */
-        .tabs { display: flex; background: #111; margin: 10px; border-radius: 12px; padding: 5px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 8px; font-size: 13px; }
+        .tabs { display: flex; background: #111; margin: 10px; border-radius: 12px; padding: 5px; gap: 5px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: #888; cursor: pointer; border-radius: 10px; font-size: 14px; }
         .tab-btn.active { background: var(--gold); color: #000; font-weight: bold; }
 
-        /* صندوق الإجمالي */
-        .revenue-box { background: #151515; border: 1px solid #333; margin: 10px; padding: 15px; border-radius: 15px; text-align: center; }
-        .revenue-box h3 { margin: 0; font-size: 16px; color: #fff; }
-        .revenue-box span { color: var(--green); font-size: 26px; font-weight: bold; display: block; margin-top: 5px; }
+        /* صندوق إجمالي المبالغ - كما في الصورة 1000068090 */
+        .revenue-box { background: #151515; border: 1px solid var(--gold); margin: 10px; padding: 20px; border-radius: 15px; text-align: center; }
+        .revenue-box h3 { margin: 0; font-size: 16px; color: #fff; margin-bottom: 10px; }
+        .revenue-box span { color: var(--green); font-size: 32px; font-weight: bold; display: block; }
 
-        /* كارت الأوردر (التنسيق المطلوب بالملي) */
-        .order-card { background: var(--dark); border-radius: 20px; padding: 15px; margin: 12px; border-right: 4px solid var(--gold); position: relative; }
-        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .price-text { color: var(--green); font-size: 22px; font-weight: bold; }
-        .name-box { background: #222; color: #fff; padding: 5px 15px; border-radius: 10px; font-size: 16px; font-weight: bold; border: 1px solid #333; }
+        /* كارت الأوردر - مطابقة تامة للصور المرفقة */
+        .order-card { background: var(--dark); border-radius: 20px; padding: 15px; margin: 15px; border-right: 4px solid var(--gold); position: relative; }
+        .order-time { font-size: 10px; color: #444; text-align: left; margin-bottom: 5px; }
         
-        .order-details { text-align: right; margin-bottom: 10px; }
-        .qty-badge { background: #1a1500; color: var(--gold); padding: 5px 15px; border-radius: 8px; font-size: 13px; border: 1px solid #312600; display: inline-block; margin-bottom: 10px; }
-        .info-row { font-size: 13px; color: #999; margin-bottom: 4px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
-        .info-row i { color: var(--gold); font-size: 12px; }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .price-text { color: var(--green); font-size: 26px; font-weight: bold; }
+        .name-box { background: #222; color: #fff; padding: 8px 18px; border-radius: 10px; font-size: 18px; font-weight: bold; border: 1px solid #333; }
+        
+        .details-section { text-align: right; margin-bottom: 15px; }
+        .qty- مستطيل { background: #1a1500; color: var(--gold); padding: 6px 15px; border-radius: 8px; font-size: 14px; border: 1px solid #312600; display: inline-block; margin-bottom: 12px; }
+        .info-item { font-size: 14px; color: #999; margin-bottom: 6px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+        .info-item i { color: var(--gold); width: 15px; }
 
-        /* صف الأزرار - الألوان كما في الصورة */
-        .btns-row { display: flex; gap: 5px; margin-top: 15px; }
-        .btn { height: 42px; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; transition: 0.2s; }
+        /* صف الأزرار - الألوان والترتيب كما في الصورة */
+        .btns-row { display: flex; gap: 6px; margin-top: 20px; }
+        .btn { height: 48px; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; transition: 0.2s; }
         
-        .btn-ship { background: var(--purple); flex: 3; font-weight: bold; } /* شحن الأوردر البنفسجي */
-        .btn-prnt { background: #fff; color: #000; flex: 1; } /* طباعة الأبيض */
-        .btn-wa { background: #25d366; flex: 1; } /* واتساب الأخضر */
-        .btn-cpy { background: #ff8c00; flex: 1; } /* نسخ البرتقالي */
-        .btn-del { background: #d9534f; flex: 1; } /* حذف الأحمر */
+        .btn-ship { background: var(--purple); flex: 3; font-weight: bold; font-size: 16px; }
+        .btn-prnt { background: #fff; color: #000; flex: 1; }
+        .btn-wa { background: #25d366; flex: 1; }
+        .btn-cpy { background: #ff8c00; flex: 1; }
+        .btn-del { background: #d9534f; flex: 1; }
 
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000; }
     </style>
@@ -56,10 +57,10 @@
 <body>
 
 <div id="login-screen">
-    <div style="background:var(--dark); padding:30px; border-radius:20px; border:1px solid var(--gold); text-align:center; width:260px;">
-        <h2 style="color:var(--gold)">НОТЕР</h2>
-        <input type="password" id="passInput" placeholder="كلمة السر" style="width:100%; padding:10px; margin:15px 0; background:#000; border:1px solid #333; color:#fff; text-align:center; border-radius:8px;">
-        <button id="loginBtn" style="background:var(--gold); border:none; padding:10px; width:100%; border-radius:8px; font-weight:bold; cursor:pointer;">دخول</button>
+    <div style="background:var(--dark); padding:30px; border-radius:20px; border:1px solid var(--gold); text-align:center; width:280px;">
+        <h2 style="color:var(--gold)">НОТЕР ADMIN</h2>
+        <input type="password" id="passInput" placeholder="كلمة السر" style="width:100%; padding:12px; margin:15px 0; background:#000; border:1px solid #333; color:#fff; text-align:center; border-radius:10px;">
+        <button id="loginBtn" style="background:var(--gold); border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold; cursor:pointer;">دخول النظام</button>
     </div>
 </div>
 
@@ -80,7 +81,11 @@
     </div>
 
     <div id="vNew">
-        <div class="revenue-box"><h3>إجمالي مبالغ الجديد:</h3><span id="revNew">0</span> ج</div>
+        <div class="revenue-box">
+            <h3>إجمالي مبالغ الجديد</h3>
+            <span id="revNew">0</span>
+            <div style="color:#fff; font-size: 18px; margin-top:5px;">ج</div>
+        </div>
         <div id="listNew"></div>
     </div>
     <div id="vShip" style="display:none;"><div id="listShip"></div></div>
@@ -97,10 +102,11 @@ const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-w
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// دالة حساب الشحن المعتمدة بناءً على الصورة
+// دالة حساب الشحن المعتمدة بناءً على الصورة 1000068086
 function getShipping(city) {
     if (!city) return 70;
-    if (city.includes("القاهرة") || city.includes("الجيزة")) return 50;
+    const c = city.toLowerCase();
+    if (c.includes("القاهرة") || c.includes("الجيزة")) return 50;
     return 70;
 }
 
@@ -119,35 +125,35 @@ function startEngine() {
     });
 
     db.ref('orders').on('value', snap => {
-        let lists = {new: '', ship: '', done: ''}, counts = {n:0, s:0, d:0}, revN = 0;
+        let lists = {new: '', ship: '', done: ''}, counts = {n:0, s:0, d:0}, totalRev = 0;
 
         snap.forEach(child => {
             const o = child.val();
             const id = child.key;
             
-            // إصلاح الحساب: سعر المنتج + سعر الشحن
-            const productPrice = parseInt(o.سعر_المنتج || o.Price || o.السعر || 0);
-            const shippingCost = getShipping(o.المحافظة);
-            const total = productPrice + shippingCost;
+            // إصلاح الحساب: سعر المنتج من الداتابيز + الشحن بناءً على المحافظة
+            const itemPrice = parseInt(o.سعر_المنتج || o.Price || o.السعر || 0);
+            const shipping = getShipping(o.المحافظة);
+            const finalTotal = itemPrice + shipping;
             
             const q = o.الكمية || 1;
             const sz = o.المقاس || 'M';
 
             const card = `
                 <div class="order-card">
-                    <div style="font-size:10px; color:#444; margin-bottom:5px; text-align:left;">${o.التاريخ || ''}</div>
+                    <div class="order-time">${o.التاريخ || ''}</div>
                     <div class="order-header">
-                        <div class="price-text">${total} ج</div>
+                        <div class="price-text">${finalTotal} ج</div>
                         <div class="name-box">${o.الاسم}</div>
                     </div>
                     
-                    <div class="order-details">
-                        <div style="text-align:right;"><span class="qty-badge">${q} علبة - ${sz}</span></div>
-                        <div class="info-row">${o.الهاتف} <i class="fas fa-phone"></i></div>
-                        <div class="info-row">${o.المحافظة} - ${o.العنوان} <i class="fas fa-map-marker-alt"></i></div>
+                    <div class="details-section">
+                        <div style="text-align:right;"><span style="background: #1a1500; color: var(--gold); padding: 6px 15px; border-radius: 8px; font-size: 14px; border: 1px solid #312600; display: inline-block; margin-bottom: 12px;">${q} علبة - مقاس ${sz}</span></div>
+                        <div class="info-item">${o.الهاتف} <i class="fas fa-phone"></i></div>
+                        <div class="info-item">${o.المحافظة} - ${o.العنوان} <i class="fas fa-map-marker-alt"></i></div>
                     </div>
 
-                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${total}" data-qty="${q}" data-addr="${o.العنوان}">
+                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${finalTotal}" data-qty="${q}" data-addr="${o.العنوان}">
                         ${o.الحالة === 'مشحون' ? 
                             `<button class="btn btn-ship" style="background:#0084ff; flex:3;">تم التسليم</button>` : 
                             (o.الحالة === 'تم التسليم' ? `<div style="flex:3; text-align:center; color:var(--green); font-weight:bold;">✅ مستلم</div>` : `<button class="btn btn-ship btn-go-ship">شحن الأوردر</button>`)
@@ -155,13 +161,13 @@ function startEngine() {
                         <button class="btn btn-prnt"><i class="fas fa-print"></i></button>
                         <button class="btn btn-wa"><i class="fab fa-whatsapp"></i></button>
                         <button class="btn btn-cpy"><i class="fas fa-copy"></i></button>
-                        <button class="btn btn-del"><i class="fas fa-times"></i></button>
+                        <button class="btn btn-del"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
 
             if(o.الحالة === 'تم التسليم') { lists.done += card; counts.d++; }
             else if(o.الحالة === 'مشحون') { lists.ship += card; counts.s++; }
-            else { lists.new += card; counts.n++; revN += total; }
+            else { lists.new += card; counts.n++; totalRev += finalTotal; }
         });
 
         document.getElementById('listNew').innerHTML = lists.new;
@@ -170,7 +176,7 @@ function startEngine() {
         document.getElementById('cN').innerText = counts.n;
         document.getElementById('cS').innerText = counts.s;
         document.getElementById('cD').innerText = counts.d;
-        document.getElementById('revNew').innerText = revN;
+        document.getElementById('revNew').innerText = totalRev;
     });
 }
 
@@ -197,7 +203,7 @@ document.addEventListener('click', (e) => {
         if (btn.classList.contains('btn-del') && confirm('حذف؟')) db.ref('orders/' + p.id).remove();
         if (btn.classList.contains('btn-wa')) window.open(`https://wa.me/2${p.phone}`, '_blank');
         if (btn.classList.contains('btn-cpy')) {
-            navigator.clipboard.writeText(`الاسم: ${p.name}\nالهاتف: ${p.phone}\nالمبلغ: ${p.price} ج`).then(() => alert('تم النسخ'));
+            navigator.clipboard.writeText(`الاسم: ${p.name}\nالهاتف: ${p.phone}\nالعنوان: ${p.addr}\nالمبلغ: ${p.price} ج`).then(() => alert('تم النسخ'));
         }
         if (btn.classList.contains('btn-prnt')) {
             const pArea = document.getElementById('print-area');
@@ -209,3 +215,4 @@ document.addEventListener('click', (e) => {
 </script>
 </body>
 </html>
+ 
