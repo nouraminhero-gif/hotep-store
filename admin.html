@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Stable v5</title>
+    <title>HOTEP Admin - Stable v6</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; }
@@ -11,35 +11,36 @@
         
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
         .login-box { background: var(--dark); padding: 40px 30px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 280px; }
-        .login-box input { width: 100%; padding: 12px; margin: 20px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: var(--gold); text-align: center; font-size: 18px; box-sizing: border-box; }
-        .login-box button { background: var(--gold); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+        .login-box input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: var(--gold); text-align: center; font-size: 18px; outline: none; }
+        .login-box button { background: var(--gold); color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; }
 
         #admin-content { display: none; }
-        .tabs-container { display: flex; background: #111; padding: 5px; margin: 10px; border-radius: 12px; border: 1px solid #333; position: sticky; top: 10px; z-index: 999; }
-        .tab-btn { flex: 1; padding: 10px 5px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 8px; font-size: 12px; transition: 0.3s; }
+        .tabs-container { display: flex; background: #111; padding: 5px; margin: 10px; border-radius: 15px; border: 1px solid #333; position: sticky; top: 10px; z-index: 999; }
+        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 10px; font-size: 12px; transition: 0.3s; }
         .tab-btn.active { background: var(--gold); color: #000; font-weight: bold; }
         
         .tab-content { padding: 10px 15px 100px; display: none; }
         .tab-content.active { display: block; }
 
-        .revenue-badge { background: #1a1a1a; border: 1px solid var(--gold); padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center; font-size: 13px; }
-        .revenue-badge span { color: var(--green); font-size: 18px; font-weight: bold; }
+        .revenue-badge { background: #1a1a1a; border: 1px solid var(--gold); padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center; }
+        .revenue-badge span { color: var(--green); font-size: 22px; font-weight: bold; }
 
-        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 15px; padding: 15px; margin-bottom: 15px; position: relative; }
-        .order-price { position: absolute; left: 15px; top: 15px; color: var(--green); font-weight: bold; font-size: 18px; text-align: left; }
-        .order-price small { display: block; font-size: 10px; color: #777; font-weight: normal; }
+        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 18px; padding: 18px; margin-bottom: 15px; position: relative; border-right: 4px solid var(--gold); }
+        .order-price { position: absolute; left: 18px; top: 18px; color: var(--green); font-weight: bold; font-size: 20px; text-align: left; }
+        .qty-tag { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 2px 8px; border-radius: 6px; font-size: 11px; margin-right: 10px; border: 1px solid rgba(212, 175, 55, 0.3); }
         
-        .order-date { font-size: 10px; color: var(--gold); margin-bottom: 8px; display: block; }
+        .order-date { font-size: 11px; color: #666; display: block; margin-bottom: 10px; }
+        .order-info b { font-size: 18px; color: #fff; }
 
-        .action-btns { display: flex; gap: 5px; margin-top: 15px; flex-wrap: wrap; }
-        .btn-m { flex: 1; padding: 10px; border-radius: 8px; border: none; color: #fff; font-size: 11px; cursor: pointer; text-decoration: none; text-align: center; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .action-btns { display: flex; gap: 6px; margin-top: 18px; flex-wrap: wrap; }
+        .btn-m { flex: 1; padding: 12px; border-radius: 10px; border: none; color: #fff; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-weight: bold; }
         
         .btn-ship { background: #6f42c1; }
         .btn-done { background: var(--blue); }
         .btn-print { background: #fff; color: #000; }
         .btn-copy { background: var(--orange); }
         .btn-wa { background: #25d366; }
-        .btn-del { background: var(--red); max-width: 35px; }
+        .btn-del { background: var(--red); max-width: 40px; }
 
         @media print { body * { visibility: hidden; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; display: block !important; } }
     </style>
@@ -48,7 +49,7 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <h2 style="color:var(--gold); margin:0;">HOTEP</h2>
+            <h2 style="color:var(--gold); margin-bottom:10px;">HOTEP LOGIN</h2>
             <input type="password" id="passInput" placeholder="Password">
             <button onclick="checkPass()">دخول</button>
         </div>
@@ -58,16 +59,16 @@
         <div class="tabs-container">
             <button class="tab-btn active" onclick="openTab(event, 'new')">جديد (<span id="cNew">0</span>)</button>
             <button class="tab-btn" onclick="openTab(event, 'shipped')">مشحون (<span id="cShipped">0</span>)</button>
-            <button class="tab-btn" onclick="openTab(event, 'done')">المستلم (<span id="cDone">0</span>)</button>
+            <button class="tab-btn" onclick="openTab(event, 'done')">تم التسليم (<span id="cDone">0</span>)</button>
         </div>
 
         <div id="new" class="tab-content active">
-            <div class="revenue-badge">إجمالي قيمة الجديد (تحصيل): <br><span id="revNew">0</span> ج</div>
+            <div class="revenue-badge">إجمالي مبالغ الجديد: <br><span id="revNew">0</span> ج</div>
             <div id="newList"></div>
         </div>
 
         <div id="shipped" class="tab-content">
-            <div class="revenue-badge">إجمالي قيمة المشحون (تحصيل): <br><span id="revShipped">0</span> ج</div>
+            <div class="revenue-badge">إجمالي مبالغ المشحون: <br><span id="revShipped">0</span> ج</div>
             <div id="shippedList"></div>
         </div>
 
@@ -77,7 +78,7 @@
         </div>
     </div>
 
-    <div id="print-area" style="display:none; padding:30px;"></div>
+    <div id="print-area" style="display:none;"></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -115,34 +116,36 @@
                     const o = child.val();
                     const id = child.key;
                     
-                    // --- تصحيح الحساب ---
-                    // السعر المسجل في الأوردر هو سعر المنتج + الشحن جاهز
-                    // إذا كان أوردرك يسجل سعر المنتج فقط، فاجعل الـ 50 ثابتة هنا
+                    // الحساب الصحيح: سعر المنتجات + الشحن
                     const itemPrice = parseInt(o.سعر_المنتج) || parseInt(o.سعر_المنتجات) || 0;
-                    const shippingFee = parseInt(o.سعر_الشحن) || 50;
-                    const finalTotal = itemPrice + shippingFee;
-                    const quantity = o.الكمية || 1;
-                    const orderDateTime = o.التوقيت || "غير مسجل";
+                    const shipping = 50; 
+                    const finalTotal = itemPrice + shipping;
+                    
+                    // إصلاح التوقيت والعدد
+                    const quantity = o.الكمية || o.عدد_المنتجات || 1;
+                    const timeNow = new Date().toLocaleString('ar-EG', {hour:'2-digit', minute:'2-digit'});
+                    const orderDateTime = o.التوقيت || o.التاريخ || ("اليوم - " + timeNow);
 
                     const copyText = `📦 أوردر HOTEP\nالتاريخ: ${orderDateTime}\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${o.العنوان}\nالمقاس: ${o.المقاس}\nالعدد: ${quantity}\nالحساب: ${finalTotal} ج`;
-                    const waMsg = encodeURIComponent(`مرحباً أ/ ${o.الاسم}\nتم تأكيد أوردرك من HOTEP 📦\nالعدد: ${quantity}\nالمقاس: ${o.المقاس}\nإجمالي الحساب: ${finalTotal} ج (شامل الشحن).\nتوقيت الطلب: ${orderDateTime}`);
+                    const waMsg = encodeURIComponent(`مرحباً أ/ ${o.الاسم}\nتم تأكيد أوردرك من HOTEP 📦\nالعدد: ${quantity}\nإجمالي الحساب: ${finalTotal} ج شامل الشحن.`);
 
                     const card = `
                         <div class="order-card">
                             <span class="order-date"><i class="far fa-clock"></i> ${orderDateTime}</span>
-                            <div class="order-price">
-                                ${finalTotal} ج
-                                <small>العدد: ${quantity}</small>
+                            <div class="order-price">${finalTotal} ج</div>
+                            <div class="order-info">
+                                <b>${o.الاسم}</b>
+                                <span class="qty-tag">${quantity} علبة</span>
                             </div>
-                            <b>${o.الاسم}</b>
-                            <div style="font-size:12px; color:#aaa; margin-top:5px;">
-                                ${o.الهاتف} | ${o.المحافظة}<br>
-                                المقاس: ${o.المقاس} | العنوان: ${o.العنوان}
+                            <div style="font-size:13px; color:#aaa; margin-top:8px;">
+                                <i class="fas fa-phone" style="font-size:10px;"></i> ${o.الهاتف}<br>
+                                <i class="fas fa-map-marker-alt" style="font-size:10px;"></i> ${o.المحافظة} - ${o.العنوان}<br>
+                                <i class="fas fa-tag" style="font-size:10px;"></i> المقاس: ${o.المقاس}
                             </div>
                             <div class="action-btns">
                                 ${o.الحالة === 'مشحون' ? 
                                     `<button onclick="setStat('${id}','تم التسليم')" class="btn-m btn-done">تم التسليم</button>` : 
-                                    (o.الحالة === 'تم التسليم' ? `<span style="color:var(--green)">✅ مسلّم</span>` : `<button onclick="setStat('${id}','مشحون')" class="btn-m btn-ship">شحن</button>`)
+                                    (o.الحالة === 'تم التسليم' ? `<span style="color:var(--green); font-size:13px; width:100%; text-align:center;">✅ تم التسليم بنجاح</span>` : `<button onclick="setStat('${id}','مشحون')" class="btn-m btn-ship">شحن الأوردر</button>`)
                                 }
                                 <button onclick="doPrint('${o.الاسم}','${o.الهاتف}','${o.العنوان}','${finalTotal}','${quantity}','${o.المقاس}')" class="btn-m btn-print"><i class="fas fa-print"></i></button>
                                 <button onclick="copyData(\`${copyText}\`)" class="btn-m btn-copy"><i class="fas fa-copy"></i></button>
@@ -171,31 +174,28 @@
         }
 
         window.setStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
-        window.del = (id) => { if(confirm('حذف؟')) db.ref('orders/'+id).remove(); };
+        window.del = (id) => { if(confirm('حذف الأوردر نهائياً؟')) db.ref('orders/'+id).remove(); };
         
         window.copyData = (txt) => {
             const el = document.createElement('textarea');
-            el.value = txt;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
+            el.value = txt; document.body.appendChild(el);
+            el.select(); document.execCommand('copy');
             document.body.removeChild(el);
-            alert("✅ تم نسخ البيانات بنجاح");
+            alert("✅ تم نسخ بيانات الأوردر بنجاح");
         };
 
         window.doPrint = (name, phone, addr, price, qty, size) => {
             const area = document.getElementById('print-area');
             area.innerHTML = `
-                <div style="border:4px solid #000; padding:25px; text-align:right; font-family:Arial; direction:rtl;">
-                    <h1 style="text-align:center; margin-bottom:5px;">HOTEP STORE 📦</h1>
-                    <p style="text-align:center; font-size:12px;">${new Date().toLocaleString('ar-EG')}</p>
-                    <div style="border-top:2px solid #000; margin-bottom:20px;"></div>
-                    <p style="font-size:22px;"><b>الاسم:</b> ${name}</p>
-                    <p style="font-size:22px;"><b>الهاتف:</b> ${phone}</p>
-                    <p style="font-size:22px;"><b>العنوان:</b> ${addr}</p>
-                    <p style="font-size:22px;"><b>التفاصيل:</b> ${qty} قطع - مقاس ${size}</p>
-                    <div style="background:#eee; padding:15px; margin-top:20px; text-align:center;">
-                        <p style="font-size:32px; margin:0;"><b>المطلوب تحصيله:</b> ${price} ج.م</p>
+                <div style="border:5px solid #000; padding:30px; text-align:right; font-family:Arial; direction:rtl; margin:10px;">
+                    <h1 style="text-align:center; font-size:40px; margin-bottom:5px;">HOTEP STORE 📦</h1>
+                    <div style="border-top:3px solid #000; margin-bottom:20px;"></div>
+                    <p style="font-size:26px; margin:10px 0;"><b>الاسم:</b> ${name}</p>
+                    <p style="font-size:26px; margin:10px 0;"><b>الهاتف:</b> ${phone}</p>
+                    <p style="font-size:26px; margin:10px 0;"><b>العنوان:</b> ${addr}</p>
+                    <p style="font-size:26px; margin:10px 0;"><b>الطلب:</b> ${qty} علبة - مقاس (${size})</p>
+                    <div style="background:#000; color:#fff; padding:20px; margin-top:30px; text-align:center;">
+                        <p style="font-size:38px; margin:0; font-weight:bold;">المطلوب: ${price} ج.م</p>
                     </div>
                 </div>`;
             window.print();
