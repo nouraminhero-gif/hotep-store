@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Fixed Counter</title>
+    <title>HOTEP Admin - Final Fixed</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; }
@@ -27,10 +28,7 @@
         .tab-content { padding: 10px 15px 100px; display: none; }
         .tab-content.active { display: block; }
 
-        .revenue-badge { background: #1a1a1a; border: 1px solid var(--gold); padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center; }
-        .revenue-badge span { color: var(--green); font-size: 24px; font-weight: bold; }
-
-        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 20px; padding: 20px; margin-bottom: 15px; position: relative; border-right: 5px solid var(--gold); overflow: hidden; }
+        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 20px; padding: 20px; margin-bottom: 15px; position: relative; border-right: 5px solid var(--gold); }
         .order-price { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: bold; font-size: 22px; }
         .order-header { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px; width: 70%; }
         .name-tag { background: rgba(255, 255, 255, 0.05); color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 18px; font-weight: bold; border: 1px solid #333; }
@@ -43,8 +41,6 @@
         .btn-print { background: #fff; color: #000; }
         .btn-wa { background: #25d366; text-decoration: none; }
         .btn-del { background: var(--red); max-width: 45px; }
-
-        @media print { body * { visibility: hidden; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; display: block !important; } }
     </style>
 </head>
 <body>
@@ -64,7 +60,7 @@
             <div class="stat-item"><span>XL</span><b id="sXL">0</b></div>
             <div class="stat-item"><span>XXL</span><b id="sXXL">0</b></div>
         </div>
-        <div class="reset-link" onclick="resetCounter()">تصفير سجل المقاسات ↺</div>
+        <div class="reset-link" onclick="resetCounter()">تصفير السجل ↺</div>
 
         <div class="tabs-container">
             <button class="tab-btn active" onclick="openTab(event, 'new')">جديد (<span id="cNew">0</span>)</button>
@@ -72,15 +68,10 @@
             <button class="tab-btn" onclick="openTab(event, 'done')">تم التسليم (<span id="cDone">0</span>)</button>
         </div>
 
-        <div id="new" class="tab-content active">
-            <div class="revenue-badge">إجمالي مبالغ الجديد: <br><span id="revNew">0</span> ج</div>
-            <div id="newList"></div>
-        </div>
+        <div id="new" class="tab-content active"><div id="newList"></div></div>
         <div id="shipped" class="tab-content"><div id="shippedList"></div></div>
         <div id="done" class="tab-content"><div id="doneList"></div></div>
     </div>
-
-    <div id="print-area" style="display:none;"></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -93,7 +84,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 startApp();
-            } else { alert("كلمة السر خاطئة"); }
+            } else { alert("خطأ!"); }
         }
 
         function openTab(evt, name) {
@@ -110,7 +101,6 @@
             if (!firebase.apps.length) firebase.initializeApp(config);
             db = firebase.database();
 
-            // تحديث العداد
             db.ref('stats_counter').on('value', snap => {
                 const d = snap.val() || {M:0, L:0, XL:0, XXL:0};
                 document.getElementById('sM').innerText = d.M || 0;
@@ -122,14 +112,16 @@
             db.ref('orders').on('value', snap => {
                 let html = { new:'', shipped:'', done:'' };
                 let counts = { new:0, shipped:0, done:0 };
-                let revs = { new:0, shipped:0, done:0 };
 
                 snap.forEach(child => {
                     const o = child.val();
                     const id = child.key;
-                    const price = (Number(o.سعر_المنتج) || 0) + 50;
+                    const price = (Number(o.سعر_المنتج) || Number(o.سعر_المنتجات) || 0) + 50;
                     const qty = Number(o.الكمية || o.عدد_المنتجات) || 1;
                     const size = o.المقاس || 'M';
+
+                    // رسالة الواتساب الأصلية المفقودة
+                    const waMsg = encodeURIComponent(`مرحباً أ/ ${o.الاسم}\nتم تأكيد أوردرك من HOTEP 📦\nالعدد: ${qty} علبة\nالمقاس: ${size}\nإجمالي الحساب: ${price} ج شامل الشحن.`);
 
                     const card = `
                         <div class="order-card">
@@ -147,31 +139,30 @@
                                     (o.الحالة === 'تم التسليم' ? `<span style="color:var(--green); width:100%; text-align:center;">✅ مكتمل</span>` : `<button onclick="shipAndCount('${id}','${size}',${qty})" class="btn-m btn-ship">شحن الأوردر</button>`)
                                 }
                                 <button onclick="window.print()" class="btn-m btn-print"><i class="fas fa-print"></i></button>
-                                <a href="https://wa.me/2${o.الهاتف}" target="_blank" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
+                                <a href="https://wa.me/2${o.الهاتف}?text=${waMsg}" target="_blank" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
                                 <button onclick="del('${id}')" class="btn-m btn-del">×</button>
                             </div>
                         </div>`;
 
                     if(o.الحالة === 'تم التسليم') { html.done += card; counts.done++; }
                     else if(o.الحالة === 'مشحون') { html.shipped += card; counts.shipped++; }
-                    else { html.new += card; counts.new++; revs.new += price; }
+                    else { html.new += card; counts.new++; }
                 });
 
                 document.getElementById('newList').innerHTML = html.new;
                 document.getElementById('shippedList').innerHTML = html.shipped;
                 document.getElementById('doneList').innerHTML = html.done;
-                document.getElementById('cNew').innerText = counts.new;
-                document.getElementById('cShipped').innerText = counts.shipped;
-                document.getElementById('cDone').innerText = counts.done;
-                document.getElementById('revNew').innerText = revs.new.toLocaleString();
+                document.getElementById('cNew').innerText = counts.new || 0;
+                document.getElementById('cShipped').innerText = counts.shipped || 0;
+                document.getElementById('cDone').innerText = counts.done || 0;
             });
         }
 
-        // الإصلاح الجوهري هنا لعملية الحساب
+        // الإصلاح النهائي لجمع "الكمية" الفعلية وليس "1" فقط
         window.shipAndCount = (id, size, qty) => {
-            const q = Number(qty) || 1; 
+            const amountToAdd = Number(qty) || 1;
             db.ref('stats_counter/' + size).transaction(currentValue => {
-                return (Number(currentValue) || 0) + q;
+                return (Number(currentValue) || 0) + amountToAdd;
             }, (error, committed) => {
                 if (committed) {
                     db.ref('orders/' + id).update({ الحالة: 'مشحون' });
@@ -185,4 +176,3 @@
     </script>
 </body>
 </html>
-
