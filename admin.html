@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>HOTEP Admin - Fixed UI</title>
+<title>HOTEP Admin</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
 :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #2ecc71; --red: #e74c3c; --orange: #f39c12; --purple: #8e44ad; }
@@ -23,38 +23,38 @@ body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-seri
 .tab-content { padding: 0 15px 100px; display: none; }
 .tab-content.active { display: block; }
 
-/* الكارت المعدل */
-.order-card { background: var(--dark); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #222; position: relative; border-right: 4px solid var(--gold); }
+/* الكارت */
+.order-card { background: var(--dark); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #222; border-right: 4px solid var(--gold); position: relative; }
 
-/* الاسم يمين والسعر يسار */
-.card-top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-.name-text { background: #1a1a1a; color: #fff; padding: 8px 15px; border-radius: 12px; font-size: 20px; font-weight: bold; border: 1px solid #333; order: 2; } /* order 2 يضعه يميناً */
-.order-price { color: var(--green); font-size: 26px; font-weight: bold; order: 1; } /* order 1 يضعه يساراً */
+/* ضبط أماكن الاسم والسعر */
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; direction: ltr; } /* استخدام ltr هنا ليصبح السعر يسار والاسم يمين */
+.order-price { color: var(--green); font-size: 24px; font-weight: bold; text-align: left; }
+.name-tag { background: #1a1a1a; color: #fff; padding: 8px 15px; border-radius: 12px; font-size: 18px; font-weight: bold; border: 1px solid #333; text-align: right; }
 
-.order-info { color: #aaa; font-size: 14px; line-height: 1.8; text-align: right; clear: both; }
-.qty-badge { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 5px 12px; border-radius: 8px; font-size: 13px; display: inline-block; margin: 10px 0; border: 1px solid rgba(212, 175, 55, 0.2); }
+.order-info { text-align: right; color: #aaa; font-size: 14px; line-height: 1.8; margin-top: 10px; }
+.qty-badge { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 4px 10px; border-radius: 8px; font-size: 12px; display: inline-block; border: 1px solid rgba(212, 175, 55, 0.2); }
 
 /* الأزرار */
-.action-grid { display: flex; gap: 8px; margin-top: 15px; }
-.btn-act { flex: 1; height: 45px; border-radius: 10px; border: none; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.btn-ship-large { flex: 3; background: var(--purple); font-size: 16px; font-weight: bold; }
-.btn-del { background: var(--red); max-width: 50px; }
+.action-row { display: flex; gap: 8px; margin-top: 15px; }
+.btn-m { flex: 1; height: 45px; border-radius: 10px; border: none; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.btn-ship { background: var(--purple); flex: 3; font-size: 15px; }
+.btn-done { background: var(--green); flex: 3; font-size: 15px; }
 .btn-copy { background: var(--orange); }
 .btn-wa { background: #25d366; }
 .btn-print { background: #fff; color: #000; }
-.btn-done { background: var(--green); flex: 3; font-size: 16px; font-weight: bold; }
+.btn-del { background: var(--red); max-width: 50px; }
 </style>
 </head>
 <body>
 
-<div id="admin-content" style="display:block;">
+<div id="admin-content">
     <div class="stats-bar">
         <div class="stat-item"><span>M</span><b id="sM">0</b></div>
         <div class="stat-item"><span>L</span><b id="sL">0</b></div>
         <div class="stat-item"><span>XL</span><b id="sXL">0</b></div>
         <div class="stat-item"><span>XXL</span><b id="sXXL">0</b></div>
     </div>
-    <div style="text-align: center; color: #666; font-size: 12px; padding: 5px; cursor: pointer;" onclick="resetCounter()">تصفير السجل ↺</div>
+    <div onclick="resetCounter()" style="text-align:center; color:#555; font-size:12px; padding:8px; cursor:pointer;">تصفير سجل المقاسات ↺</div>
 
     <div class="tabs-container">
         <button class="tab-btn active" onclick="openTab(event, 'new')">جديد</button>
@@ -76,35 +76,43 @@ const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.fir
 if (!firebase.apps.length) firebase.initializeApp(config);
 db = firebase.database();
 
+db.ref('stats_counter').on('value', snap => {
+    const d = snap.val() || {M:0, L:0, XL:0, XXL:0};
+    document.getElementById('sM').innerText = d.M || 0;
+    document.getElementById('sL').innerText = d.L || 0;
+    document.getElementById('sXL').innerText = d.XL || 0;
+    document.getElementById('sXXL').innerText = d.XXL || 0;
+});
+
 db.ref('orders').on('value', snap => {
     let html = { new:'', shipped:'', done:'' };
     snap.forEach(child => {
         const o = child.val();
         const id = child.key;
-        const price = (parseInt(o.سعر_المنتج) || 0) + 50;
+        const price = (parseInt(o.سعر_المنتج) || parseInt(o.سعر_المنتجات) || 0) + 50;
         const qty = o.الكمية || 1;
         const size = o.المقاس || 'M';
 
         const card = `
         <div class="order-card">
-            <div class="card-top-row">
-                <div class="name-text">${o.الاسم}</div>
+            <div class="card-header">
                 <div class="order-price">${price} ج</div>
+                <div class="name-tag">${o.الاسم}</div>
             </div>
             <div class="order-info">
                 <div class="qty-badge">${qty} علبة - مقاس ${size}</div><br>
                 <i class="fas fa-phone"></i> ${o.الهاتف}<br>
                 <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}
             </div>
-            <div class="action-grid">
+            <div class="action-row">
                 ${o.الحالة === 'مشحون' ? 
-                `<button onclick="setStat('${id}','تم التسليم')" class="btn-act btn-done">تم التسليم</button>` : 
-                (o.الحالة === 'تم التسليم' ? `<span style="flex:3; color:var(--green); text-align:center; line-height:45px;">✅ مستلم</span>` : `<button onclick="shipAndCount('${id}','${size}',${qty})" class="btn-act btn-ship-large">شحن الأوردر</button>`)
+                `<button onclick="setStat('${id}','تم التسليم')" class="btn-m btn-done">تم التسليم</button>` : 
+                (o.الحالة === 'تم التسليم' ? `<span style="flex:3; color:var(--green); text-align:center; font-weight:bold; line-height:45px;">✅ مستلم</span>` : `<button onclick="shipAndCount('${id}','${size}',${qty})" class="btn-m btn-ship">شحن الأوردر</button>`)
                 }
-                <button onclick="doPrint()" class="btn-act btn-print"><i class="fas fa-print"></i></button>
-                <button onclick="wa('${o.الهاتف}','${o.الاسم}','${price}')" class="btn-act btn-wa"><i class="fab fa-whatsapp"></i></button>
-                <button onclick="copyData('${o.الاسم}','${price}')" class="btn-act btn-copy"><i class="fas fa-copy"></i></button>
-                <button onclick="del('${id}')" class="btn-act btn-del"><i class="fas fa-times"></i></button>
+                <button onclick="window.print()" class="btn-m btn-print"><i class="fas fa-print"></i></button>
+                <button onclick="wa('${o.الهاتف}','${o.الاسم}','${price}')" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></button>
+                <button onclick="copyData('${o.الاسم}','${price}')" class="btn-m btn-copy"><i class="fas fa-copy"></i></button>
+                <button onclick="del('${id}')" class="btn-m btn-del">×</button>
             </div>
         </div>`;
 
@@ -134,7 +142,8 @@ window.setStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
 window.del = (id) => { if(confirm('حذف؟')) db.ref('orders/'+id).remove(); };
 window.wa = (h, n, p) => window.open(`https://wa.me/2${h}?text=أهلاً أ/ ${n} تم شحن طلبك، الحساب ${p}ج`);
 window.copyData = (n, p) => { navigator.clipboard.writeText(`${n}\n${p}ج`).then(() => alert("تم النسخ")); };
+window.resetCounter = () => { if(confirm('تصفير العداد؟')) db.ref('stats_counter').set({M:0, L:0, XL:0, XXL:0}); };
 </script>
 </body>
 </html>
- 
+
