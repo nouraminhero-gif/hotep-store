@@ -3,44 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>НОТЕР Admin - Final Fix</title>
+    <title>НОТЕР Admin - Final Version</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        .stats-bar { background: #000; padding: 10px; display: flex; justify-content: space-around; border-bottom: 1px solid #222; }
+        
+        /* شريط الإحصائيات العلوي */
+        .stats-bar { background: #000; padding: 15px; display: flex; justify-content: space-around; border-bottom: 1px solid #222; }
+        .stat-item { text-align: center; }
+        .stat-item span { display: block; color: var(--gold); font-size: 11px; margin-bottom: 3px; }
         .stat-item b { font-size: 18px; color: #fff; }
-        .stat-item span { display: block; color: var(--gold); font-size: 10px; }
-        
-        /* زر الريستارت */
-        .reset-link { text-align: center; display: block; color: #d9534f; font-size: 12px; margin: 10px 0; cursor: pointer; text-decoration: underline; font-weight: bold; }
-        
-        .tabs { display: flex; background: #111; margin: 10px; border-radius: 12px; padding: 5px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 8px; font-size: 13px; }
+
+        /* زر التصفير المحدث */
+        .reset-link { text-align: center; padding: 10px; color: #d9534f; font-size: 13px; cursor: pointer; text-decoration: underline; font-weight: bold; display: block; }
+
+        /* التبويبات */
+        .tabs { display: flex; background: #111; margin: 10px; border-radius: 12px; padding: 5px; border: 1px solid #222; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: #888; cursor: pointer; border-radius: 10px; font-size: 14px; }
         .tab-btn.active { background: var(--gold); color: #000; font-weight: bold; }
+
+        /* صناديق الإجمالي */
+        .revenue-box { background: #151515; border: 1px solid var(--gold); margin: 10px; padding: 15px; border-radius: 15px; text-align: center; }
+        .revenue-box h3 { margin: 0; font-size: 15px; color: #ccc; }
+        .revenue-box span { color: var(--green); font-size: 26px; font-weight: bold; display: block; margin-top: 5px; }
+
+        /* كارت الأوردر - التنسيق الفخم */
+        .order-card { background: var(--dark); border-radius: 20px; padding: 15px; margin: 12px; border-right: 4px solid var(--gold); position: relative; }
+        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .price-tag { color: var(--green); font-size: 22px; font-weight: bold; }
+        .name-tag { color: #fff; font-size: 17px; font-weight: bold; background: #1a1a1a; padding: 4px 12px; border-radius: 8px; border: 1px solid #333; }
         
-        .revenue-box { background: #151515; border: 1px solid var(--gold); margin: 10px; padding: 10px; border-radius: 15px; text-align: center; }
-        .revenue-box span { color: var(--green); font-size: 20px; font-weight: bold; }
+        .order-details { margin-bottom: 10px; line-height: 1.6; }
+        .qty-badge { color: var(--gold); font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px; }
+        .detail-text { font-size: 13px; color: #aaa; display: flex; align-items: center; gap: 8px; }
+        .detail-text i { color: var(--gold); width: 14px; }
+
+        /* صف الأزرار */
+        .btns-row { display: flex; gap: 5px; margin-top: 15px; }
+        .btn { height: 42px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; transition: 0.2s; }
         
-        .order-card { background: var(--dark); border-radius: 15px; padding: 15px; margin: 10px; position: relative; border-right: 4px solid var(--gold); }
-        .order-price { position: absolute; left: 15px; bottom: 65px; color: var(--green); font-weight: bold; font-size: 14px; }
-        .order-timestamp { font-size: 10px; color: #555; display: block; text-align: right; margin-bottom: 5px; }
-        .name-tag { background: #1a1a1a; color: #fff; padding: 5px 12px; border-radius: 8px; font-size: 16px; font-weight: bold; border: 1px solid #333; }
-        .qty-tag { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 5px 12px; border-radius: 8px; font-size: 13px; border: 1px solid rgba(212, 175, 55, 0.3); }
-        
-        /* تنسيق الصف الخاص بالأزرار لضمان عدم الاختفاء */
-        .btns-row { display: flex; gap: 4px; margin-top: 12px; height: 38px; flex-wrap: nowrap; }
-        .btn { flex: 1; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; min-width: 35px; }
-        
-        .btn-ship { background: #6f42c1; font-weight: bold; }
-        .btn-wa { background: #25d366; }
-        .btn-cpy { background: #ff8c00; }
-        .btn-prnt { background: #ffffff; color: #000; }
-        .btn-del { background: #d9534f; }
-        
+        .btn-ship-action { background: #6f42c1; flex: 2.5; font-weight: bold; }
+        .btn-wa { background: #25d366; flex: 1; }
+        .btn-cpy { background: #ff8c00; flex: 1; }
+        .btn-prnt { background: #fff; color: #000; flex: 1; }
+        .btn-del { background: #d9534f; flex: 1; }
+
+        .status-done-msg { background: rgba(37, 211, 102, 0.1); color: var(--green); padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; flex: 2.5; border: 1px solid var(--green); }
+
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000; }
-        #print-area { display: none; }
-        @media print { body * { display: none; } #print-area { display: block; color: #000; } }
     </style>
 </head>
 <body>
@@ -48,17 +59,17 @@
 <div id="login-screen">
     <div style="background:var(--dark); padding:30px; border-radius:20px; border:1px solid var(--gold); text-align:center; width:260px;">
         <h2 style="color:var(--gold)">НОТЕР</h2>
-        <input type="password" id="passInput" placeholder="كلمة السر" style="width:100%; padding:10px; margin:15px 0; background:#000; border:1px solid #333; color:#fff; text-align:center;">
+        <input type="password" id="passInput" placeholder="كلمة السر" style="width:100%; padding:10px; margin:15px 0; background:#000; border:1px solid #333; color:#fff; text-align:center; border-radius:8px;">
         <button id="loginBtn" style="background:var(--gold); border:none; padding:10px; width:100%; border-radius:8px; font-weight:bold; cursor:pointer;">دخول</button>
     </div>
 </div>
 
 <div id="app" style="display:none;">
     <div class="stats-bar">
-        <div class="stat-item"><span>XXL</span><b id="sXXL">0</b></div>
-        <div class="stat-item"><span>XL</span><b id="sXL">0</b></div>
-        <div class="stat-item"><span>L</span><b id="sL">0</b></div>
         <div class="stat-item"><span>M</span><b id="sM">0</b></div>
+        <div class="stat-item"><span>L</span><b id="sL">0</b></div>
+        <div class="stat-item"><span>XL</span><b id="sXL">0</b></div>
+        <div class="stat-item"><span>XXL</span><b id="sXXL">0</b></div>
     </div>
     
     <div class="reset-link" id="resetBtn">🔄 تصفير سجل المقاسات</div>
@@ -70,20 +81,20 @@
     </div>
 
     <div id="vNew">
-        <div class="revenue-box">إجمالي الجديد: <span id="revNew">0</span> ج</div>
+        <div class="revenue-box"><h3>إجمالي مبالغ الجديد</h3><span id="revNew">0</span> ج</div>
         <div id="listNew"></div>
     </div>
     <div id="vShip" style="display:none;">
-        <div class="revenue-box">أرباح قيد الشحن: <span id="revShip">0</span> ج</div>
+        <div class="revenue-box"><h3>أرباح قيد الشحن</h3><span id="revShip">0</span> ج</div>
         <div id="listShip"></div>
     </div>
     <div id="vDone" style="display:none;">
-        <div class="revenue-box">أرباح تم استلامها: <span id="revDone">0</span> ج</div>
+        <div class="revenue-box"><h3>أرباح مستلمة</h3><span id="revDone">0</span> ج</div>
         <div id="listDone"></div>
     </div>
 </div>
 
-<div id="print-area"></div>
+<div id="print-area" style="display:none;"></div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -93,18 +104,11 @@ const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-w
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// أسعار الشحن المعتمدة (60 ج كمتوسط وأسعار الأقاليم)
-const shippingRates = {
-    "القاهرة": 60, "الجيزة": 60, "الاسكندرية": 60, "الإسكندرية": 60,
-    "الصعيد": 80, "مطروح": 100, "سيناء": 100
-};
-
+// أسعار الشحن المعتمدة بناءً على الصورة التي أرفقتها
 function getShipCost(city) {
-    if (!city) return 60;
-    for (let key in shippingRates) {
-        if (city.includes(key)) return shippingRates[key];
-    }
-    return 60; // السعر الذي اعتمدته
+    if (!city) return 70;
+    if (city.includes("القاهرة") || city.includes("الجيزة")) return 50;
+    return 70; // الإسكندرية وباقي المحافظات
 }
 
 document.getElementById('loginBtn').addEventListener('click', () => {
@@ -118,10 +122,7 @@ document.getElementById('loginBtn').addEventListener('click', () => {
 function startEngine() {
     db.ref('shipped_stats').on('value', snap => {
         const d = snap.val() || {M:0, L:0, XL:0, XXL:0};
-        ['M','L','XL','XXL'].forEach(s => {
-            const el = document.getElementById('s'+s);
-            if(el) el.innerText = d[s] || 0;
-        });
+        ['M','L','XL','XXL'].forEach(s => document.getElementById('s'+s).innerText = d[s] || 0);
     });
 
     db.ref('orders').on('value', snap => {
@@ -131,34 +132,35 @@ function startEngine() {
             const o = child.val();
             const id = child.key;
             
-            // إصلاح الحسابات البرمجي
-            const itemPrice = parseInt(o.سعر_المنتج || o.Price || o.السعر || 0);
-            const shipCost = getShipCost(o.المحافظة);
-            const finalPrice = itemPrice + shipCost;
-            const q = parseInt(o.الكمية || 1);
+            // الحساب: (سعر المنتج من قاعدة البيانات) + (الشحن المعتمد)
+            const basePrice = parseInt(o.سعر_المنتج || o.Price || o.السعر || 0);
+            const shipping = getShipCost(o.المحافظة);
+            const finalPrice = basePrice + shipping;
+            
+            const q = o.الكمية || 1;
             const sz = o.المقاس || 'M';
 
             const card = `
                 <div class="order-card">
-                    <span class="order-timestamp">${o.التاريخ || ''}</span>
-                    <div class="order-price">${finalPrice} ج</div>
                     <div class="order-header">
-                        <span class="name-tag">${o.الاسم}</span>
-                        <span class="qty-tag">${q} علبة - ${sz}</span>
+                        <div class="price-tag">${finalPrice} ج</div>
+                        <div class="name-tag">${o.الاسم}</div>
                     </div>
-                    <div class="order-info">
-                        <i class="fas fa-phone"></i> ${o.الهاتف}<br>
-                        <i class="fas fa-map-marker-alt"></i> ${o.المحافظة}
+                    <div class="order-details">
+                        <span class="qty-badge">${q} علبة - مقاس ${sz}</span>
+                        <div class="detail-text"><i class="fas fa-phone"></i> ${o.الهاتف}</div>
+                        <div class="detail-text"><i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}</div>
+                        <div style="font-size:10px; color:#444; margin-top:5px;">${o.التاريخ || ''}</div>
                     </div>
-                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${finalPrice}" data-ship="${shipCost}" data-itemprice="${itemPrice}" data-qty="${q}" data-addr="${o.العنوان}">
+                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${finalPrice}" data-ship="${shipping}" data-base="${basePrice}" data-qty="${q}" data-addr="${o.العنوان}">
                         ${o.الحالة === 'مشحون' ? 
-                            `<button class="btn btn-done" style="background:#0084ff; flex:2;">تم التسليم</button>` : 
-                            (o.الحالة === 'تم التسليم' ? `<div style="flex:2; text-align:center; color:var(--green); font-size:12px;">✅ مستلم</div>` : `<button class="btn btn-ship btn-go-ship" style="flex:2;">شحن</button>`)
+                            `<button class="btn btn-done" style="background:#0084ff; flex:2.5;">تم التسليم</button>` : 
+                            (o.الحالة === 'تم التسليم' ? `<div class="status-done-msg">✅ أوردر مستلم</div>` : `<button class="btn btn-ship-action btn-go-ship">شحن الأوردر</button>`)
                         }
-                        <button class="btn btn-prnt"><i class="fas fa-print"></i></button>
                         <button class="btn btn-wa"><i class="fab fa-whatsapp"></i></button>
                         <button class="btn btn-cpy"><i class="fas fa-copy"></i></button>
-                        <button class="btn btn-del"><i class="fas fa-times"></i></button>
+                        <button class="btn btn-prnt"><i class="fas fa-print"></i></button>
+                        <button class="btn btn-del"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
 
@@ -191,9 +193,7 @@ document.addEventListener('click', (e) => {
         tab.classList.add('active');
     }
 
-    if (reset && confirm('تصفير جميع المقاسات؟')) {
-        db.ref('shipped_stats').set({M:0, L:0, XL:0, XXL:0});
-    }
+    if (reset && confirm('تصفير عداد المقاسات؟')) db.ref('shipped_stats').set({M:0, L:0, XL:0, XXL:0});
 
     if (btn) {
         const p = btn.parentElement.dataset;
@@ -204,15 +204,15 @@ document.addEventListener('click', (e) => {
         if (btn.classList.contains('btn-done')) db.ref('orders/' + p.id).update({ الحالة: 'تم التسليم' });
         if (btn.classList.contains('btn-del') && confirm('حذف؟')) db.ref('orders/' + p.id).remove();
         if (btn.classList.contains('btn-wa')) {
-            const m = encodeURIComponent(`مرحباً أ/ ${p.name}\nتم تأكيد أوردرك من НОТЕР 📦\n\nالكمية: ${p.qty} علبة (${p.size})\nالسعر: ${p.itemprice} ج\nالشحن: ${p.ship} ج\nالإجمالي: ${p.price} ج\n\nسيصلك خلال 48 ساعة.`);
-            window.open(`https://wa.me/2${p.phone}?text=${m}`, '_blank');
+            const msg = encodeURIComponent(`مرحباً أ/ ${p.name}\nتم تأكيد أوردرك من НОТЕР 📦\nالحساب: ${p.price} ج (شامل الشحن).\nسيصلك خلال 48 ساعة.`);
+            window.open(`https://wa.me/2${p.phone}?text=${msg}`, '_blank');
         }
         if (btn.classList.contains('btn-cpy')) {
-            const t = `الاسم: ${p.name}\nالهاتف: ${p.phone}\nالعنوان: ${p.addr}\nالمقاس: ${p.size}\nالحساب: ${p.price} ج`;
-            navigator.clipboard.writeText(t).then(() => alert('تم النسخ'));
+            navigator.clipboard.writeText(`الاسم: ${p.name}\nالهاتف: ${p.phone}\nالعنوان: ${p.addr}\nالمبلغ: ${p.price} ج`).then(() => alert('تم النسخ'));
         }
         if (btn.classList.contains('btn-prnt')) {
-            document.getElementById('print-area').innerHTML = `<div style="direction:rtl; padding:40px; font-family:Arial;"><h1>НОТЕР</h1><hr><p>الاسم: ${p.name}</p><p>الهاتف: ${p.phone}</p><p>العنوان: ${p.addr}</p><p>المقاس: ${p.size}</p><h2>المطلوب: ${p.price} ج</h2></div>`;
+            const pArea = document.getElementById('print-area');
+            pArea.innerHTML = `<div style="direction:rtl; padding:30px; color:#000; font-family:Arial;"><h1>НОТЕР</h1><hr><h3>الاسم: ${p.name}</h3><h3>الهاتف: ${p.phone}</h3><h3>المقاس: ${p.size}</h3><h2>المطلوب: ${p.price} ج</h2></div>`;
             window.print();
         }
     }
@@ -221,4 +221,3 @@ document.addEventListener('click', (e) => {
 </body>
 </html>
 
- 
