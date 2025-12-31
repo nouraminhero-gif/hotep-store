@@ -1,46 +1,53 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Stable v6</title>
+    <title>HOTEP Admin - Final UI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
         
-        #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-box { background: var(--dark); padding: 40px 30px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 280px; }
-        .login-box input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: var(--gold); text-align: center; font-size: 18px; outline: none; }
-        .login-box button { background: var(--gold); color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; }
+        /* ضبط شاشة الدخول في المنتصف تماماً */
+        #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
+        .login-box { background: var(--dark); padding: 40px 30px; border-radius: 25px; border: 2px solid var(--gold); text-align: center; width: 100%; max-width: 320px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.15); }
+        .login-box h2 { color: var(--gold); margin-bottom: 25px; letter-spacing: 2px; }
+        .login-box input { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 12px; border: 1px solid #333; background: #000; color: var(--gold); text-align: center; font-size: 18px; outline: none; box-sizing: border-box; }
+        .login-box button { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; transition: 0.3s; }
 
-        #admin-content { display: none; }
-        .tabs-container { display: flex; background: #111; padding: 5px; margin: 10px; border-radius: 15px; border: 1px solid #333; position: sticky; top: 10px; z-index: 999; }
-        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 10px; font-size: 12px; transition: 0.3s; }
+        /* التبويبات */
+        #admin-content { display: none; width: 100%; }
+        .tabs-container { display: flex; background: #111; padding: 5px; margin: 15px; border-radius: 15px; border: 1px solid #333; position: sticky; top: 10px; z-index: 999; }
+        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 10px; font-size: 13px; transition: 0.3s; }
         .tab-btn.active { background: var(--gold); color: #000; font-weight: bold; }
         
         .tab-content { padding: 10px 15px 100px; display: none; }
         .tab-content.active { display: block; }
 
         .revenue-badge { background: #1a1a1a; border: 1px solid var(--gold); padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center; }
-        .revenue-badge span { color: var(--green); font-size: 22px; font-weight: bold; }
+        .revenue-badge span { color: var(--green); font-size: 24px; font-weight: bold; }
 
-        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 18px; padding: 18px; margin-bottom: 15px; position: relative; border-right: 4px solid var(--gold); }
-        .order-price { position: absolute; left: 18px; top: 18px; color: var(--green); font-weight: bold; font-size: 20px; text-align: left; }
-        .qty-tag { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 2px 8px; border-radius: 6px; font-size: 11px; margin-right: 10px; border: 1px solid rgba(212, 175, 55, 0.3); }
+        /* تنسيق الكرت الجديد */
+        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 20px; padding: 20px; margin-bottom: 15px; position: relative; border-right: 5px solid var(--gold); }
+        .order-price { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: bold; font-size: 22px; text-align: left; }
         
-        .order-date { font-size: 11px; color: #666; display: block; margin-bottom: 10px; }
-        .order-info b { font-size: 18px; color: #fff; }
+        .order-header { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .name-tag { background: rgba(255, 255, 255, 0.05); color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 18px; font-weight: bold; border: 1px solid #333; }
+        .qty-tag { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 4px 12px; border-radius: 8px; font-size: 13px; border: 1px solid rgba(212, 175, 55, 0.3); }
+        
+        .order-date { font-size: 11px; color: #666; display: block; margin-bottom: 5px; }
 
-        .action-btns { display: flex; gap: 6px; margin-top: 18px; flex-wrap: wrap; }
-        .btn-m { flex: 1; padding: 12px; border-radius: 10px; border: none; color: #fff; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-weight: bold; }
+        .action-btns { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+        .btn-m { flex: 1; padding: 12px; border-radius: 12px; border: none; color: #fff; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-weight: bold; }
         
         .btn-ship { background: #6f42c1; }
         .btn-done { background: var(--blue); }
         .btn-print { background: #fff; color: #000; }
         .btn-copy { background: var(--orange); }
         .btn-wa { background: #25d366; }
-        .btn-del { background: var(--red); max-width: 40px; }
+        .btn-del { background: var(--red); max-width: 45px; }
 
         @media print { body * { visibility: hidden; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; display: block !important; } }
     </style>
@@ -49,7 +56,7 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <h2 style="color:var(--gold); margin-bottom:10px;">HOTEP LOGIN</h2>
+            <h2>HOTEP LOGIN</h2>
             <input type="password" id="passInput" placeholder="Password">
             <button onclick="checkPass()">دخول</button>
         </div>
@@ -116,12 +123,9 @@
                     const o = child.val();
                     const id = child.key;
                     
-                    // الحساب الصحيح: سعر المنتجات + الشحن
                     const itemPrice = parseInt(o.سعر_المنتج) || parseInt(o.سعر_المنتجات) || 0;
-                    const shipping = 50; 
-                    const finalTotal = itemPrice + shipping;
+                    const finalTotal = itemPrice + 50;
                     
-                    // إصلاح التوقيت والعدد
                     const quantity = o.الكمية || o.عدد_المنتجات || 1;
                     const timeNow = new Date().toLocaleString('ar-EG', {hour:'2-digit', minute:'2-digit'});
                     const orderDateTime = o.التوقيت || o.التاريخ || ("اليوم - " + timeNow);
@@ -133,19 +137,19 @@
                         <div class="order-card">
                             <span class="order-date"><i class="far fa-clock"></i> ${orderDateTime}</span>
                             <div class="order-price">${finalTotal} ج</div>
-                            <div class="order-info">
-                                <b>${o.الاسم}</b>
+                            <div class="order-header">
+                                <span class="name-tag">${o.الاسم}</span>
                                 <span class="qty-tag">${quantity} علبة</span>
                             </div>
-                            <div style="font-size:13px; color:#aaa; margin-top:8px;">
-                                <i class="fas fa-phone" style="font-size:10px;"></i> ${o.الهاتف}<br>
-                                <i class="fas fa-map-marker-alt" style="font-size:10px;"></i> ${o.المحافظة} - ${o.العنوان}<br>
-                                <i class="fas fa-tag" style="font-size:10px;"></i> المقاس: ${o.المقاس}
+                            <div style="font-size:14px; color:#aaa; margin-top:12px; line-height:1.6;">
+                                <i class="fas fa-phone" style="color:var(--gold); width:20px;"></i> ${o.الهاتف}<br>
+                                <i class="fas fa-map-marker-alt" style="color:var(--gold); width:20px;"></i> ${o.المحافظة} - ${o.العنوان}<br>
+                                <i class="fas fa-tshirt" style="color:var(--gold); width:20px;"></i> المقاس: ${o.المقاس}
                             </div>
                             <div class="action-btns">
                                 ${o.الحالة === 'مشحون' ? 
                                     `<button onclick="setStat('${id}','تم التسليم')" class="btn-m btn-done">تم التسليم</button>` : 
-                                    (o.الحالة === 'تم التسليم' ? `<span style="color:var(--green); font-size:13px; width:100%; text-align:center;">✅ تم التسليم بنجاح</span>` : `<button onclick="setStat('${id}','مشحون')" class="btn-m btn-ship">شحن الأوردر</button>`)
+                                    (o.الحالة === 'تم التسليم' ? `<span style="color:var(--green); font-size:14px; width:100%; text-align:center;">✅ أوردر مكتمل</span>` : `<button onclick="setStat('${id}','مشحون')" class="btn-m btn-ship">شحن الأوردر</button>`)
                                 }
                                 <button onclick="doPrint('${o.الاسم}','${o.الهاتف}','${o.العنوان}','${finalTotal}','${quantity}','${o.المقاس}')" class="btn-m btn-print"><i class="fas fa-print"></i></button>
                                 <button onclick="copyData(\`${copyText}\`)" class="btn-m btn-copy"><i class="fas fa-copy"></i></button>
@@ -174,28 +178,28 @@
         }
 
         window.setStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
-        window.del = (id) => { if(confirm('حذف الأوردر نهائياً؟')) db.ref('orders/'+id).remove(); };
+        window.del = (id) => { if(confirm('حذف الأوردر؟')) db.ref('orders/'+id).remove(); };
         
         window.copyData = (txt) => {
             const el = document.createElement('textarea');
             el.value = txt; document.body.appendChild(el);
             el.select(); document.execCommand('copy');
             document.body.removeChild(el);
-            alert("✅ تم نسخ بيانات الأوردر بنجاح");
+            alert("✅ تم نسخ البيانات");
         };
 
         window.doPrint = (name, phone, addr, price, qty, size) => {
             const area = document.getElementById('print-area');
             area.innerHTML = `
-                <div style="border:5px solid #000; padding:30px; text-align:right; font-family:Arial; direction:rtl; margin:10px;">
-                    <h1 style="text-align:center; font-size:40px; margin-bottom:5px;">HOTEP STORE 📦</h1>
-                    <div style="border-top:3px solid #000; margin-bottom:20px;"></div>
-                    <p style="font-size:26px; margin:10px 0;"><b>الاسم:</b> ${name}</p>
-                    <p style="font-size:26px; margin:10px 0;"><b>الهاتف:</b> ${phone}</p>
-                    <p style="font-size:26px; margin:10px 0;"><b>العنوان:</b> ${addr}</p>
-                    <p style="font-size:26px; margin:10px 0;"><b>الطلب:</b> ${qty} علبة - مقاس (${size})</p>
+                <div style="border:5px solid #000; padding:30px; text-align:right; font-family:Arial; direction:rtl;">
+                    <h1 style="text-align:center; font-size:40px;">HOTEP STORE 📦</h1>
+                    <hr style="border:2px solid #000;">
+                    <p style="font-size:26px;"><b>الاسم:</b> ${name}</p>
+                    <p style="font-size:26px;"><b>الهاتف:</b> ${phone}</p>
+                    <p style="font-size:26px;"><b>العنوان:</b> ${addr}</p>
+                    <p style="font-size:26px;"><b>الطلب:</b> ${qty} علبة - مقاس (${size})</p>
                     <div style="background:#000; color:#fff; padding:20px; margin-top:30px; text-align:center;">
-                        <p style="font-size:38px; margin:0; font-weight:bold;">المطلوب: ${price} ج.م</p>
+                        <p style="font-size:38px; margin:0;">المطلوب: ${price} ج.م</p>
                     </div>
                 </div>`;
             window.print();
@@ -203,4 +207,3 @@
     </script>
 </body>
 </html>
-
