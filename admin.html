@@ -3,60 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Professional</title>
+    <title>HOTEP Admin - Master Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <style>
-        :root { --gold: #D4AF37; --black: #000000; --dark: #111111; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; }
+        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --green: #25d366; --blue: #0084ff; --red: #d9534f; --gray: #444; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        
-        /* تصميم واجهة الباسورد المنسقة */
+
+        /* واجهة دخول احترافية */
         #login-screen { position: fixed; inset: 0; background: var(--black); display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-box { width: 320px; text-align: center; padding: 40px 20px; border-radius: 30px; background: #080808; border: 1px solid #1a1a1a; box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
-        .login-box h1 { color: var(--gold); font-size: 40px; margin: 0 0 10px 0; letter-spacing: 4px; font-weight: 800; }
-        .login-box p { color: #555; font-size: 12px; margin-bottom: 30px; text-transform: uppercase; }
-        .login-box input { width: 85%; padding: 15px; border-radius: 15px; border: 1px solid #222; background: #000; color: var(--gold); text-align: center; font-size: 20px; outline: none; transition: 0.3s; }
-        .login-box input:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(212,175,55,0.1); }
-        .login-box button { width: 85%; margin-top: 20px; padding: 15px; border-radius: 15px; border: none; background: var(--gold); color: #000; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; }
-        .login-box button:active { transform: scale(0.96); }
+        .login-box { width: 340px; text-align: center; padding: 50px 20px; border-radius: 40px; background: #050505; border: 1px solid #111; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        .login-box h1 { color: var(--gold); font-size: 45px; margin: 0; letter-spacing: 8px; font-weight: 900; }
+        .login-box p { color: var(--gray); font-size: 10px; letter-spacing: 2px; margin-bottom: 40px; }
+        .login-box input { width: 80%; padding: 18px; border-radius: 15px; border: 1px solid #1a1a1a; background: #000; color: var(--gold); text-align: center; font-size: 22px; outline: none; transition: 0.3s; }
+        .login-box input:focus { border-color: var(--gold); }
+        .login-box button { width: 85%; margin-top: 30px; padding: 16px; border-radius: 15px; border: none; background: var(--gold); color: #000; font-weight: bold; cursor: pointer; font-size: 16px; }
 
-        /* المحتوى الرئيسي */
         #admin-content { display: none; }
-        .sales-info { background: #080808; padding: 20px; display: flex; justify-content: space-around; border-bottom: 1px solid #1a1a1a; }
-        .sales-card span { display: block; font-size: 11px; color: var(--gold); margin-bottom: 5px; opacity: 0.8; }
-        .sales-card b { font-size: 24px; font-weight: 700; }
 
-        .stats-bar { background: #000; padding: 15px; display: flex; justify-content: space-around; }
-        .stat-item span { display: block; color: #444; font-size: 10px; margin-bottom: 3px; }
-        .stat-item b { font-size: 18px; color: #fff; }
+        /* شريط المبيعات والأرباح */
+        .stats-header { background: #050505; padding: 25px 15px; display: flex; justify-content: space-around; border-bottom: 1px solid #111; }
+        .stat-card { text-align: center; }
+        .stat-card span { display: block; font-size: 11px; color: var(--gold); opacity: 0.7; margin-bottom: 5px; }
+        .stat-card b { font-size: 26px; font-weight: bold; color: #fff; }
 
-        /* زر ريسيت المكتشف */
-        .reset-container { text-align: center; padding: 10px; background: #000; }
-        .btn-reset { background: transparent; color: var(--red); border: 1px solid #333; padding: 6px 15px; border-radius: 20px; font-size: 11px; cursor: pointer; transition: 0.3s; }
-        .btn-reset:hover { background: var(--red); color: #fff; }
+        /* شريط المقاسات الصغير */
+        .size-bar { background: #000; padding: 12px; display: flex; justify-content: space-around; border-bottom: 1px solid #111; }
+        .size-item { text-align: center; }
+        .size-item span { display: block; color: var(--gray); font-size: 10px; }
+        .size-item b { font-size: 15px; color: #eee; }
 
-        .search-container { padding: 15px; }
-        #searchInput { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #222; background: #080808; color: #fff; box-sizing: border-box; outline: none; }
+        .search-area { padding: 15px; }
+        #searchInput { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #1a1a1a; background: #050505; color: #fff; outline: none; box-sizing: border-box; }
 
-        .tabs-container { display: flex; background: #080808; margin: 10px 15px; border-radius: 15px; border: 1px solid #1a1a1a; overflow: hidden; }
-        .tab-btn { flex: 1; padding: 14px; border: none; background: transparent; color: #555; cursor: pointer; font-size: 13px; font-weight: 600; }
+        /* نظام التبويبات */
+        .tabs { display: flex; background: #050505; margin: 10px 15px; border-radius: 20px; border: 1px solid #111; overflow: hidden; }
+        .tab-btn { flex: 1; padding: 16px; border: none; background: transparent; color: var(--gray); cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; }
         .tab-btn.active { background: var(--gold); color: #000; }
 
         .tab-content { padding: 15px; display: none; }
         .tab-content.active { display: block; }
 
-        .order-card { background: #080808; border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #1a1a1a; border-right: 5px solid var(--gold); position: relative; }
-        .order-price { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: bold; font-size: 22px; }
-        .name-tag { font-size: 18px; font-weight: bold; margin-bottom: 8px; display: block; }
-        .qty-tag { background: rgba(212,175,55,0.1); color: var(--gold); padding: 4px 10px; border-radius: 8px; font-size: 12px; border: 1px solid rgba(212,175,55,0.3); font-weight: bold; }
-        
-        .action-btns { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
-        .btn-m { flex: 1; min-width: 45px; height: 45px; border-radius: 12px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
-        .btn-ship { background: #6f42c1; font-weight: bold; }
-        .btn-done { background: var(--blue); font-weight: bold; }
+        /* كارت الأوردر المطور */
+        .order-card { background: #050505; border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid #111; border-right: 6px solid var(--gold); position: relative; }
+        .price-badge { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: 800; font-size: 24px; }
+        .order-meta { font-size: 10px; color: #333; margin-bottom: 10px; display: block; }
+        .order-name { font-size: 20px; font-weight: bold; display: block; margin-bottom: 5px; }
+        .order-qty { background: rgba(212,175,55,0.05); color: var(--gold); padding: 5px 12px; border-radius: 10px; font-size: 12px; border: 1px solid rgba(212,175,55,0.1); font-weight: bold; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 25px; flex-wrap: wrap; }
+        .action-btn { flex: 1; height: 48px; border-radius: 14px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; font-weight: 600; }
+        .btn-ship { background: #5533ff; }
+        .btn-done { background: var(--blue); }
         .btn-print { background: #fff; color: #000; }
-        .btn-copy { background: var(--orange); }
         .btn-wa { background: var(--green); }
-        .btn-del { background: #222; flex: 0 0 45px; color: var(--red); }
+        .btn-del { background: #111; flex: 0 0 48px; color: var(--red); }
+
+        .excel-section { padding: 10px 15px; }
+        .btn-excel { width: 100%; padding: 14px; background: #1d6f42; color: #fff; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        .reset-link { text-align: center; display: block; padding: 15px; color: #222; font-size: 11px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -66,42 +72,49 @@
     <div id="login-screen">
         <div class="login-box">
             <h1>HOTEP</h1>
-            <p>Admin Control Panel</p>
-            <input type="password" id="passInput" placeholder="••••••">
-            <button onclick="checkPass()">LOGIN</button>
+            <p>ELITE MANAGEMENT</p>
+            <input type="password" id="passInput" placeholder="••••">
+            <button onclick="checkPass()">ACCESS SYSTEM</button>
         </div>
     </div>
 
     <div id="admin-content">
-        <div class="sales-info">
-            <div class="sales-card"><span>صافي الأرباح</span><b id="totalMoney">0</b></div>
-            <div class="sales-card"><span>إجمالي القطع</span><b id="totalSold">0</b></div>
+        <div class="stats-header">
+            <div class="stat-card"><span>صافي المبيعات</span><b id="totalMoney">0</b></div>
+            <div class="stat-card"><span>إجمالي القطع</span><b id="totalSold">0</b></div>
         </div>
 
-        <div class="stats-bar">
-            <div class="stat-item"><span>M</span><b id="sM">0</b></div>
-            <div class="stat-item"><span>L</span><b id="sL">0</b></div>
-            <div class="stat-item"><span>XL</span><b id="sXL">0</b></div>
-            <div class="stat-item"><span>XXL</span><b id="sXXL">0</b></div>
+        <div class="size-bar">
+            <div class="size-item"><span>M</span><b id="sM">0</b></div>
+            <div class="size-item"><span>L</span><b id="sL">0</b></div>
+            <div class="size-item"><span>XL</span><b id="sXL">0</b></div>
+            <div class="size-item"><span>XXL</span><b id="sXXL">0</b></div>
         </div>
 
-        <div class="reset-container">
-            <button class="btn-reset" onclick="resetCounter()">تصفير سجل المقاسات ↺</button>
+        <div class="search-area">
+            <input type="text" id="searchInput" placeholder="ابحث بالاسم، الهاتف، أو العنوان..." onkeyup="filterOrders()">
         </div>
 
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الهاتف..." onkeyup="filterOrders()">
-        </div>
-
-        <div class="tabs-container">
+        <div class="tabs">
             <button class="tab-btn active" onclick="openTab(event, 'new')">جديد (<span id="cNew">0</span>)</button>
             <button class="tab-btn" onclick="openTab(event, 'shipped')">مشحون (<span id="cShipped">0</span>)</button>
             <button class="tab-btn" onclick="openTab(event, 'done')">مكتمل (<span id="cDone">0</span>)</button>
         </div>
 
         <div id="new" class="tab-content active"><div id="newList"></div></div>
-        <div id="shipped" class="tab-content"><div id="shippedList"></div></div>
+        
+        <div id="shipped" class="tab-content">
+            <div class="excel-section">
+                <button class="btn-excel" onclick="exportExcel()">
+                    <i class="fas fa-file-excel"></i> استخراج شيت الشحن (Excel)
+                </button>
+            </div>
+            <div id="shippedList"></div>
+        </div>
+
         <div id="done" class="tab-content"><div id="doneList"></div></div>
+
+        <span class="reset-link" onclick="resetSizes()">تصفير سجل المقاسات ↺</span>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -109,22 +122,23 @@
 
     <script>
         let db;
-        let lastCount = -1;
+        let lastOrderCount = -1;
+        let shippedArray = [];
 
         function checkPass() {
             if (document.getElementById('passInput').value === "hero1") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 startApp();
-            } else { alert("كلمة السر خاطئة"); }
+            } else { alert("رمز الدخول غير صحيح"); }
         }
 
-        function openTab(evt, name) {
+        function openTab(evt, tabName) {
             let contents = document.getElementsByClassName("tab-content");
             for (let i = 0; i < contents.length; i++) contents[i].style.display = "none";
             let buttons = document.getElementsByClassName("tab-btn");
             for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
-            document.getElementById(name).style.display = "block";
+            document.getElementById(tabName).style.display = "block";
             evt.currentTarget.classList.add("active");
         }
 
@@ -141,87 +155,103 @@
             if (!firebase.apps.length) firebase.initializeApp(config);
             db = firebase.database();
 
+            // تحديث عداد المقاسات
             db.ref('stats_counter').on('value', snap => {
-                const d = snap.val() || {M:0, L:0, XL:0, XXL:0};
-                document.getElementById('sM').innerText = d.M || 0;
-                document.getElementById('sL').innerText = d.L || 0;
-                document.getElementById('sXL').innerText = d.XL || 0;
-                document.getElementById('sXXL').innerText = d.XXL || 0;
+                const s = snap.val() || {M:0, L:0, XL:0, XXL:0};
+                document.getElementById('sM').innerText = s.M || 0;
+                document.getElementById('sL').innerText = s.L || 0;
+                document.getElementById('sXL').innerText = s.XL || 0;
+                document.getElementById('sXXL').innerText = s.XXL || 0;
             });
 
+            // تحديث الأوردرات
             db.ref('orders').on('value', snap => {
                 let html = { new:'', shipped:'', done:'' };
                 let counts = { new:0, shipped:0, done:0 };
-                let totalProfit = 0; let totalSoldItems = 0;
+                let totalProfit = 0; let totalItems = 0;
+                shippedArray = [];
 
-                if (lastCount !== -1 && snap.numChildren() > lastCount) {
+                if (lastOrderCount !== -1 && snap.numChildren() > lastOrderCount) {
                     document.getElementById('notifSound').play();
                 }
-                lastCount = snap.numChildren();
+                lastOrderCount = snap.numChildren();
 
                 snap.forEach(child => {
                     const o = child.val();
                     const id = child.key;
-                    let qty = parseInt(String(o.الكمية || o.عدد_المنتجات || "1").replace(/[^0-9]/g, '')) || 1;
-                    let gov = String(o.المحافظة || "");
+
+                    // معالجة ذكية للكمية (إزالة أي نص وإبقاء الأرقام فقط)
+                    let q = parseInt(String(o.الكمية || "1").replace(/[^0-9]/g, '')) || 1;
+                    let gov = o.المحافظة || "";
                     let shipping = (gov.includes("قاهرة") || gov.includes("جيزة")) ? 50 : 70;
-                    let priceWithShipping = (qty * 200) + shipping;
+                    let fullPrice = (q * 200) + shipping;
+                    let time = o.التوقيت || new Date().toLocaleString('ar-EG', {hour12: true});
 
                     if(o.الحالة === 'تم التسليم') {
-                        totalProfit += (qty * 200);
-                        totalSoldItems += qty;
+                        totalProfit += (q * 200);
+                        totalItems += q;
                     }
-
-                    // رسالة الواتساب المليئة بالبيانات
-                    const waText = `أهلاً أ/ ${o.الاسم}، تم تأكيد أوردرك من HOTEP ✅\n\nالعدد: ${qty} علبة\nالمقاس: ${o.المقاس || 'M'}\nالحساب: ${priceWithShipping} ج (شامل الشحن)\n\nشكراً لثقتك بنا!`;
-                    const fullCopy = `HOTEP\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${gov} - ${o.العنوان}\nالعدد: ${qty}\nالحساب: ${priceWithShipping}ج`;
 
                     const card = `
                         <div class="order-card">
-                            <div class="order-price">${priceWithShipping}ج</div>
-                            <span class="name-tag">${o.الاسم}</span>
-                            <span class="qty-tag">${qty} علبة - ${o.المقاس || 'M'}</span>
-                            <div style="font-size:12px; color:#666; margin-top:12px; line-height:1.6">
+                            <span class="order-meta"><i class="far fa-clock"></i> ${time}</span>
+                            <div class="price-badge">${fullPrice}ج</div>
+                            <span class="order-name">${o.الاسم}</span>
+                            <span class="order-qty">${q} قطعة - ${o.المقاس || 'M'}</span>
+                            <div style="font-size:13px; color:#555; margin-top:15px; line-height:1.6">
                                 <i class="fas fa-phone"></i> ${o.الهاتف}<br>
                                 <i class="fas fa-map-marker-alt"></i> ${gov} - ${o.العنوان}
                             </div>
-                            <div class="action-btns">
+                            <div class="btn-group">
                                 ${o.الحالة === 'مشحون' ? 
-                                    `<button onclick="setStat('${id}','تم التسليم')" class="btn-m btn-done">تم التسليم</button>` : 
-                                    (o.الحالة === 'تم التسليم' ? `<span style="width:100%;text-align:center;color:var(--green)">✅ مكتمل</span>` : `<button onclick="shipAndCount('${id}','${o.المقاس}',${qty})" class="btn-m btn-ship">شحن الأوردر</button>`)
+                                    `<button onclick="updateStatus('${id}','تم التسليم')" class="action-btn btn-done">تم التسليم</button>` : 
+                                    (o.الحالة === 'تم التسليم' ? `<span style="width:100%; text-align:center; color:var(--green); font-weight:bold;">✅ أوردر مكتمل</span>` : `<button onclick="shipOrder('${id}','${o.المقاس}',${q})" class="action-btn btn-ship">شحن الأوردر</button>`)
                                 }
-                                <button onclick="window.print()" class="btn-m btn-print"><i class="fas fa-print"></i></button>
-                                <button onclick="copyText(\`${fullCopy}\`)" class="btn-m btn-copy"><i class="fas fa-copy"></i></button>
-                                <a href="https://wa.me/2${o.الهاتف}?text=${encodeURIComponent(waText)}" target="_blank" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
-                                <button onclick="del('${id}')" class="btn-m btn-del"><i class="fas fa-trash"></i></button>
+                                <button onclick="window.print()" class="action-btn btn-print"><i class="fas fa-print"></i></button>
+                                <a href="https://wa.me/2${o.الهاتف}?text=${encodeURIComponent('تم شحن طلبك من HOTEP ✅\nالعدد: '+q+'\nالحساب: '+fullPrice)}" target="_blank" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
+                                <button onclick="deleteOrder('${id}')" class="action-btn btn-del">×</button>
                             </div>
                         </div>`;
 
-                    if(o.الحالة === 'تم التسليم') { html.done += card; counts.done++; }
-                    else if(o.الحالة === 'مشحون') { html.shipped += card; counts.shipped++; }
+                    if(o.الحالة === 'مشحون') { 
+                        html.shipped += card; counts.shipped++; 
+                        shippedArray.push({"الاسم":o.الاسم, "الهاتف":o.الهاتف, "المحافظة":gov, "العنوان":o.العنوان, "الكمية":q, "المقاس":o.المقاس, "الحساب":fullPrice});
+                    }
+                    else if(o.الحالة === 'تم التسليم') { html.done += card; counts.done++; }
                     else { html.new += card; counts.new++; }
                 });
 
-                document.getElementById('newList').innerHTML = html.new || '<p style="text-align:center;color:#333">لا يوجد أوردرات جديدة</p>';
+                document.getElementById('newList').innerHTML = html.new;
                 document.getElementById('shippedList').innerHTML = html.shipped;
                 document.getElementById('doneList').innerHTML = html.done;
                 document.getElementById('totalMoney').innerText = totalProfit.toLocaleString();
-                document.getElementById('totalSold').innerText = totalSoldItems;
+                document.getElementById('totalSold').innerText = totalItems;
                 document.getElementById('cNew').innerText = counts.new;
                 document.getElementById('cShipped').innerText = counts.shipped;
                 document.getElementById('cDone').innerText = counts.done;
             });
         }
 
-        window.shipAndCount = (id, size, q) => {
-            db.ref('stats_counter/' + (size || 'M')).transaction(c => (Number(c) || 0) + Number(q));
+        window.shipOrder = (id, size, qty) => {
+            // تحديث عداد المقاسات عند الشحن فقط
+            db.ref('stats_counter/' + (size || 'M')).transaction(current => (Number(current) || 0) + Number(qty));
             db.ref('orders/' + id).update({ الحالة: 'مشحون' });
         };
-        window.setStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
-        window.del = (id) => { if(confirm('حذف نهائي؟')) db.ref('orders/'+id).remove(); };
-        window.copyText = (t) => { navigator.clipboard.writeText(t); alert("تم النسخ!"); };
-        window.resetCounter = () => { if(confirm('تصفير عداد المقاسات؟')) db.ref('stats_counter').set({M:0, L:0, XL:0, XXL:0}); };
+
+        window.updateStatus = (id, status) => db.ref('orders/' + id).update({ الحالة: status });
+        
+        window.deleteOrder = (id) => { if(confirm('هل أنت متأكد من حذف الأوردر نهائياً؟')) db.ref('orders/' + id).remove(); };
+
+        window.resetSizes = () => { if(confirm('هل تريد تصفير سجل المقاسات بالكامل؟')) db.ref('stats_counter').set({M:0, L:0, XL:0, XXL:0}); };
+
+        function exportExcel() {
+            if(shippedArray.length === 0) return alert("لا توجد أوردرات مشحونة حالياً");
+            const worksheet = XLSX.utils.json_to_sheet(shippedArray);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Shipped");
+            XLSX.writeFile(workbook, `Hotep_Shipped_${new Date().toLocaleDateString()}.xlsx`);
+        }
     </script>
 </body>
 </html>
-
+ 
