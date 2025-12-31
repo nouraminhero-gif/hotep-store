@@ -1,184 +1,211 @@
-
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP Admin | Time & Bill Share</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#050505">
+    <title>HOTEP Admin App</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --orange: #ff8c00; --red: #d9534f; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; font-size: 13px; }
-        .top-nav { background: var(--dark); padding: 10px 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
-        .top-nav h1 { color: var(--gold); margin: 0; font-size: 18px; }
         
-        .inventory-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px; background: #111; margin: 10px; border-radius: 10px; border: 1px solid #333; }
-        .inv-item { text-align: center; background: #000; padding: 8px; border-radius: 6px; border: 1px solid #222; }
-        .inv-item label { display: block; font-size: 11px; color: var(--gold); }
-        .inv-item input { background: transparent; border: none; color: #fff; width: 100%; text-align: center; font-size: 15px; font-weight: bold; outline: none; }
+        /* جعل التطبيق يملأ شاشة الهاتف بالكامل */
+        body { 
+            background: var(--black); 
+            color: #fff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            font-size: 14px;
+            user-select: none; /* منع تحديد النصوص ليشبه التطبيقات */
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        .stats-container { display: flex; gap: 8px; padding: 0 10px 10px; }
-        .stat-card { background: var(--dark); border: 1px solid #333; padding: 10px; border-radius: 8px; flex: 1; text-align: center; position: relative; }
-        .stat-card span { display: block; font-size: 14px; font-weight: bold; color: var(--gold); }
-        .btn-reset { background: none; border: none; color: #666; cursor: pointer; position: absolute; top: 5px; left: 5px; }
+        /* شاشة تسجيل الدخول الاحترافية */
+        #login-screen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle, #1a1a1a 0%, #050505 100%); 
+            display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; z-index: 1000; 
+        }
+        .login-box { 
+            background: var(--dark); padding: 40px 25px; border-radius: 20px; 
+            border: 1px solid var(--gold); text-align: center; width: 85%; max-width: 320px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .login-box h2 { color: var(--gold); margin-bottom: 25px; letter-spacing: 2px; }
+        .login-box input { 
+            width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 10px; 
+            border: 1px solid #333; background: #000; color: var(--gold); 
+            text-align: center; font-size: 18px; box-sizing: border-box;
+        }
+        .login-box button { 
+            background: var(--gold); color: #000; border: none; padding: 15px; 
+            border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px;
+        }
 
-        .table-container { margin: 0 10px 10px; background: var(--dark); border-radius: 12px; border: 1px solid #333; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
-        th { background: #1a1a1a; color: var(--gold); padding: 10px; font-size: 11px; }
-        td { padding: 10px; border-bottom: 1px solid #222; text-align: center; transition: 0.3s; }
+        #admin-content { display: none; padding-bottom: 20px; }
+
+        .top-nav { 
+            background: var(--dark); padding: 15px; border-bottom: 2px solid var(--gold); 
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .top-nav h1 { color: var(--gold); margin: 0; font-size: 20px; }
+
+        .inventory-bar { 
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; 
+            padding: 15px; background: #111; margin: 10px; border-radius: 15px; border: 1px solid #333; 
+        }
+        .inv-item { text-align: center; background: #000; padding: 10px 5px; border-radius: 10px; border: 1px solid #222; }
+        .inv-item label { display: block; font-size: 10px; color: var(--gold); margin-bottom: 5px; }
+        .inv-item input { background: transparent; border: none; color: #fff; width: 100%; text-align: center; font-size: 18px; font-weight: bold; outline: none; }
+
+        .stats-container { display: flex; gap: 10px; padding: 0 10px 10px; }
+        .stat-card { 
+            background: var(--dark); border: 1px solid #333; padding: 15px; 
+            border-radius: 15px; flex: 1; text-align: center; position: relative; 
+        }
+        .stat-card span:first-child { display: block; font-size: 11px; color: #888; margin-bottom: 5px; }
+        .stat-card span:last-child { display: block; font-size: 18px; font-weight: bold; color: var(--gold); }
+
+        .table-container { margin: 10px; background: var(--dark); border-radius: 15px; border: 1px solid #333; overflow: hidden; }
+        .order-card { 
+            padding: 15px; border-bottom: 1px solid #222; position: relative;
+        }
+        .order-card:last-child { border-bottom: none; }
+        .order-info b { color: var(--gold); font-size: 16px; }
+        .order-details { font-size: 12px; color: #aaa; margin-top: 5px; line-height: 1.6; }
+        .order-price { position: absolute; left: 15px; top: 15px; color: var(--green); font-weight: bold; font-size: 16px; }
         
-        .row-shipped { background-color: rgba(37, 211, 102, 0.1) !important; }
-        .time-cell { font-size: 10px; color: #888; }
-
-        .btn-m { width: 32px; height: 32px; border-radius: 8px; border: none; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
-        .btn-shipped { background: var(--green); }
+        .action-btns { display: flex; gap: 10px; margin-top: 15px; justify-content: flex-start; }
+        .btn-m { 
+            padding: 10px 15px; border-radius: 8px; border: none; color: #fff; 
+            cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 13px;
+        }
         .btn-delivered { background: var(--blue); }
-        .btn-wa { background: #075e54; }
+        .btn-wa { background: #075e54; text-decoration: none; }
         .btn-share { background: var(--orange); }
-        .btn-del { background: var(--red); }
+        .btn-del { background: var(--red); margin-right: auto; }
     </style>
 </head>
 <body>
 
-    <nav class="top-nav"><h1>HOTEP ADMIN <small id="clock" style="font-size: 10px; color: #666;"></small></h1></nav>
-
-    <div class="inventory-bar">
-        <div class="inv-item"><label>M</label><input type="number" id="inv-M" onchange="updateStock('M', this.value)"></div>
-        <div class="inv-item"><label>L</label><input type="number" id="inv-L" onchange="updateStock('L', this.value)"></div>
-        <div class="inv-item"><label>XL</label><input type="number" id="inv-XL" onchange="updateStock('XL', this.value)"></div>
-        <div class="inv-item"><label>XXL</label><input type="number" id="inv-XXL" onchange="updateStock('XXL', this.value)"></div>
-    </div>
-
-    <div class="stats-container">
-        <div class="stat-card"><span>أوردرات نشطة</span><span id="sActive">0</span></div>
-        <div class="stat-card"><span>تم التسليم</span><span id="sDone">0</span></div>
-        <div class="stat-card">
-            <button class="btn-reset" onclick="resetProfits()"><i class="fas fa-sync-alt"></i></button>
-            <span>إجمالي التحصيل</span>
-            <span id="sMoney">0 ج</span>
+    <div id="login-screen">
+        <div class="login-box">
+            <i class="fas fa-user-shield" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
+            <h2>HOTEP ADMIN</h2>
+            <input type="password" id="passInput" placeholder="كلمة السر" autofocus>
+            <button onclick="checkPass()">دخول النظام</button>
+            <p id="err" style="color:var(--red); font-size:12px; margin-top:15px; display:none;">خطأ! حاول مرة أخرى</p>
         </div>
     </div>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>الوقت</th>
-                    <th>العميل</th>
-                    <th>العنوان</th>
-                    <th>الطلب</th>
-                    <th>الحساب</th>
-                    <th>تحكم</th>
-                </tr>
-            </thead>
-            <tbody id="ordersBody"></tbody>
-        </table>
+    <div id="admin-content">
+        <nav class="top-nav">
+            <h1>HOTEP <small style="font-size: 12px; opacity: 0.6;">CONTROL</small></h1>
+            <div id="clock" style="font-size: 12px; color: var(--gold);"></div>
+        </nav>
+
+        <div class="inventory-bar">
+            <div class="inv-item"><label>M</label><input type="number" id="inv-M" onchange="updateStock('M', this.value)"></div>
+            <div class="inv-item"><label>L</label><input type="number" id="inv-L" onchange="updateStock('L', this.value)"></div>
+            <div class="inv-item"><label>XL</label><input type="number" id="inv-XL" onchange="updateStock('XL', this.value)"></div>
+            <div class="inv-item"><label>XXL</label><input type="number" id="inv-XXL" onchange="updateStock('XXL', this.value)"></div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card"><span>نشط</span><span id="sActive">0</span></div>
+            <div class="stat-card"><span>تم</span><span id="sDone">0</span></div>
+            <div class="stat-card">
+                <span id="sMoney">0 ج</span>
+                <span>التحصيل</span>
+            </div>
+        </div>
+
+        <div id="ordersList" style="margin-bottom: 80px;">
+            </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        function checkPass() {
+            if (document.getElementById('passInput').value === "hero1") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                startApp();
+            } else {
+                document.getElementById('err').style.display = 'block';
+            }
+        }
 
-        const shippingCost = 50; // سعر الشحن الافتراضي
+        function startApp() {
+            const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+            if (!firebase.apps.length) firebase.initializeApp(config);
+            const db = firebase.database();
 
-        // تحديث المخزن
-        db.ref('inventory').on('value', s => {
-            const data = s.val() || {};
-            ['M','L','XL','XXL'].forEach(sz => { if(document.getElementById('inv-'+sz)) document.getElementById('inv-'+sz).value = data[sz] || 0; });
-        });
-        function updateStock(sz, v) { db.ref('inventory/'+sz).set(parseInt(v)||0); }
+            db.ref('inventory').on('value', s => {
+                const d = s.val() || {};
+                ['M','L','XL','XXL'].forEach(z => { if(document.getElementById('inv-'+z)) document.getElementById('inv-'+z).value = d[z] || 0; });
+            });
 
-        // مزامنة الطلبات
-        db.ref('orders').on('value', (snap) => {
-            const tbody = document.getElementById('ordersBody');
-            tbody.innerHTML = '';
-            let s = { active: 0, done: 0, money: 0 };
+            db.ref('orders').on('value', (snap) => {
+                const list = document.getElementById('ordersList');
+                list.innerHTML = '';
+                let s = { active: 0, done: 0, money: 0 };
 
-            snap.forEach((child) => {
-                const o = child.val();
-                const id = child.key;
-                const price = parseInt(o.الاجمالي) || parseInt(o.سعر_المنتجات) || parseInt(o.الحساب) || 0;
-                const status = o.الحالة || o.الحاله || 'جديد';
-                const totalWithShip = price + shippingCost;
+                snap.forEach((child) => {
+                    const o = child.val();
+                    const id = child.key;
+                    const price = parseInt(o.الاجمالي) || parseInt(o.سعر_المنتجات) || 0;
+                    if (o.الحالة === 'تم التسليم') { s.done++; s.money += price; return; }
+                    s.active++;
 
-                if (status === 'تم التسليم') {
-                    s.done++; s.money += price; return;
-                }
-
-                s.active++;
-                
-                // تنسيق الوقت
-                const orderTime = o.التوقيت || o.التاريخ || "غير مسجل";
-
-                // تجهيز نص البوليصة للمشاركة
-                const billText = `📦 بوليصة شحن HOTEP\n----------------\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالمحافظة: ${o.المحافظة}\nالعنوان: ${o.العنوان}\nالطلب: ${o.الكمية} (مقاس ${o.المقاس})\n----------------\nالحساب: ${price} + ${shippingCost} شحن\nالإجمالي: ${totalWithShip} ج`;
-
-                const waText = `✅ تأكيد أوردر HOTEP\nأستاذ ${o.الاسم}، طلبك مقاس ${o.المقاس} جاهز.\nالإجمالي: ${totalWithShip} ج شامل الشحن.`;
-                const waLink = `https://wa.me/2${o.الهاتف}?text=${encodeURIComponent(waText)}`;
-
-                const rowClass = (status === 'تم الشحن') ? 'row-shipped' : '';
-
-                const row = `
-                    <tr class="${rowClass}">
-                        <td class="time-cell">${orderTime}</td>
-                        <td style="text-align:right"><b>${o.الاسم}</b><br><small>${o.الهاتف}</small></td>
-                        <td style="text-align:right"><b>${o.المحافظة}</b><br><small>${o.العنوان}</small></td>
-                        <td><b>${o.المقاس}</b><br><small>كمية: ${o.الكمية}</small></td>
-                        <td style="color:var(--green); font-weight:bold">${price} ج</td>
-                        <td>
-                            <div style="display:flex; gap:3px; justify-content:center">
-                                <button onclick="shipOrder('${id}', '${o.المقاس}', '${o.الكمية}', '${status}')" class="btn-m btn-shipped" title="شحن"><i class="fas fa-truck"></i></button>
-                                <button onclick="setDone('${id}')" class="btn-m btn-delivered" title="تسليم"><i class="fas fa-check-double"></i></button>
-                                <button onclick="copyBill(\`${billText}\`)" class="btn-m btn-share" title="نسخ البوليصة"><i class="fas fa-copy"></i></button>
-                                <a href="${waLink}" target="_blank" class="btn-m btn-wa" title="واتساب"><i class="fab fa-whatsapp"></i></a>
-                                <button onclick="delO('${id}')" class="btn-m btn-del" title="حذف"><i class="fas fa-trash"></i></button>
+                    const bill = `📦 بوليصة HOTEP\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${o.العنوان}\nالمقاس: ${o.المقاس}\nالحساب: ${price + 50} ج`;
+                    
+                    const card = `
+                        <div class="table-container">
+                            <div class="order-card">
+                                <div class="order-price">${price} ج</div>
+                                <div class="order-info"><b>${o.الاسم}</b></div>
+                                <div class="order-details">
+                                    <i class="fas fa-phone"></i> ${o.الهاتف}<br>
+                                    <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}<br>
+                                    <i class="fas fa-tshirt"></i> المقاس: ${o.المقاس} | الكمية: ${o.الكمية || 1}<br>
+                                    <small style="color:#555">${o.التوقيت || ''}</small>
+                                </div>
+                                <div class="action-btns">
+                                    <button onclick="setDone('${id}')" class="btn-m btn-delivered"><i class="fas fa-check"></i> تسليم</button>
+                                    <button onclick="copyBill(\`${bill}\`)" class="btn-m btn-share"><i class="fas fa-copy"></i> بوليصة</button>
+                                    <a href="https://wa.me/2${o.الهاتف}" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
+                                    <button onclick="delO('${id}')" class="btn-m btn-del"><i class="fas fa-trash"></i></button>
+                                </div>
                             </div>
-                        </td>
-                    </tr>`;
-                tbody.insertAdjacentHTML('afterbegin', row);
-            });
-            document.getElementById('sActive').innerText = s.active;
-            document.getElementById('sDone').innerText = s.done;
-            document.getElementById('sMoney').innerText = s.money + " ج";
-        });
-
-        // وظيفة نسخ البوليصة
-        function copyBill(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("✅ تم نسخ بيانات البوليصة بنجاح");
+                        </div>`;
+                    list.insertAdjacentHTML('afterbegin', card);
+                });
+                document.getElementById('sActive').innerText = s.active;
+                document.getElementById('sDone').innerText = s.done;
+                document.getElementById('sMoney').innerText = s.money + " ج";
             });
         }
 
-        function shipOrder(id, sz, q, st) {
-            if (st === 'تم الشحن') return;
-            if(confirm('شحن الطلب وخصم المخزن؟')) {
-                const qty = parseInt(q.replace(/[^0-9]/g, '')) || 1;
-                db.ref('orders/'+id).update({ الحالة: 'تم الشحن' }).then(() => {
-                    const ref = db.ref('inventory/'+sz);
-                    ref.once('value', s => { ref.set(Math.max(0, (parseInt(s.val())||0)-qty)); });
-                });
-            }
-        }
-
-        function resetProfits() {
-            if(confirm('تصفير الأرباح؟ (سيتم حذف الطلبات المسلمة فقط)')) {
-                db.ref('orders').once('value', snap => {
-                    snap.forEach(child => { if(child.val().الحالة === 'تم التسليم') db.ref('orders/'+child.key).remove(); });
-                });
-            }
-        }
-        function setDone(id) { if(confirm('تم التسليم نهائياً؟')) db.ref('orders/'+id).update({ الحالة: 'تم التسليم' }); }
-        function delO(id) { if(confirm('حذف؟')) db.ref('orders/'+id).remove(); }
+        function copyBill(t) { navigator.clipboard.writeText(t).then(() => alert("✅ تم نسخ البوليصة")); }
+        function updateStock(s, v) { firebase.database().ref('inventory/'+s).set(parseInt(v)||0); }
+        function setDone(id) { if(confirm('تأكيد التسليم؟')) firebase.database().ref('orders/'+id).update({ الحالة: 'تم التسليم' }); }
+        function delO(id) { if(confirm('حذف الأوردر؟')) firebase.database().ref('orders/'+id).remove(); }
         
-        // ساعة لوحة التحكم
         setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('ar-EG');
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
         }, 1000);
     </script>
 </body>
 </html>
+ 
