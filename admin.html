@@ -1,44 +1,44 @@
-
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#050505">
     <title>HOTEP Admin App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --orange: #ff8c00; --red: #d9534f; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; font-size: 14px; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
-        .login-box { background: var(--dark); padding: 40px 25px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 85%; max-width: 320px; }
-        .login-box input { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #333; background: #000; color: var(--gold); text-align: center; font-size: 18px; }
-        .login-box button { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; }
+        /* إصلاح واجهة تسجيل الدخول */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .login-box { background: var(--dark); padding: 30px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 80%; max-width: 300px; }
+        .login-box h2 { color: var(--gold); margin-bottom: 20px; }
+        .login-box input { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 18px; box-sizing: border-box; }
+        .login-box button { background: var(--gold); color: #000; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
 
-        #admin-content { display: none; }
-        .top-nav { background: var(--dark); padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        /* محتوى الإدارة */
+        #admin-content { display: none; padding: 15px; }
+        .top-nav { background: var(--dark); padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; margin: -15px -15px 15px -15px; }
         .top-nav h1 { color: var(--gold); margin: 0; font-size: 20px; }
 
-        .inventory-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 15px; background: #111; margin: 10px; border-radius: 15px; border: 1px solid #333; }
-        .inv-item { text-align: center; background: #000; padding: 10px 5px; border-radius: 10px; border: 1px solid #222; }
+        .inventory-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #111; padding: 10px; border-radius: 12px; border: 1px solid #333; margin-bottom: 15px; }
+        .inv-item { text-align: center; }
         .inv-item label { display: block; font-size: 10px; color: var(--gold); }
-        .inv-item input { background: transparent; border: none; color: #fff; width: 100%; text-align: center; font-size: 18px; font-weight: bold; outline: none; }
+        .inv-item input { background: transparent; border: none; color: #fff; width: 100%; text-align: center; font-size: 16px; font-weight: bold; outline: none; }
 
-        .stats-container { display: flex; gap: 10px; padding: 0 10px 10px; }
-        .stat-card { background: var(--dark); border: 1px solid #333; padding: 15px; border-radius: 15px; flex: 1; text-align: center; }
-        .stat-card span { display: block; font-size: 18px; font-weight: bold; color: var(--gold); }
+        .stat-card { background: var(--dark); border: 1px solid #333; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 10px; }
+        .stat-card span { display: block; font-size: 20px; font-weight: bold; color: var(--gold); }
 
-        .order-card { background: var(--dark); margin: 10px; border-radius: 15px; border: 1px solid #333; padding: 15px; position: relative; }
+        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 15px; padding: 15px; margin-bottom: 15px; position: relative; }
         .order-price { position: absolute; left: 15px; top: 15px; color: var(--green); font-weight: bold; font-size: 18px; }
         .order-info b { color: var(--gold); font-size: 17px; }
-        .order-details { font-size: 13px; color: #aaa; margin: 10px 0; line-height: 1.6; }
+        .order-details { font-size: 13px; color: #aaa; margin: 10px 0; line-height: 1.5; }
         
-        .action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
-        .btn-m { padding: 10px 12px; border-radius: 8px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 12px; }
+        .action-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .btn-m { padding: 8px 12px; border-radius: 6px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 12px; text-decoration: none; }
         .btn-delivered { background: var(--blue); }
-        .btn-wa { background: #075e54; text-decoration: none; }
         .btn-share { background: var(--orange); }
+        .btn-wa { background: #075e54; }
         .btn-del { background: var(--red); }
     </style>
 </head>
@@ -49,25 +49,26 @@
             <h2>HOTEP ADMIN</h2>
             <input type="password" id="passInput" placeholder="كلمة السر">
             <button onclick="checkPass()">دخول</button>
+            <p id="login-err" style="color:red; display:none; margin-top:10px;">كلمة السر خطأ!</p>
         </div>
     </div>
 
     <div id="admin-content">
         <nav class="top-nav">
-            <h1>HOTEP <small style="font-size:12px">APP</small></h1>
-            <div id="clock" style="color:var(--gold)"></div>
+            <h1>HOTEP <small>CONTROL</small></h1>
+            <div id="clock"></div>
         </nav>
 
-        <div class="inventory-bar">
-            <div class="inv-item"><label>M</label><input type="number" id="inv-M" onchange="updateStock('M', this.value)"></div>
-            <div class="inv-item"><label>L</label><input type="number" id="inv-L" onchange="updateStock('L', this.value)"></div>
-            <div class="inv-item"><label>XL</label><input type="number" id="inv-XL" onchange="updateStock('XL', this.value)"></div>
-            <div class="inv-item"><label>XXL</label><input type="number" id="inv-XXL" onchange="updateStock('XXL', this.value)"></div>
+        <div class="inventory-bar" id="inv-inputs">
+            <div class="inv-item"><label>M</label><input type="number" id="inv-M" onchange="saveInv('M', this.value)"></div>
+            <div class="inv-item"><label>L</label><input type="number" id="inv-L" onchange="saveInv('L', this.value)"></div>
+            <div class="inv-item"><label>XL</label><input type="number" id="inv-XL" onchange="saveInv('XL', this.value)"></div>
+            <div class="inv-item"><label>XXL</label><input type="number" id="inv-XXL" onchange="saveInv('XXL', this.value)"></div>
         </div>
 
-        <div class="stats-container">
-            <div class="stat-card"><span>النشط</span><div id="sActive">0</div></div>
-            <div class="stat-card"><span>التحصيل</span><div id="sMoney">0 ج</div></div>
+        <div style="display:flex; gap:10px;">
+            <div class="stat-card" style="flex:1">النشط <span id="sActive">0</span></div>
+            <div class="stat-card" style="flex:1">التحصيل <span id="sMoney">0 ج</span></div>
         </div>
 
         <div id="ordersList"></div>
@@ -79,106 +80,119 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        let lastOrderCount = -1;
-
+        // التحقق من الدخول
         function checkPass() {
-            if (document.getElementById('passInput').value === "hero1") {
+            const p = document.getElementById('passInput').value;
+            if (p === "hero1") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
-                // طلب إذن الإشعارات من المتصفح
                 if (Notification.permission !== "granted") Notification.requestPermission();
-                startApp();
+                initFirebase();
+            } else {
+                document.getElementById('login-err').style.display = 'block';
             }
         }
 
-        function startApp() {
+        let database;
+        let lastCount = -1;
+
+        function initFirebase() {
             const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
             if (!firebase.apps.length) firebase.initializeApp(config);
-            const db = firebase.database();
+            database = firebase.database();
 
-            // تحديث المخزن
-            db.ref('inventory').on('value', s => {
-                const d = s.val() || {};
-                ['M','L','XL','XXL'].forEach(z => { document.getElementById('inv-'+z).value = d[z] || 0; });
+            // مزامنة المخزن
+            database.ref('inventory').on('value', snap => {
+                const d = snap.val() || {};
+                ['M','L','XL','XXL'].forEach(sz => {
+                    document.getElementById('inv-'+sz).value = d[sz] || 0;
+                });
             });
 
             // مزامنة الأوردرات
-            db.ref('orders').on('value', (snap) => {
+            database.ref('orders').on('value', snap => {
                 const list = document.getElementById('ordersList');
                 list.innerHTML = '';
-                let s = { active: 0, money: 0, count: 0 };
+                let activeCount = 0;
+                let money = 0;
+                let totalCurrent = 0;
 
-                snap.forEach((child) => {
+                snap.forEach(child => {
                     const o = child.val();
                     const id = child.key;
                     const price = parseInt(o.الاجمالي) || parseInt(o.سعر_المنتجات) || 0;
-                    
-                    if (o.الحالة === 'تم التسليم') { s.money += price; return; }
-                    s.active++; s.count++;
 
-                    const billText = `📦 بوليصة HOTEP\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${o.العنوان}\nالمقاس: ${o.المقاس}\nالحساب: ${price + 50} ج`;
-
-                    const card = `
-                        <div class="order-card">
-                            <div class="order-price">${price} ج</div>
-                            <div class="order-info"><b>${o.الاسم}</b></div>
-                            <div class="order-details">
-                                <i class="fas fa-phone"></i> ${o.الهاتف}<br>
-                                <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}<br>
-                                <i class="fas fa-tshirt"></i> ${o.المقاس} | ${o.التوقيت || ''}
-                            </div>
-                            <div class="action-btns">
-                                <button onclick="setDone('${id}')" class="btn-m btn-delivered"><i class="fas fa-check"></i> تسليم</button>
-                                <button onclick="copyBill(\`${billText}\`)" class="btn-m btn-share"><i class="fas fa-copy"></i> بوليصة</button>
-                                <a href="https://wa.me/2${o.الهاتف}" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
-                                <button onclick="delO('${id}')" class="btn-m btn-del"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>`;
-                    list.insertAdjacentHTML('afterbegin', card);
+                    if (o.الحالة === 'تم التسليم') {
+                        money += price;
+                    } else {
+                        activeCount++;
+                        totalCurrent++;
+                        
+                        const bill = `📦 بوليصة شحن HOTEP\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${o.العنوان}\nالمقاس: ${o.المقاس}\nالحساب: ${price + 50} ج`;
+                        
+                        const html = `
+                            <div class="order-card">
+                                <div class="order-price">${price} ج</div>
+                                <div class="order-info"><b>${o.الاسم}</b></div>
+                                <div class="order-details">
+                                    <i class="fas fa-phone"></i> ${o.الهاتف}<br>
+                                    <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}<br>
+                                    <i class="fas fa-tshirt"></i> ${o.المقاس} | ${o.التوقيت || ''}
+                                </div>
+                                <div class="action-btns">
+                                    <button onclick="setOrderDone('${id}')" class="btn-m btn-delivered"><i class="fas fa-check"></i> تسليم</button>
+                                    <button onclick="copyToClipboard(\`${bill}\`)" class="btn-m btn-share"><i class="fas fa-copy"></i> بوليصة</button>
+                                    <a href="https://wa.me/2${o.الهاتف}" target="_blank" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i> واتساب</a>
+                                    <button onclick="deleteOrder('${id}')" class="btn-m btn-del"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>`;
+                        list.insertAdjacentHTML('afterbegin', html);
+                    }
                 });
 
-                // ميزة الإشعارات عند وصول أوردر جديد
-                if (lastOrderCount !== -1 && s.count > lastOrderCount) {
+                // تفعيل الإشعارات
+                if (lastCount !== -1 && totalCurrent > lastCount) {
                     document.getElementById('notifSound').play();
-                    if (Notification.permission === "granted") {
-                        new Notification("HOTEP: أوردر جديد! 🔥", { body: "لديك طلب جديد ينتظر التجهيز" });
-                    }
+                    if (Notification.permission === "granted") new Notification("أوردر جديد في HOTEP! 🔥");
                 }
-                lastOrderCount = s.count;
+                lastCount = totalCurrent;
 
-                document.getElementById('sActive').innerText = s.active;
-                document.getElementById('sMoney').innerText = s.money + " ج";
+                document.getElementById('sActive').innerText = activeCount;
+                document.getElementById('sMoney').innerText = money + " ج";
             });
         }
 
-        // الوظائف التي طلبت تصليحها
-        function setDone(id) {
+        // الوظائف الأساسية
+        window.setOrderDone = function(id) {
             if(confirm('تأكيد تسليم الأوردر؟')) {
-                firebase.database().ref('orders/' + id).update({ الحالة: 'تم التسليم' });
+                database.ref('orders/' + id).update({ الحالة: 'تم التسليم' });
             }
         }
 
-        function copyBill(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("✅ تم نسخ بيانات البوليصة");
-            }).catch(err => {
-                // حل بديل للمتصفحات التي تمنع الكليب بورد
-                const el = document.createElement('textarea');
-                el.value = text;
-                document.body.appendChild(el);
-                el.select();
-                document.execCommand('copy');
-                document.body.removeChild(el);
-                alert("✅ تم نسخ بيانات البوليصة");
-            });
+        window.deleteOrder = function(id) {
+            if(confirm('حذف الأوردر نهائياً؟')) {
+                database.ref('orders/' + id).remove();
+            }
         }
 
-        function updateStock(sz, v) { firebase.database().ref('inventory/'+sz).set(parseInt(v)||0); }
-        function delO(id) { if(confirm('حذف نهائي؟')) firebase.database().ref('orders/'+id).remove(); }
-        
+        window.saveInv = function(sz, v) {
+            database.ref('inventory/' + sz).set(parseInt(v) || 0);
+        }
+
+        window.copyToClipboard = function(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            alert("✅ تم نسخ البوليصة بنجاح");
+        }
+
         setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-EG');
         }, 1000);
     </script>
 </body>
 </html>
+
