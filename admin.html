@@ -3,26 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Sales Tracker</title>
+    <title>HOTEP Admin - Fixed Finals</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
-        /* شاشة الدخول */
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
         .login-box { background: var(--dark); padding: 30px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 85%; max-width: 320px; }
-        .login-box h2 { color: var(--gold); margin-bottom: 20px; font-size: 24px; }
         .login-box input { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 18px; outline: none; box-sizing: border-box; }
-        .login-box button { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; font-size: 18px; }
+        .login-box button { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; }
 
-        /* سجل المشحونات (المخزون سابقاً) */
         .stock-header { background: var(--dark); margin: 15px; padding: 15px; border-radius: 15px; border: 1px solid #333; display: flex; justify-content: space-around; text-align: center; }
-        .stock-box { flex: 1; }
-        .stock-box span { display: block; font-size: 10px; color: var(--gold); font-weight: bold; }
+        .stock-box span { display: block; font-size: 12px; color: var(--gold); font-weight: bold; }
         .stock-box b { font-size: 20px; color: #fff; }
 
-        /* التبويبات */
         #admin-content { display: none; }
         .tabs-container { display: flex; background: #111; padding: 5px; margin: 15px; border-radius: 15px; border: 1px solid #333; }
         .tab-btn { flex: 1; padding: 12px 5px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 10px; font-size: 14px; }
@@ -33,11 +28,9 @@
         .revenue-badge { background: #1a1a1a; border: 1px solid var(--gold); padding: 15px; border-radius: 15px; margin: 15px 0; text-align: center; }
         .revenue-badge span { color: var(--green); font-size: 26px; font-weight: bold; }
 
-        /* الكروت */
         .order-card { background: var(--dark); border: 1px solid #333; border-radius: 20px; padding: 20px; margin-bottom: 15px; position: relative; border-right: 4px solid var(--gold); }
         .order-price { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: bold; font-size: 24px; }
-        .name-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-        .name-tag { font-size: 20px; font-weight: bold; color: #fff; }
+        .name-tag { font-size: 20px; font-weight: bold; color: #fff; display: block; margin: 10px 0; }
         .qty-tag { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 2px 8px; border-radius: 5px; font-size: 12px; border: 1px solid var(--gold); }
 
         .action-btns { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
@@ -47,7 +40,6 @@
         .btn-wa { background: #25d366; }
         .btn-del { background: var(--red); max-width: 50px; }
 
-        /* الطباعة موسطة */
         #print-area { display: none; }
         @media print {
             body * { visibility: hidden !important; }
@@ -60,14 +52,15 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <h2>HOTEP LOGIN</h2>
+            <h1 style="color:var(--gold); margin:0;">HOTEP</h1>
+            <p style="color:#fff; font-size:10px; letter-spacing:2px; margin-bottom:20px;">ADMIN PANEL</p>
             <input type="password" id="passInput" placeholder="Password">
             <button onclick="checkPass()">دخول</button>
         </div>
     </div>
 
     <div id="admin-content">
-        <div style="text-align:center; font-size:12px; color:var(--gold); margin-top:10px;">إجمالي المشحون لكل مقاس:</div>
+        <div style="text-align:center; font-size:12px; color:var(--gold); margin-top:10px;">إجمالي المبيعات (بناءً على المشحون):</div>
         <div class="stock-header">
             <div class="stock-box"><span>M</span><b id="s-M">0</b></div>
             <div class="stock-box"><span>L</span><b id="s-L">0</b></div>
@@ -78,11 +71,11 @@
         <div class="tabs-container">
             <button class="tab-btn active" onclick="openTab(event, 'new')">جديد (<span id="cNew">0</span>)</button>
             <button class="tab-btn" onclick="openTab(event, 'shipped')">مشحون (<span id="cShipped">0</span>)</button>
-            <button class="tab-btn" onclick="openTab(event, 'done')">تم التسليم (<span id="cDone">0</span>)</button>
+            <button class="tab-btn" onclick="openTab(event, 'done')">المستلم (<span id="cDone">0</span>)</button>
         </div>
 
         <div id="new" class="tab-content active">
-            <div class="revenue-badge">إجمالي مبالغ الجديد:<br><span id="revNew">0</span> ج</div>
+            <div class="revenue-badge">مبالغ بانتظار الشحن:<br><span id="revNew">0</span> ج</div>
             <div id="newList"></div>
         </div>
         <div id="shipped" class="tab-content"><div id="shippedList"></div></div>
@@ -104,7 +97,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 loadData();
-            } else { alert("خطأ!"); }
+            } else { alert("كلمة المرور خاطئة"); }
         }
 
         function openTab(evt, name) {
@@ -117,10 +110,13 @@
         }
 
         function loadData() {
-            // تحميل سجل المشحونات
+            // تحميل سجل المبيعات (المشحون)
             db.ref('shipped_stats').on('value', s => {
                 const data = s.val() || { M:0, L:0, XL:0, XXL:0 };
-                for (let k in data) if(document.getElementById('s-'+k)) document.getElementById('s-'+k).innerText = data[k];
+                document.getElementById('s-M').innerText = data.M || 0;
+                document.getElementById('s-L').innerText = data.L || 0;
+                document.getElementById('s-XL').innerText = data.XL || 0;
+                document.getElementById('s-XXL').innerText = data.XXL || 0;
             });
 
             db.ref('orders').on('value', snap => {
@@ -131,18 +127,19 @@
                 snap.forEach(child => {
                     const o = child.val();
                     const id = child.key;
-                    const price = (parseInt(o.سعر_المنتج) || 0) + 50;
-                    const qty = o.الكمية || 1;
+
+                    // إصلاح الحسابات: جلب السعر من أي حقل متاح (سعر_المنتج أو سعر_المنتجات)
+                    let productPrice = parseInt(o.سعر_المنتج) || parseInt(o.سعر_المنتجات) || 0;
+                    let finalTotal = productPrice + 50;
+                    
+                    let qty = parseInt(o.الكمية) || parseInt(o.عدد_المنتجات) || 1;
 
                     const card = `
                         <div class="order-card">
-                            <span class="order-date">${o.التاريخ || 'اليوم'}</span>
-                            <div class="order-price">${price} ج</div>
-                            <div class="name-row">
-                                <span class="name-tag">${o.الاسم}</span>
-                                <span class="qty-tag">${qty} علبة</span>
-                            </div>
-                            <div style="font-size:14px; color:#aaa;">
+                            <div class="order-price">${finalTotal} ج</div>
+                            <span class="name-tag">${o.الاسم}</span>
+                            <span class="qty-tag">${qty} علبة</span>
+                            <div style="font-size:14px; color:#aaa; margin-top:5px;">
                                 ${o.الهاتف} | ${o.المحافظة}<br>المقاس: ${o.المقاس}
                             </div>
                             <div class="action-btns">
@@ -150,7 +147,7 @@
                                     `<button onclick="updateStat('${id}','تم التسليم')" class="btn-m btn-done">تم التسليم</button>` : 
                                     (o.الحالة === 'تم التسليم' ? `<span style="width:100%; text-align:center; color:var(--green)">✓ مستلم</span>` : `<button onclick="shipOrder('${id}','${o.المقاس}', ${qty})" class="btn-m btn-ship">شحن الأوردر</button>`)
                                 }
-                                <button onclick="printOrder('${o.الاسم}','${o.الهاتف}','${o.العنوان}','${price}','${o.المقاس}')" class="btn-m btn-print"><i class="fas fa-print"></i></button>
+                                <button onclick="printOrder('${o.الاسم}','${o.الهاتف}','${o.العنوان}','${finalTotal}','${o.المقاس}')" class="btn-m btn-print"><i class="fas fa-print"></i></button>
                                 <a href="https://wa.me/2${o.الهاتف}" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
                                 <button onclick="deleteOrder('${id}')" class="btn-m btn-del">×</button>
                             </div>
@@ -158,7 +155,7 @@
 
                     if(o.الحالة === 'تم التسليم') { html.done += card; counts.done++; }
                     else if(o.الحالة === 'مشحون') { html.shipped += card; counts.shipped++; }
-                    else { html.new += card; counts.new++; revs.new += price; }
+                    else { html.new += card; counts.new++; revs.new += finalTotal; }
                 });
 
                 document.getElementById('newList').innerHTML = html.new;
@@ -171,8 +168,9 @@
             });
         }
 
-        // وظيفة الشحن مع زيادة سجل المبيعات بدلاً من الخصم
+        // دالة الشحن: تزيد عداد المبيعات ولا تنقصه
         window.shipOrder = (id, size, qty) => {
+            if(!size) size = "M"; // احتياطي
             db.ref('shipped_stats/' + size).transaction(current => (current || 0) + qty);
             db.ref('orders/' + id).update({ الحالة: 'مشحون' });
         };
@@ -180,12 +178,12 @@
         window.updateStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
         window.deleteOrder = (id) => { if(confirm('حذف؟')) db.ref('orders/'+id).remove(); };
 
-        // بوليصة موسطة باللوجو
+        // الطباعة الموسطة باللوجو
         window.printOrder = (name, phone, addr, price, size) => {
             const area = document.getElementById('print-area');
             area.innerHTML = `
                 <div style="width:85%; margin:auto; padding:40px; border:10px solid #000; text-align:center; font-family:Arial;">
-                    <h1 style="font-size:70px; margin:0;">HOTEP</h1>
+                    <h1 style="font-size:70px; margin:0; letter-spacing:5px;">HOTEP</h1>
                     <p style="font-size:22px; margin:0; border-bottom:4px solid #000; padding-bottom:15px;">EGYPTIAN BRAND</p>
                     <div style="margin:40px 0; font-size:35px; line-height:1.8;">
                         <p><b>العميل:</b> ${name}</p>
