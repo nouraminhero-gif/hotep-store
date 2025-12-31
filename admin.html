@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Fixed</title>
+    <title>HOTEP Admin - Sales Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; }
@@ -16,10 +16,10 @@
         .login-box input { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 18px; outline: none; box-sizing: border-box; }
         .login-box button { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; font-size: 18px; }
 
-        /* لوحة المخزون */
+        /* سجل المشحونات (المخزون سابقاً) */
         .stock-header { background: var(--dark); margin: 15px; padding: 15px; border-radius: 15px; border: 1px solid #333; display: flex; justify-content: space-around; text-align: center; }
         .stock-box { flex: 1; }
-        .stock-box span { display: block; font-size: 12px; color: var(--gold); font-weight: bold; }
+        .stock-box span { display: block; font-size: 10px; color: var(--gold); font-weight: bold; }
         .stock-box b { font-size: 20px; color: #fff; }
 
         /* التبويبات */
@@ -36,7 +36,6 @@
         /* الكروت */
         .order-card { background: var(--dark); border: 1px solid #333; border-radius: 20px; padding: 20px; margin-bottom: 15px; position: relative; border-right: 4px solid var(--gold); }
         .order-price { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: bold; font-size: 24px; }
-        .order-date { font-size: 11px; color: #666; margin-bottom: 8px; display: block; }
         .name-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
         .name-tag { font-size: 20px; font-weight: bold; color: #fff; }
         .qty-tag { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 2px 8px; border-radius: 5px; font-size: 12px; border: 1px solid var(--gold); }
@@ -44,17 +43,16 @@
         .action-btns { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
         .btn-m { flex: 1; padding: 14px; border-radius: 12px; border: none; color: #fff; font-size: 14px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .btn-ship { background: #6f42c1; }
-        .btn-done { background: var(--blue); }
         .btn-print { background: #fff !important; color: #000 !important; }
         .btn-wa { background: #25d366; }
         .btn-del { background: var(--red); max-width: 50px; }
 
-        /* الطباعة */
+        /* الطباعة موسطة */
         #print-area { display: none; }
         @media print {
             body * { visibility: hidden !important; }
             #print-area, #print-area * { visibility: visible !important; }
-            #print-area { display: block !important; position: absolute; left: 0; top: 0; width: 100%; text-align: center; background: #fff; color: #000; }
+            #print-area { display: block !important; position: absolute; left: 0; top: 0; width: 100%; text-align: center; background: #fff; color: #000; padding: 40px 0; }
         }
     </style>
 </head>
@@ -62,17 +60,19 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <h2>HOTEP LOGIN</h2> <input type="password" id="passInput" placeholder="Password">
+            <h2>HOTEP LOGIN</h2>
+            <input type="password" id="passInput" placeholder="Password">
             <button onclick="checkPass()">دخول</button>
         </div>
     </div>
 
     <div id="admin-content">
+        <div style="text-align:center; font-size:12px; color:var(--gold); margin-top:10px;">إجمالي المشحون لكل مقاس:</div>
         <div class="stock-header">
-            <div class="stock-box" onclick="editStock('M')"><span>M</span><b id="s-M">0</b></div>
-            <div class="stock-box" onclick="editStock('L')"><span>L</span><b id="s-L">0</b></div>
-            <div class="stock-box" onclick="editStock('XL')"><span>XL</span><b id="s-XL">0</b></div>
-            <div class="stock-box" onclick="editStock('XXL')"><span>XXL</span><b id="s-XXL">0</b></div>
+            <div class="stock-box"><span>M</span><b id="s-M">0</b></div>
+            <div class="stock-box"><span>L</span><b id="s-L">0</b></div>
+            <div class="stock-box"><span>XL</span><b id="s-XL">0</b></div>
+            <div class="stock-box"><span>XXL</span><b id="s-XXL">0</b></div>
         </div>
 
         <div class="tabs-container">
@@ -95,7 +95,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // إعدادات Firebase - تأكد أنها صحيحة
         const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
@@ -105,7 +104,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 loadData();
-            } else { alert("كلمة المرور خطأ"); }
+            } else { alert("خطأ!"); }
         }
 
         function openTab(evt, name) {
@@ -118,13 +117,12 @@
         }
 
         function loadData() {
-            // تحميل المخزون
-            db.ref('inventory').on('value', s => {
+            // تحميل سجل المشحونات
+            db.ref('shipped_stats').on('value', s => {
                 const data = s.val() || { M:0, L:0, XL:0, XXL:0 };
                 for (let k in data) if(document.getElementById('s-'+k)) document.getElementById('s-'+k).innerText = data[k];
             });
 
-            // تحميل الأوردرات
             db.ref('orders').on('value', snap => {
                 let html = { new:'', shipped:'', done:'' };
                 let counts = { new:0, shipped:0, done:0 };
@@ -145,14 +143,12 @@
                                 <span class="qty-tag">${qty} علبة</span>
                             </div>
                             <div style="font-size:14px; color:#aaa;">
-                                <i class="fas fa-phone"></i> ${o.الهاتف}<br>
-                                <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}<br>
-                                <i class="fas fa-tshirt"></i> المقاس: ${o.المقاس}
+                                ${o.الهاتف} | ${o.المحافظة}<br>المقاس: ${o.المقاس}
                             </div>
                             <div class="action-btns">
                                 ${o.الحالة === 'مشحون' ? 
                                     `<button onclick="updateStat('${id}','تم التسليم')" class="btn-m btn-done">تم التسليم</button>` : 
-                                    (o.الحالة === 'تم التسليم' ? `<span style="width:100%; text-align:center; color:var(--green)">✓ مستلم</span>` : `<button onclick="updateStat('${id}','مشحون')" class="btn-m btn-ship">شحن الأوردر</button>`)
+                                    (o.الحالة === 'تم التسليم' ? `<span style="width:100%; text-align:center; color:var(--green)">✓ مستلم</span>` : `<button onclick="shipOrder('${id}','${o.المقاس}', ${qty})" class="btn-m btn-ship">شحن الأوردر</button>`)
                                 }
                                 <button onclick="printOrder('${o.الاسم}','${o.الهاتف}','${o.العنوان}','${price}','${o.المقاس}')" class="btn-m btn-print"><i class="fas fa-print"></i></button>
                                 <a href="https://wa.me/2${o.الهاتف}" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
@@ -175,32 +171,31 @@
             });
         }
 
-        window.updateStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
-        window.deleteOrder = (id) => { if(confirm('حذف؟')) db.ref('orders/'+id).remove(); };
-        window.editStock = (size) => {
-            const val = prompt(`تعديل مخزون ${size}:`);
-            if(val !== null) db.ref('inventory/'+size).set(parseInt(val));
+        // وظيفة الشحن مع زيادة سجل المبيعات بدلاً من الخصم
+        window.shipOrder = (id, size, qty) => {
+            db.ref('shipped_stats/' + size).transaction(current => (current || 0) + qty);
+            db.ref('orders/' + id).update({ الحالة: 'مشحون' });
         };
 
-        // دالة الطباعة باللوجو والبيانات الموسطة
+        window.updateStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
+        window.deleteOrder = (id) => { if(confirm('حذف؟')) db.ref('orders/'+id).remove(); };
+
+        // بوليصة موسطة باللوجو
         window.printOrder = (name, phone, addr, price, size) => {
             const area = document.getElementById('print-area');
             area.innerHTML = `
-                <div style="padding: 50px; border: 12px solid #000; margin: 20px; text-align: center; font-family: Arial;">
-                    <h1 style="font-size: 70px; margin: 0; letter-spacing: 8px;">HOTEP</h1>
-                    <p style="font-size: 22px; margin: 0; border-bottom: 4px solid #000; padding-bottom: 20px;">EGYPTIAN BRAND</p>
-                    
-                    <div style="margin: 40px 0; font-size: 38px; line-height: 1.6;">
+                <div style="width:85%; margin:auto; padding:40px; border:10px solid #000; text-align:center; font-family:Arial;">
+                    <h1 style="font-size:70px; margin:0;">HOTEP</h1>
+                    <p style="font-size:22px; margin:0; border-bottom:4px solid #000; padding-bottom:15px;">EGYPTIAN BRAND</p>
+                    <div style="margin:40px 0; font-size:35px; line-height:1.8;">
                         <p><b>العميل:</b> ${name}</p>
                         <p><b>الهاتف:</b> ${phone}</p>
                         <p><b>العنوان:</b> ${addr}</p>
                         <p><b>المقاس:</b> ${size}</p>
                     </div>
-
-                    <div style="background: #000; color: #fff; padding: 40px; border-radius: 15px;">
-                        <h2 style="font-size: 60px; margin: 0;">المطلوب: ${price} ج.م</h2>
+                    <div style="background:#000; color:#fff; padding:35px; border-radius:15px;">
+                        <h2 style="font-size:55px; margin:0;">المطلوب: ${price} ج.م</h2>
                     </div>
-                    <p style="margin-top: 30px; font-size: 20px;">شكراً لشرائكم من HOTEP ❤️</p>
                 </div>`;
             setTimeout(() => { window.print(); }, 500);
         };
