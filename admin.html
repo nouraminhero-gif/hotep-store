@@ -4,224 +4,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Full Sync</title>
+    <title>HOTEP Admin - Official</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; }
+        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #2ecc71; --red: #e74c3c; --orange: #f39c12; --purple: #8e44ad; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
 
-        /* شاشة الدخول */
-        #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-box { background: var(--dark); padding: 30px; border-radius: 20px; border: 2px solid var(--gold); text-align: center; width: 85%; max-width: 320px; }
-        .login-box h2 { color: var(--gold); margin-bottom: 20px; }
-        .login-box input { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 18px; outline: none; box-sizing: border-box; }
-        .login-box button { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; }
-
-        /* سجل المشحونات العلوي */
-        .sales-header { background: var(--dark); margin: 15px; padding: 15px; border-radius: 15px; border: 1px solid #333; display: flex; justify-content: space-around; text-align: center; }
-        .sales-box span { display: block; font-size: 10px; color: var(--gold); font-weight: bold; }
-        .sales-box b { font-size: 24px; color: #fff; }
+        /* سجل المقاسات العلوي */
+        .stats-bar { background: #000; padding: 15px; display: flex; justify-content: space-around; text-align: center; border-bottom: 1px solid #222; }
+        .stat-item span { display: block; color: var(--gold); font-size: 10px; font-weight: bold; }
+        .stat-item b { font-size: 24px; color: #fff; }
+        .reset-link { text-align: center; display: block; color: #444; font-size: 11px; margin: 5px 0; cursor: pointer; text-decoration: underline; }
 
         /* التبويبات */
-        #admin-content { display: none; padding-bottom: 50px; }
-        .tabs-container { display: flex; background: #111; padding: 10px; margin: 15px; border-radius: 15px; border: 1px solid #333; gap: 10px; }
-        .tab-btn { flex: 1; padding: 15px 5px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 12px; font-size: 14px; transition: 0.3s; }
-        .tab-btn.active { background: var(--gold); color: #000; font-weight: bold; }
+        .tabs { display: flex; background: #111; margin: 10px; border-radius: 15px; padding: 5px; gap: 5px; }
+        .tab { flex: 1; padding: 12px; border: none; border-radius: 12px; background: transparent; color: #777; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .tab.active { background: var(--gold); color: #000; }
 
-        .revenue-badge { background: #1a1a1a; border: 1px solid #333; padding: 15px; border-radius: 15px; margin: 0 15px 20px; text-align: center; border-bottom: 3px solid var(--gold); }
-        .revenue-badge h3 { margin: 0; font-size: 18px; color: #fff; }
-        .revenue-badge span { color: var(--green); font-size: 28px; font-weight: bold; }
+        /* إجمالي المبالغ */
+        .revenue-box { background: #151515; border: 1px solid var(--gold); margin: 10px; padding: 15px; border-radius: 15px; text-align: center; }
+        .revenue-box h2 { margin: 0; font-size: 20px; color: #fff; }
+        .revenue-box span { color: var(--green); font-size: 32px; font-weight: bold; display: block; margin-top: 5px; }
 
-        /* تنسيق الكروت */
-        .orders-grid { display: grid; grid-template-columns: 1fr; gap: 15px; padding: 0 15px; }
-        @media (min-width: 768px) { .orders-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1024px) { .orders-grid { grid-template-columns: repeat(3, 1fr); } }
+        /* كرت الأوردر */
+        .orders-container { padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
+        .order-card { background: var(--dark); border-radius: 25px; padding: 20px; position: relative; border-right: 5px solid var(--gold); }
+        .card-price { position: absolute; left: 20px; top: 20px; color: var(--green); font-size: 28px; font-weight: bold; }
+        .card-time { font-size: 11px; color: #555; display: block; margin-bottom: 10px; text-align: right; }
+        .card-name { font-size: 24px; font-weight: bold; color: #fff; margin: 10px 0; display: block; }
+        .tag-qty { background: #1a1500; color: var(--gold); border: 1px solid #332b00; padding: 4px 12px; border-radius: 10px; font-size: 13px; display: inline-block; }
+        .info-list { margin-top: 15px; color: #888; font-size: 14px; line-height: 1.8; }
+        .info-list i { color: var(--gold); width: 20px; text-align: center; }
 
-        .order-card { background: var(--dark); border: 1px solid #333; border-radius: 20px; padding: 20px; position: relative; border-right: 5px solid var(--gold); }
-        .order-price { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: bold; font-size: 26px; }
-        .order-time { font-size: 11px; color: #555; display: block; margin-bottom: 5px; }
-        .order-name { font-size: 22px; font-weight: bold; color: #fff; display: block; text-align: left; margin-top: 10px; }
-        .qty-tag { background: #1a1500; color: var(--gold); padding: 4px 12px; border-radius: 8px; font-size: 12px; border: 1px solid #3a3100; margin-top: 5px; display: inline-block; }
-        
-        .info-row { font-size: 14px; color: #888; margin-top: 15px; text-align: left; line-height: 1.6; }
+        /* الأزرار */
+        .btns-row { display: flex; gap: 8px; margin-top: 20px; height: 50px; }
+        .btn { border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; transition: 0.2s; }
+        .btn-del { background: var(--red); color: #fff; width: 60px; }
+        .btn-wa { background: var(--green); color: #fff; width: 60px; }
+        .btn-copy { background: var(--orange); color: #fff; width: 60px; }
+        .btn-print { background: #fff; color: #000; width: 60px; }
+        .btn-ship { background: var(--purple); color: #fff; flex-grow: 1; font-size: 14px; }
+        .btn-done { background: #3498db; color: #fff; flex-grow: 1; }
 
-        /* الأزرار بالظبط كما في الصور */
-        .action-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-m { height: 50px; border-radius: 12px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.3s; flex: 1; }
-        .btn-del { background: #d9534f; color: #fff; flex: 0 0 50px; }
-        .btn-wa { background: #25d366; color: #fff; }
-        .btn-copy { background: #ff8c00; color: #fff; }
-        .btn-print { background: #fff; color: #000; }
-        .btn-ship { background: #6f42c1; color: #fff; flex: 1.5; font-size: 14px; }
-        
-        .done-label { width: 100%; text-align: center; color: var(--green); font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .done-status { width: 100%; text-align: center; color: var(--green); font-size: 20px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        .reset-section { text-align: center; margin-bottom: 10px; }
-        .reset-link { color: #444; font-size: 11px; cursor: pointer; text-decoration: underline; }
+        #login-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .login-box { width: 300px; text-align: center; padding: 30px; border: 2px solid var(--gold); border-radius: 20px; }
+        .login-box input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 12px; background: #111; border: 1px solid #333; color: #fff; text-align: center; box-sizing: border-box; }
+        .login-box button { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: bold; }
 
-        @media print {
-            body * { visibility: hidden !important; }
-            #print-area, #print-area * { visibility: visible !important; }
-            #print-area { display: block !important; position: absolute; left: 0; top: 0; width: 100%; text-align: center; color: #000; }
-        }
+        @media print { body * { visibility: hidden !important; } #print-area, #print-area * { visibility: visible !important; } #print-area { display: block !important; position: absolute; left: 0; top: 0; width: 100%; color: #000; } }
     </style>
 </head>
 <body>
 
-<audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+<audio id="newOrderSnd" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
 <div id="login-screen">
     <div class="login-box">
-        <h1 style="color:var(--gold); margin:0; letter-spacing:5px;">HOTEP</h1>
-        <p style="color:#555; font-size:10px; margin-bottom:20px;">ADMINISTRATION</p>
-        <input type="password" id="passInput" placeholder="Password">
-        <button onclick="checkPass()">LOGIN</button>
+        <h1 style="color:var(--gold); margin:0; letter-spacing:5px;">НОТЕР</h1>
+        <input type="password" id="pInput" placeholder="Password">
+        <button onclick="auth()">LOGIN</button>
     </div>
 </div>
 
-<div id="admin-content">
-    <div class="sales-header">
-        <div class="sales-box"><span>M</span><b id="s-M">0</b></div>
-        <div class="sales-box"><span>L</span><b id="s-L">0</b></div>
-        <div class="sales-box"><span>XL</span><b id="s-XL">0</b></div>
-        <div class="sales-box"><span>XXL</span><b id="s-XXL">0</b></div>
+<div id="admin-main" style="display:none;">
+    <div class="stats-bar">
+        <div class="stat-item"><span>XXL</span><b id="s-XXL">0</b></div>
+        <div class="stat-item"><span>XL</span><b id="s-XL">0</b></div>
+        <div class="stat-item"><span>L</span><b id="s-L">0</b></div>
+        <div class="stat-item"><span>M</span><b id="s-M">0</b></div>
     </div>
-    <div class="reset-section">
-        <span class="reset-link" onclick="resetStats()">تصفير السجل</span>
+    <span class="reset-link" onclick="resetStats()">تصفير السجل</span>
+
+    <div class="tabs">
+        <button id="tNew" class="tab active" onclick="switchTab('new')">جديد (<span id="cN">0</span>)</button>
+        <button id="tShip" class="tab" onclick="switchTab('ship')">مشحون (<span id="cS">0</span>)</button>
+        <button id="tDone" class="tab" onclick="switchTab('done')">المستلم (<span id="cD">0</span>)</button>
     </div>
 
-    <div class="tabs-container">
-        <button class="tab-btn active" onclick="openTab(event, 'newTab')">جديد (<span id="countNew">0</span>)</button>
-        <button class="tab-btn" onclick="openTab(event, 'shipTab')">مشحون (<span id="countShip">0</span>)</button>
-        <button class="tab-btn" onclick="openTab(event, 'doneTab')">المستلم (<span id="countDone">0</span>)</button>
+    <div id="secNew">
+        <div class="revenue-box"><h2>إجمالي مبالغ الجديد:</h2><span id="revN">0</span> ج</div>
+        <div id="listNew" class="orders-container"></div>
     </div>
-
-    <div id="newTab" class="tab-content active">
-        <div class="revenue-badge"><h3>إجمالي مبالغ الجديد:</h3><span id="revNew">0</span> ج</div>
-        <div id="listNew" class="orders-grid"></div>
-    </div>
-    <div id="shipTab" class="tab-content"><div id="listShip" class="orders-grid"></div></div>
-    <div id="doneTab" class="tab-content"><div id="listDone" class="orders-grid"></div></div>
+    <div id="secShip" style="display:none;"><div id="listShip" class="orders-container"></div></div>
+    <div id="secDone" style="display:none;"><div id="listDone" class="orders-container"></div></div>
 </div>
 
-<div id="print-area"></div>
+<div id="print-area" style="display:none;"></div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-let db;
-let isLoaded = false;
-const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-if (!firebase.apps.length) firebase.initializeApp(config);
+let db; let isInit = false;
+const cfg = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+if (!firebase.apps.length) firebase.initializeApp(cfg);
 db = firebase.database();
 
-function checkPass() {
-    if (document.getElementById('passInput').value === "hero1") {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('admin-content').style.display = 'block';
-        initApp();
+function auth() {
+    if(document.getElementById('pInput').value === "hero1") {
+        document.getElementById('login-screen').style.display='none';
+        document.getElementById('admin-main').style.display='block';
+        start();
     }
 }
 
-function openTab(evt, name) {
-    let contents = document.getElementsByClassName("tab-content");
-    for (let i = 0; i < contents.length; i++) contents[i].style.display = "none";
-    let buttons = document.getElementsByClassName("tab-btn");
-    for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
-    document.getElementById(name).style.display = "block";
-    evt.currentTarget.classList.add("active");
+function switchTab(name) {
+    ['secNew','secShip','secDone'].forEach(id => document.getElementById(id).style.display='none');
+    ['tNew','tShip','tDone'].forEach(id => document.getElementById(id).classList.remove('active'));
+    document.getElementById('sec' + name.charAt(0).toUpperCase() + name.slice(1)).style.display='block';
+    document.getElementById('t' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
 }
 
-function initApp() {
-    // تحديث عدادات المشحونات (المخزون المسجل)
+function start() {
     db.ref('shipped_stats').on('value', s => {
         const d = s.val() || { M:0, L:0, XL:0, XXL:0 };
-        document.getElementById('s-M').innerText = d.M || 0;
-        document.getElementById('s-L').innerText = d.L || 0;
-        document.getElementById('s-XL').innerText = d.XL || 0;
-        document.getElementById('s-XXL').innerText = d.XXL || 0;
+        ['M','L','XL','XXL'].forEach(sz => document.getElementById('s-'+sz).innerText = d[sz] || 0);
     });
 
-    // مراقبة الطلبات الجديدة والتنبيه الصوتي
     db.ref('orders').on('value', snap => {
         let html = { new:'', ship:'', done:'' };
         let counts = { new:0, ship:0, done:0 };
         let totalRev = 0;
 
-        if (isLoaded) document.getElementById('notifSound').play().catch(() => {});
+        if(isInit) document.getElementById('newOrderSnd').play().catch(()=>{});
 
         snap.forEach(child => {
-            const o = child.val();
-            const id = child.key;
-            const price = (parseInt(o.سعر_المنتج) || 0) + 50;
-            const qty = parseInt(o.الكمية) || 1;
+            const o = child.val(); const id = child.key;
+            // إصلاح الحسابات: جلب السعر الصحيح
+            const basePrice = parseInt(o.سعر_المنتج) || parseInt(o.سعر_المنتجات) || 0;
+            const finalPrice = basePrice + 50;
+            const qty = o.الكمية || o.عدد_المنتجات || 1;
             const size = o.المقاس || "M";
 
-            const cardHtml = `
+            const card = `
                 <div class="order-card">
-                    <span class="order-time"><i class="far fa-clock"></i> ${o.التاريخ || 'اليوم'}</span>
-                    <div class="order-price">${price} ج</div>
-                    <span class="order-name">${o.الاسم}</span>
-                    <span class="qty-tag">${qty} علبة - ${size}</span>
-                    <div class="info-row">
+                    <span class="card-time"><i class="far fa-clock"></i> ${o.التاريخ || 'اليوم'}</span>
+                    <div class="card-price">${finalPrice} ج</div>
+                    <span class="card-name">${o.الاسم}</span>
+                    <span class="tag-qty">${qty} علبة - ${size}</span>
+                    <div class="info-list">
                         <i class="fas fa-phone"></i> ${o.الهاتف}<br>
                         <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}<br>
                         <i class="fas fa-tags"></i> المقاس: ${size}
                     </div>
-                    <div class="action-btns">
+                    <div class="btns-row">
                         ${o.الحالة === 'مشحون' ? 
-                            `<button onclick="setStat('${id}','تم التسليم')" class="btn-m btn-ship" style="background:var(--blue)">تم التسليم</button>` : 
-                            (o.الحالة === 'تم التسليم' ? `<div class="done-label">تم <i class="fas fa-check-square"></i></div>` : `<button onclick="shipItem('${id}','${size}',${qty})" class="btn-m btn-ship">شحن الأوردر</button>`)
+                            `<button onclick="setS('${id}','تم التسليم')" class="btn btn-done">تم التسليم</button>` : 
+                            (o.الحالة === 'تم التسليم' ? `<div class="done-status">تم <i class="fas fa-check-square"></i></div>` : `<button onclick="ship('${id}','${size}',${qty})" class="btn btn-ship">شحن الأوردر</button>`)
                         }
-                        <button onclick="doPrint('${o.الاسم}','${o.الهاتف}','${o.العنوان}',${price},${qty},'${size}')" class="btn-m btn-print"><i class="fas fa-print"></i></button>
-                        <button onclick="copyData('${o.الاسم}','${o.الهاتف}','${o.العنوان}','${size}',${price})" class="btn-m btn-copy"><i class="fas fa-copy"></i></button>
-                        <a href="https://wa.me/2${o.الهاتف}" target="_blank" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
-                        <button onclick="delItem('${id}')" class="btn-m btn-del"><i class="fas fa-times"></i></button>
+                        <button onclick="prnt('${o.الاسم}','${o.الهاتف}','${o.العنوان}',${finalPrice},${qty},'${size}')" class="btn btn-print"><i class="fas fa-print"></i></button>
+                        <button onclick="cpy('${o.الاسم}','${o.الهاتف}','${o.العنوان}','${size}',${finalPrice})" class="btn btn-copy"><i class="fas fa-copy"></i></button>
+                        <a href="https://wa.me/2${o.الهاتف}" target="_blank" class="btn btn-wa"><i class="fab fa-whatsapp"></i></a>
+                        <button onclick="del('${id}')" class="btn btn-del"><i class="fas fa-times"></i></button>
                     </div>
                 </div>`;
 
-            if(o.الحالة === 'تم التسليم') { html.done += cardHtml; counts.done++; }
-            else if(o.الحالة === 'مشحون') { html.ship += cardHtml; counts.ship++; }
-            else { html.new += cardHtml; counts.new++; totalRev += price; }
+            if(o.الحالة === 'تم التسليم') { html.done += card; counts.done++; }
+            else if(o.الحالة === 'مشحون') { html.ship += card; counts.ship++; }
+            else { html.new += card; counts.new++; totalRev += finalPrice; }
         });
 
         document.getElementById('listNew').innerHTML = html.new;
         document.getElementById('listShip').innerHTML = html.ship;
         document.getElementById('listDone').innerHTML = html.done;
-        document.getElementById('countNew').innerText = counts.new;
-        document.getElementById('countShip').innerText = counts.ship;
-        document.getElementById('countDone').innerText = counts.done;
-        document.getElementById('revNew').innerText = totalRev;
-        isLoaded = true;
+        document.getElementById('cN').innerText = counts.new;
+        document.getElementById('cS').innerText = counts.ship;
+        document.getElementById('cD').innerText = counts.done;
+        document.getElementById('revN').innerText = totalRev;
+        isInit = true;
     });
 }
 
-// تصفير العدادات (إصلاح الزر)
-window.resetStats = () => {
-    if(confirm('هل تريد تصفير سجل المشحونات بالكامل؟')) {
-        db.ref('shipped_stats').set({ M:0, L:0, XL:0, XXL:0 });
-    }
-};
-
-window.shipItem = (id, size, qty) => {
-    db.ref('shipped_stats/' + size).transaction(c => (c || 0) + qty);
+window.ship = (id, sz, q) => {
+    db.ref('shipped_stats/' + sz).transaction(c => (c || 0) + q);
     db.ref('orders/' + id).update({ الحالة: 'مشحون' });
 };
-
-window.setStat = (id, s) => db.ref('orders/' + id).update({ الحالة: s });
-window.delItem = (id) => { if(confirm('حذف؟')) db.ref('orders/' + id).remove(); };
-
-window.copyData = (n, p, a, s, pr) => {
-    const text = `الاسم: ${n}\nالهاتف: ${p}\nالعنوان: ${a}\nالمقاس: ${s}\nالحساب: ${pr} ج`;
-    navigator.clipboard.writeText(text).then(() => alert('تم نسخ البيانات ✅'));
+window.setS = (id, s) => db.ref('orders/' + id).update({ الحالة: s });
+window.del = (id) => { if(confirm('حذف؟')) db.ref('orders/' + id).remove(); };
+window.resetStats = () => { if(confirm('تصفير سجل المشحونات؟')) db.ref('shipped_stats').set({ M:0, L:0, XL:0, XXL:0 }); };
+window.cpy = (n, p, a, s, pr) => {
+    const txt = `الاسم: ${n}\nالهاتف: ${p}\nالعنوان: ${a}\nالمقاس: ${s}\nالحساب: ${pr} ج`;
+    navigator.clipboard.writeText(txt).then(() => alert('تم النسخ ✅'));
 };
 
-window.doPrint = (name, phone, addr, price, qty, size) => {
+window.prnt = (name, phone, addr, price, qty, size) => {
     const area = document.getElementById('print-area');
     area.innerHTML = `
         <div style="width:85%; margin:auto; padding:50px; border:10px solid #000; text-align:center; direction:rtl; font-family:Arial;">
-            <h1 style="font-size:70px; margin:0;">HOTEP</h1>
+            <h1 style="font-size:70px; margin:0; letter-spacing:5px;">НОТЕР</h1>
             <p style="font-size:22px; border-bottom:4px solid #000; padding-bottom:15px;">EGYPTIAN BRAND</p>
             <div style="margin:40px 0; font-size:35px; line-height:2;">
                 <p><b>العميل:</b> ${name}</p>
@@ -236,4 +208,3 @@ window.doPrint = (name, phone, addr, price, qty, size) => {
 </script>
 </body>
 </html>
- 
