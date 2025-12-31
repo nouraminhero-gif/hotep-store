@@ -3,106 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>HOTEP Admin - Final UI</title>
+<title>HOTEP Admin - Fixed UI</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-:root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; --purple: #6f42c1; }
-body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
-
-/* تنسيق شاشة الدخول */
-#login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-.login-box { background: var(--dark); padding: 40px 30px; border-radius: 25px; border: 2px solid var(--gold); text-align: center; width: 90%; max-width: 320px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
-.login-box h2 { color: var(--gold); margin-bottom: 25px; font-size: 24px; }
-.login-box input { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 12px; border: 1px solid #333; background: #000; color: var(--gold); text-align: center; font-size: 18px; outline: none; box-sizing: border-box; }
-.login-box button { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; }
+:root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #2ecc71; --red: #e74c3c; --orange: #f39c12; --purple: #8e44ad; }
+body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
 
 /* العداد العلوي */
-.stats-bar { background: #111; padding: 10px; display: flex; justify-content: space-around; border-bottom: 1px solid #333; }
+.stats-bar { background: #000; padding: 15px 5px; display: flex; justify-content: space-around; border-bottom: 1px solid #222; }
 .stat-item { text-align: center; }
-.stat-item span { display: block; color: var(--gold); font-size: 11px; }
-.stat-item b { font-size: 18px; color: #fff; }
-.reset-link { text-align: center; padding: 5px; color: #fff; font-size: 11px; cursor: pointer; text-decoration: underline; opacity: 0.5; display: block; }
+.stat-item span { display: block; color: var(--gold); font-size: 12px; }
+.stat-item b { font-size: 20px; color: #fff; }
 
-#admin-content { display: none; width: 100%; }
-.tabs-container { display: flex; background: #111; padding: 5px; margin: 15px; border-radius: 15px; border: 1px solid #333; position: sticky; top: 10px; z-index: 999; }
-.tab-btn { flex: 1; padding: 12px 5px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 10px; font-size: 13px; transition: 0.3s; }
+/* التبويبات */
+.tabs-container { display: flex; background: #111; padding: 5px; margin: 15px; border-radius: 15px; border: 1px solid #333; }
+.tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: #888; cursor: pointer; border-radius: 10px; font-size: 14px; }
 .tab-btn.active { background: var(--gold); color: #000; font-weight: bold; }
-.tab-content { padding: 10px 15px 100px; display: none; }
+
+.tab-content { padding: 0 15px 100px; display: none; }
 .tab-content.active { display: block; }
 
-.revenue-badge { background: #1a1a1a; border: 1px solid var(--gold); padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center; }
-.revenue-badge span { color: var(--green); font-size: 24px; font-weight: bold; }
+/* الكارت المعدل */
+.order-card { background: var(--dark); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #222; position: relative; border-right: 4px solid var(--gold); }
 
-.order-card { background: var(--dark); border: 1px solid #333; border-radius: 20px; padding: 20px; margin-bottom: 15px; position: relative; border-right: 5px solid var(--gold); }
-.order-price { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: bold; font-size: 22px; text-align: left; }
+/* الاسم يمين والسعر يسار */
+.card-top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+.name-text { background: #1a1a1a; color: #fff; padding: 8px 15px; border-radius: 12px; font-size: 20px; font-weight: bold; border: 1px solid #333; order: 2; } /* order 2 يضعه يميناً */
+.order-price { color: var(--green); font-size: 26px; font-weight: bold; order: 1; } /* order 1 يضعه يساراً */
 
-/* عدد العلب على الشمال تحت السعر */
-.qty-tag { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 4px 12px; border-radius: 8px; font-size: 13px; border: 1px solid rgba(212, 175, 55, 0.3); position: absolute; left: 20px; top: 55px; }
+.order-info { color: #aaa; font-size: 14px; line-height: 1.8; text-align: right; clear: both; }
+.qty-badge { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 5px 12px; border-radius: 8px; font-size: 13px; display: inline-block; margin: 10px 0; border: 1px solid rgba(212, 175, 55, 0.2); }
 
-.order-header { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 10px; }
-.name-tag { background: rgba(255, 255, 255, 0.05); color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 18px; font-weight: bold; border: 1px solid #333; }
-.order-date { font-size: 11px; color: #666; display: block; margin-bottom: 5px; text-align: right; }
-
-.action-btns { display: flex; gap: 8px; margin-top: 25px; flex-wrap: wrap; }
-.btn-m { flex: 1; padding: 12px; border-radius: 12px; border: none; color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; text-decoration: none; }
-.btn-ship { background: var(--purple); }
-.btn-done { background: var(--blue); }
-.btn-print { background: #fff; color: #000; }
+/* الأزرار */
+.action-grid { display: flex; gap: 8px; margin-top: 15px; }
+.btn-act { flex: 1; height: 45px; border-radius: 10px; border: none; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.btn-ship-large { flex: 3; background: var(--purple); font-size: 16px; font-weight: bold; }
+.btn-del { background: var(--red); max-width: 50px; }
 .btn-copy { background: var(--orange); }
-.btn-wa { background: var(--green); }
-.btn-del { background: var(--red); max-width: 45px; }
-
-@media print { body * { visibility: hidden; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; display: block !important; } }
+.btn-wa { background: #25d366; }
+.btn-print { background: #fff; color: #000; }
+.btn-done { background: var(--green); flex: 3; font-size: 16px; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<div id="login-screen">
-    <div class="login-box">
-        <h2>HOTEP LOGIN</h2>
-        <input type="password" id="passInput" placeholder="كلمة السر">
-        <button onclick="checkPass()">دخول</button>
-    </div>
-</div>
-
-<div id="admin-content">
+<div id="admin-content" style="display:block;">
     <div class="stats-bar">
         <div class="stat-item"><span>M</span><b id="sM">0</b></div>
         <div class="stat-item"><span>L</span><b id="sL">0</b></div>
         <div class="stat-item"><span>XL</span><b id="sXL">0</b></div>
         <div class="stat-item"><span>XXL</span><b id="sXXL">0</b></div>
     </div>
-    <div class="reset-link" onclick="resetCounter()">تصفير العداد</div>
+    <div style="text-align: center; color: #666; font-size: 12px; padding: 5px; cursor: pointer;" onclick="resetCounter()">تصفير السجل ↺</div>
 
     <div class="tabs-container">
-        <button class="tab-btn active" onclick="openTab(event, 'new')">جديد (<span id="cNew">0</span>)</button>
-        <button class="tab-btn" onclick="openTab(event, 'shipped')">مشحون (<span id="cShipped">0</span>)</button>
-        <button class="tab-btn" onclick="openTab(event, 'done')">تم التسليم (<span id="cDone">0</span>)</button>
+        <button class="tab-btn active" onclick="openTab(event, 'new')">جديد</button>
+        <button class="tab-btn" onclick="openTab(event, 'shipped')">مشحون</button>
+        <button class="tab-btn" onclick="openTab(event, 'done')">مستلم</button>
     </div>
 
-    <div id="new" class="tab-content active">
-        <div class="revenue-badge">إجمالي مبالغ الجديد: <br><span id="revNew">0</span> ج</div>
-        <div id="newList"></div>
-    </div>
+    <div id="new" class="tab-content active"><div id="newList"></div></div>
     <div id="shipped" class="tab-content"><div id="shippedList"></div></div>
     <div id="done" class="tab-content"><div id="doneList"></div></div>
 </div>
-
-<div id="print-area" style="display:none;"></div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
 let db;
+const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+if (!firebase.apps.length) firebase.initializeApp(config);
+db = firebase.database();
 
-function checkPass() {
-    if (document.getElementById('passInput').value === "hero1") {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('admin-content').style.display = 'block';
-        startApp();
-    }
-}
+db.ref('orders').on('value', snap => {
+    let html = { new:'', shipped:'', done:'' };
+    snap.forEach(child => {
+        const o = child.val();
+        const id = child.key;
+        const price = (parseInt(o.سعر_المنتج) || 0) + 50;
+        const qty = o.الكمية || 1;
+        const size = o.المقاس || 'M';
+
+        const card = `
+        <div class="order-card">
+            <div class="card-top-row">
+                <div class="name-text">${o.الاسم}</div>
+                <div class="order-price">${price} ج</div>
+            </div>
+            <div class="order-info">
+                <div class="qty-badge">${qty} علبة - مقاس ${size}</div><br>
+                <i class="fas fa-phone"></i> ${o.الهاتف}<br>
+                <i class="fas fa-map-marker-alt"></i> ${o.المحافظة} - ${o.العنوان}
+            </div>
+            <div class="action-grid">
+                ${o.الحالة === 'مشحون' ? 
+                `<button onclick="setStat('${id}','تم التسليم')" class="btn-act btn-done">تم التسليم</button>` : 
+                (o.الحالة === 'تم التسليم' ? `<span style="flex:3; color:var(--green); text-align:center; line-height:45px;">✅ مستلم</span>` : `<button onclick="shipAndCount('${id}','${size}',${qty})" class="btn-act btn-ship-large">شحن الأوردر</button>`)
+                }
+                <button onclick="doPrint()" class="btn-act btn-print"><i class="fas fa-print"></i></button>
+                <button onclick="wa('${o.الهاتف}','${o.الاسم}','${price}')" class="btn-act btn-wa"><i class="fab fa-whatsapp"></i></button>
+                <button onclick="copyData('${o.الاسم}','${price}')" class="btn-act btn-copy"><i class="fas fa-copy"></i></button>
+                <button onclick="del('${id}')" class="btn-act btn-del"><i class="fas fa-times"></i></button>
+            </div>
+        </div>`;
+
+        if(o.الحالة === 'تم التسليم') html.done += card;
+        else if(o.الحالة === 'مشحون') html.shipped += card;
+        else html.new += card;
+    });
+    document.getElementById('newList').innerHTML = html.new;
+    document.getElementById('shippedList').innerHTML = html.shipped;
+    document.getElementById('doneList').innerHTML = html.done;
+});
 
 function openTab(evt, name) {
     let contents = document.getElementsByClassName("tab-content");
@@ -113,102 +126,15 @@ function openTab(evt, name) {
     evt.currentTarget.classList.add("active");
 }
 
-function startApp() {
-    const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
-    if (!firebase.apps.length) firebase.initializeApp(config);
-    db = firebase.database();
-
-    // جلب بيانات العداد
-    db.ref('stats_counter').on('value', snap => {
-        const d = snap.val() || {M:0, L:0, XL:0, XXL:0};
-        document.getElementById('sM').innerText = d.M || 0;
-        document.getElementById('sL').innerText = d.L || 0;
-        document.getElementById('sXL').innerText = d.XL || 0;
-        document.getElementById('sXXL').innerText = d.XXL || 0;
-    });
-
-    db.ref('orders').on('value', snap => {
-        let html = { new:'', shipped:'', done:'' };
-        let counts = { new:0, shipped:0, done:0 };
-        let revNew = 0;
-
-        snap.forEach(child => {
-            const o = child.val();
-            const id = child.key;
-            const price = parseInt(o.سعر_المنتج || o.سعر_المنتجات || 0) + 50;
-            const qty = parseInt(o.الكمية || o.عدد_المنتجات || 1);
-            const size = o.المقاس || 'M';
-            const date = o.التوقيت || o.التاريخ || "";
-
-            // نص الواتساب المصلح
-            const waMsg = encodeURIComponent(`مرحباً أ/ ${o.الاسم}\nتم تأكيد طلبك من HOTEP 📦\nالعدد: ${qty} علبة\nالمقاس: ${size}\nإجمالي الحساب: ${price} ج شامل الشحن.`);
-
-            const card = `
-            <div class="order-card">
-                <span class="order-date"><i class="far fa-clock"></i> ${date}</span>
-                <div class="order-price">${price} ج</div>
-                <span class="qty-tag">${qty} علبة</span>
-                <div class="order-header">
-                    <span class="name-tag">${o.الاسم}</span>
-                </div>
-                <div style="font-size:14px; color:#aaa; margin-top:12px; text-align:right;">
-                    <i class="fas fa-phone" style="color:var(--gold);"></i> ${o.الهاتف}<br>
-                    <i class="fas fa-map-marker-alt" style="color:var(--gold);"></i> ${o.المحافظة} - ${o.العنوان}<br>
-                    <i class="fas fa-tshirt" style="color:var(--gold);"></i> المقاس: ${size}
-                </div>
-                <div class="action-btns">
-                    ${o.الحالة === 'مشحون' ? 
-                    `<button onclick="setStat('${id}','تم التسليم')" class="btn-m btn-done">تم التسليم</button>` : 
-                    (o.الحالة === 'تم التسليم' ? `<span style="flex:3; color:var(--green); text-align:center; font-weight:bold;">✅ مستلم</span>` : `<button onclick="shipAndCount('${id}','${size}',${qty})" class="btn-m btn-ship">شحن الأوردر</button>`)
-                    }
-                    <button onclick="doPrint('${o.الاسم}','${o.الهاتف}','${o.العنوان}','${price}','${qty}','${size}')" class="btn-m btn-print"><i class="fas fa-print"></i></button>
-                    <button onclick="copyData('${o.الاسم}','${price}')" class="btn-m btn-copy"><i class="fas fa-copy"></i></button>
-                    <a href="https://wa.me/2${o.الهاتف}?text=${waMsg}" target="_blank" class="btn-m btn-wa"><i class="fab fa-whatsapp"></i></a>
-                    <button onclick="del('${id}')" class="btn-m btn-del">×</button>
-                </div>
-            </div>`;
-
-            if(o.الحالة === 'تم التسليم') { html.done += card; counts.done++; }
-            else if(o.الحالة === 'مشحون') { html.shipped += card; counts.shipped++; }
-            else { html.new += card; counts.new++; revNew += price; }
-        });
-
-        document.getElementById('newList').innerHTML = html.new;
-        document.getElementById('shippedList').innerHTML = html.shipped;
-        document.getElementById('doneList').innerHTML = html.done;
-        document.getElementById('cNew').innerText = counts.new;
-        document.getElementById('cShipped').innerText = counts.shipped;
-        document.getElementById('cDone').innerText = counts.done;
-        document.getElementById('revNew').innerText = revNew;
-    });
-}
-
 window.shipAndCount = (id, size, qty) => {
     db.ref('stats_counter/' + size).transaction(c => (c || 0) + parseInt(qty));
     db.ref('orders/' + id).update({ الحالة: 'مشحون' });
 };
-
 window.setStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
-window.del = (id) => { if(confirm('حذف الأوردر؟')) db.ref('orders/'+id).remove(); };
-window.resetCounter = () => { if(confirm('تصفير العداد؟')) db.ref('stats_counter').set({M:0, L:0, XL:0, XXL:0}); };
-
-window.copyData = (n, p) => {
-    const txt = "الاسم: " + n + "\nالحساب: " + p + " ج";
-    const el = document.createElement('textarea');
-    el.value = txt; document.body.appendChild(el);
-    el.select(); document.execCommand('copy');
-    document.body.removeChild(el);
-    alert("✅ تم النسخ");
-};
-
-window.doPrint = (name, phone, addr, price, qty, size) => {
-    const area = document.getElementById('print-area');
-    area.innerHTML = `<div style="border:5px solid #000; padding:30px; text-align:right; direction:rtl;">
-    <h1 style="text-align:center;">HOTEP STORE 📦</h1><hr>
-    <p><b>الاسم:</b> ${name}</p><p><b>الهاتف:</b> ${phone}</p><p><b>العنوان:</b> ${addr}</p><p><b>الطلب:</b> ${qty} علبة - مقاس (${size})</p>
-    <div style="background:#000; color:#fff; padding:15px; text-align:center; font-size:30px;">المطلوب: ${price} ج</div></div>`;
-    window.print();
-};
+window.del = (id) => { if(confirm('حذف؟')) db.ref('orders/'+id).remove(); };
+window.wa = (h, n, p) => window.open(`https://wa.me/2${h}?text=أهلاً أ/ ${n} تم شحن طلبك، الحساب ${p}ج`);
+window.copyData = (n, p) => { navigator.clipboard.writeText(`${n}\n${p}ج`).then(() => alert("تم النسخ")); };
 </script>
 </body>
 </html>
+ 
