@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -6,48 +7,48 @@
     <title>НОТЕР Admin - المعتمد النهائي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; }
+        :root { --gold: #D4AF37; --black: #050505; --dark: #121212; --green: #25d366; --purple: #6f42c1; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
         /* شريط المقاسات العلوي */
-        .stats-bar { background: #000; padding: 15px; display: flex; justify-content: space-around; border-bottom: 1px solid #222; }
+        .stats-bar { background: #000; padding: 10px; display: flex; justify-content: space-around; border-bottom: 1px solid #222; }
         .stat-item { text-align: center; }
-        .stat-item span { display: block; color: var(--gold); font-size: 11px; }
+        .stat-item span { display: block; color: var(--gold); font-size: 10px; }
         .stat-item b { font-size: 18px; color: #fff; }
 
-        /* رابط تصفير السجل */
-        .reset-link { text-align: center; padding: 10px; color: #f05050; font-size: 13px; cursor: pointer; text-decoration: underline; display: block; font-weight: bold; }
+        /* زر التصفير كما في الصورة */
+        .reset-link { text-align: center; padding: 5px; color: #555; font-size: 11px; cursor: pointer; text-decoration: underline; display: block; margin-bottom: 10px; }
 
         /* التبويبات */
-        .tabs { display: flex; background: #111; margin: 10px; border-radius: 12px; padding: 5px; border: 1px solid #222; }
-        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: #888; cursor: pointer; border-radius: 10px; font-size: 14px; }
+        .tabs { display: flex; background: #111; margin: 10px; border-radius: 12px; padding: 5px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 8px; font-size: 13px; }
         .tab-btn.active { background: var(--gold); color: #000; font-weight: bold; }
 
-        /* صناديق مبالغ الأرباح */
-        .revenue-box { background: #151515; border: 1px solid var(--gold); margin: 10px; padding: 15px; border-radius: 15px; text-align: center; }
-        .revenue-box h3 { margin: 0; font-size: 16px; color: #eee; }
-        .revenue-box span { color: var(--green); font-size: 28px; font-weight: bold; display: block; margin-top: 5px; }
+        /* صندوق الإجمالي */
+        .revenue-box { background: #151515; border: 1px solid #333; margin: 10px; padding: 15px; border-radius: 15px; text-align: center; }
+        .revenue-box h3 { margin: 0; font-size: 16px; color: #fff; }
+        .revenue-box span { color: var(--green); font-size: 26px; font-weight: bold; display: block; margin-top: 5px; }
 
-        /* كارت الأوردر - التنسيق المفضل */
-        .order-card { background: var(--dark); border-radius: 20px; padding: 18px; margin: 12px; position: relative; border-right: 4px solid var(--gold); }
-        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .name-box { background: #1a1a1a; color: #fff; padding: 8px 15px; border-radius: 10px; font-size: 18px; font-weight: bold; border: 1px solid #333; order: 2; }
-        .price-text { color: var(--green); font-size: 24px; font-weight: bold; order: 1; }
+        /* كارت الأوردر (التنسيق المطلوب بالملي) */
+        .order-card { background: var(--dark); border-radius: 20px; padding: 15px; margin: 12px; border-right: 4px solid var(--gold); position: relative; }
+        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .price-text { color: var(--green); font-size: 22px; font-weight: bold; }
+        .name-box { background: #222; color: #fff; padding: 5px 15px; border-radius: 10px; font-size: 16px; font-weight: bold; border: 1px solid #333; }
         
-        .order-info { margin-bottom: 15px; text-align: right; }
-        .info-row { font-size: 14px; color: #aaa; margin-bottom: 5px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
-        .info-row i { color: var(--gold); }
-        .qty-badge { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 5px 12px; border-radius: 8px; font-size: 14px; border: 1px solid rgba(212, 175, 55, 0.3); display: inline-block; margin-bottom: 10px; }
+        .order-details { text-align: right; margin-bottom: 10px; }
+        .qty-badge { background: #1a1500; color: var(--gold); padding: 5px 15px; border-radius: 8px; font-size: 13px; border: 1px solid #312600; display: inline-block; margin-bottom: 10px; }
+        .info-row { font-size: 13px; color: #999; margin-bottom: 4px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+        .info-row i { color: var(--gold); font-size: 12px; }
 
-        /* صف الأزرار */
-        .btns-row { display: flex; gap: 6px; margin-top: 15px; }
-        .btn { height: 45px; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; transition: 0.2s; }
+        /* صف الأزرار - الألوان كما في الصورة */
+        .btns-row { display: flex; gap: 5px; margin-top: 15px; }
+        .btn { height: 42px; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; transition: 0.2s; }
         
-        .btn-ship-action { background: #6f42c1; flex: 2.5; font-weight: bold; }
-        .btn-wa { background: #25d366; flex: 1; }
-        .btn-cpy { background: #ff8c00; flex: 1; }
-        .btn-prnt { background: #fff; color: #000; flex: 1; }
-        .btn-del { background: #d9534f; flex: 1; }
+        .btn-ship { background: var(--purple); flex: 3; font-weight: bold; } /* شحن الأوردر البنفسجي */
+        .btn-prnt { background: #fff; color: #000; flex: 1; } /* طباعة الأبيض */
+        .btn-wa { background: #25d366; flex: 1; } /* واتساب الأخضر */
+        .btn-cpy { background: #ff8c00; flex: 1; } /* نسخ البرتقالي */
+        .btn-del { background: #d9534f; flex: 1; } /* حذف الأحمر */
 
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000; }
     </style>
@@ -56,7 +57,7 @@
 
 <div id="login-screen">
     <div style="background:var(--dark); padding:30px; border-radius:20px; border:1px solid var(--gold); text-align:center; width:260px;">
-        <h2 style="color:var(--gold)">НОТЕР ADMIN</h2>
+        <h2 style="color:var(--gold)">НОТЕР</h2>
         <input type="password" id="passInput" placeholder="كلمة السر" style="width:100%; padding:10px; margin:15px 0; background:#000; border:1px solid #333; color:#fff; text-align:center; border-radius:8px;">
         <button id="loginBtn" style="background:var(--gold); border:none; padding:10px; width:100%; border-radius:8px; font-weight:bold; cursor:pointer;">دخول</button>
     </div>
@@ -70,7 +71,7 @@
         <div class="stat-item"><span>XXL</span><b id="sXXL">0</b></div>
     </div>
     
-    <div class="reset-link" id="resetBtn">🔄 تصفير سجل المقاسات</div>
+    <div class="reset-link" id="resetBtn">تصفير سجل المقاسات</div>
 
     <div class="tabs">
         <button class="tab-btn active" data-view="new">جديد (<span id="cN">0</span>)</button>
@@ -79,17 +80,11 @@
     </div>
 
     <div id="vNew">
-        <div class="revenue-box"><h3>إجمالي مبالغ الجديد</h3><span id="revNew">0</span> ج</div>
+        <div class="revenue-box"><h3>إجمالي مبالغ الجديد:</h3><span id="revNew">0</span> ج</div>
         <div id="listNew"></div>
     </div>
-    <div id="vShip" style="display:none;">
-        <div class="revenue-box"><h3>أرباح قيد الشحن</h3><span id="revShip">0</span> ج</div>
-        <div id="listShip"></div>
-    </div>
-    <div id="vDone" style="display:none;">
-        <div class="revenue-box"><h3>أرباح مستلمة</h3><span id="revDone">0</span> ج</div>
-        <div id="listDone"></div>
-    </div>
+    <div id="vShip" style="display:none;"><div id="listShip"></div></div>
+    <div id="vDone" style="display:none;"><div id="listDone"></div></div>
 </div>
 
 <div id="print-area" style="display:none;"></div>
@@ -102,12 +97,11 @@ const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-w
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// تحديد سعر الشحن بناءً على المحافظة
-function getShipCost(city) {
+// دالة حساب الشحن المعتمدة بناءً على الصورة
+function getShipping(city) {
     if (!city) return 70;
-    const c = city.toLowerCase();
-    if (c.includes("القاهرة") || c.includes("الجيزة")) return 50;
-    return 70; // الإسكندرية وباقي المحافظات
+    if (city.includes("القاهرة") || city.includes("الجيزة")) return 50;
+    return 70;
 }
 
 document.getElementById('loginBtn').addEventListener('click', () => {
@@ -125,49 +119,49 @@ function startEngine() {
     });
 
     db.ref('orders').on('value', snap => {
-        let lists = {new: '', ship: '', done: ''}, counts = {n:0, s:0, d:0}, rev = {n:0, s:0, d:0};
+        let lists = {new: '', ship: '', done: ''}, counts = {n:0, s:0, d:0}, revN = 0;
 
         snap.forEach(child => {
             const o = child.val();
             const id = child.key;
             
-            // معادلة الحساب: سعر المنتج + سعر الشحن
+            // إصلاح الحساب: سعر المنتج + سعر الشحن
             const productPrice = parseInt(o.سعر_المنتج || o.Price || o.السعر || 0);
-            const shipping = getShipCost(o.المحافظة);
-            const totalPrice = productPrice + shipping;
+            const shippingCost = getShipping(o.المحافظة);
+            const total = productPrice + shippingCost;
             
             const q = o.الكمية || 1;
             const sz = o.المقاس || 'M';
 
             const card = `
                 <div class="order-card">
+                    <div style="font-size:10px; color:#444; margin-bottom:5px; text-align:left;">${o.التاريخ || ''}</div>
                     <div class="order-header">
-                        <div class="price-text">${totalPrice} ج</div>
+                        <div class="price-text">${total} ج</div>
                         <div class="name-box">${o.الاسم}</div>
                     </div>
                     
-                    <div class="order-info">
-                        <span class="qty-badge">${q} علبة - مقاس ${sz}</span>
+                    <div class="order-details">
+                        <div style="text-align:right;"><span class="qty-badge">${q} علبة - ${sz}</span></div>
                         <div class="info-row">${o.الهاتف} <i class="fas fa-phone"></i></div>
                         <div class="info-row">${o.المحافظة} - ${o.العنوان} <i class="fas fa-map-marker-alt"></i></div>
-                        <div style="font-size:10px; color:#444; margin-top:5px; text-align:left;">${o.التاريخ || ''}</div>
                     </div>
 
-                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${totalPrice}" data-ship="${shipping}" data-base="${productPrice}" data-qty="${q}" data-addr="${o.العنوان}">
+                    <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-size="${sz}" data-price="${total}" data-qty="${q}" data-addr="${o.العنوان}">
                         ${o.الحالة === 'مشحون' ? 
-                            `<button class="btn btn-done" style="background:#0084ff; flex:2.5;">تم التسليم</button>` : 
-                            (o.الحالة === 'تم التسليم' ? `<div style="flex:2.5; text-align:center; color:var(--green); font-weight:bold;">✅ مستلم</div>` : `<button class="btn btn-ship-action btn-go-ship">شحن الأوردر</button>`)
+                            `<button class="btn btn-ship" style="background:#0084ff; flex:3;">تم التسليم</button>` : 
+                            (o.الحالة === 'تم التسليم' ? `<div style="flex:3; text-align:center; color:var(--green); font-weight:bold;">✅ مستلم</div>` : `<button class="btn btn-ship btn-go-ship">شحن الأوردر</button>`)
                         }
+                        <button class="btn btn-prnt"><i class="fas fa-print"></i></button>
                         <button class="btn btn-wa"><i class="fab fa-whatsapp"></i></button>
                         <button class="btn btn-cpy"><i class="fas fa-copy"></i></button>
-                        <button class="btn btn-prnt"><i class="fas fa-print"></i></button>
-                        <button class="btn btn-del"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-del"><i class="fas fa-times"></i></button>
                     </div>
                 </div>`;
 
-            if(o.الحالة === 'تم التسليم') { lists.done += card; counts.d++; rev.d += totalPrice; }
-            else if(o.الحالة === 'مشحون') { lists.ship += card; counts.s++; rev.s += totalPrice; }
-            else { lists.new += card; counts.n++; rev.n += totalPrice; }
+            if(o.الحالة === 'تم التسليم') { lists.done += card; counts.d++; }
+            else if(o.الحالة === 'مشحون') { lists.ship += card; counts.s++; }
+            else { lists.new += card; counts.n++; revN += total; }
         });
 
         document.getElementById('listNew').innerHTML = lists.new;
@@ -176,9 +170,7 @@ function startEngine() {
         document.getElementById('cN').innerText = counts.n;
         document.getElementById('cS').innerText = counts.s;
         document.getElementById('cD').innerText = counts.d;
-        document.getElementById('revNew').innerText = rev.n;
-        document.getElementById('revShip').innerText = rev.s;
-        document.getElementById('revDone').innerText = rev.d;
+        document.getElementById('revNew').innerText = revN;
     });
 }
 
@@ -194,9 +186,7 @@ document.addEventListener('click', (e) => {
         tab.classList.add('active');
     }
 
-    if (reset && confirm('هل أنت متأكد من تصفير سجل المقاسات؟')) {
-        db.ref('shipped_stats').set({M:0, L:0, XL:0, XXL:0});
-    }
+    if (reset && confirm('تصفير سجل المقاسات؟')) db.ref('shipped_stats').set({M:0, L:0, XL:0, XXL:0});
 
     if (btn) {
         const p = btn.parentElement.dataset;
@@ -204,22 +194,18 @@ document.addEventListener('click', (e) => {
             db.ref('shipped_stats/' + p.size).transaction(c => (parseInt(c) || 0) + parseInt(p.qty));
             db.ref('orders/' + p.id).update({ الحالة: 'مشحون' });
         }
-        if (btn.classList.contains('btn-done')) db.ref('orders/' + p.id).update({ الحالة: 'تم التسليم' });
-        if (btn.classList.contains('btn-del') && confirm('حذف الأوردر نهائياً؟')) db.ref('orders/' + p.id).remove();
-        if (btn.classList.contains('btn-wa')) {
-            const msg = encodeURIComponent(`مرحباً أ/ ${p.name}\nتم تأكيد أوردرك من НОТЕР 📦\nإجمالي الحساب: ${p.price} ج (شامل الشحن).\nسيصلك الأوردر خلال 48 ساعة.`);
-            window.open(`https://wa.me/2${p.phone}?text=${msg}`, '_blank');
-        }
+        if (btn.classList.contains('btn-del') && confirm('حذف؟')) db.ref('orders/' + p.id).remove();
+        if (btn.classList.contains('btn-wa')) window.open(`https://wa.me/2${p.phone}`, '_blank');
         if (btn.classList.contains('btn-cpy')) {
-            navigator.clipboard.writeText(`الاسم: ${p.name}\nالهاتف: ${p.phone}\nالعنوان: ${p.addr}\nالمبلغ: ${p.price} ج`).then(() => alert('تم النسخ'));
+            navigator.clipboard.writeText(`الاسم: ${p.name}\nالهاتف: ${p.phone}\nالمبلغ: ${p.price} ج`).then(() => alert('تم النسخ'));
         }
         if (btn.classList.contains('btn-prnt')) {
             const pArea = document.getElementById('print-area');
-            pArea.innerHTML = `<div style="direction:rtl; padding:30px; color:#000; font-family:Arial; border:2px solid #000;"><h1>НОТЕР</h1><hr><h3>الاسم: ${p.name}</h3><h3>الهاتف: ${p.phone}</h3><h3>العنوان: ${p.addr}</h3><br><h2>المطلوب تحصيله: ${p.price} ج</h2></div>`;
+            pArea.innerHTML = `<div style="direction:rtl; padding:20px; color:#000;"><h2>НОТЕР</h2><p>الاسم: ${p.name}</p><p>الهاتف: ${p.phone}</p><h3>المبلغ: ${p.price} ج</h3></div>`;
             window.print();
         }
     }
 });
 </script>
 </body>
-</html> 
+</html>
