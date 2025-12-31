@@ -23,13 +23,10 @@
         .revenue-box { background: #151515; border: 1px solid var(--gold); margin: 10px; padding: 20px; border-radius: 15px; text-align: center; }
         .revenue-box span { color: var(--green); font-size: 32px; font-weight: bold; display: block; }
 
-        /* التنسيق المطلوب: الاسم يمين - السعر يسار */
+        /* الكارت: الاسم يمين - السعر يسار */
         .order-card { background: var(--dark); border-radius: 20px; padding: 15px; margin: 15px; border-right: 4px solid var(--gold); }
         .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        
-        /* الاسم جهة اليمين في صندوق رمادي */
         .name-box { background: #222; color: #fff; padding: 8px 18px; border-radius: 10px; font-size: 18px; font-weight: bold; border: 1px solid #333; order: 2; }
-        /* السعر جهة اليسار باللون الأخضر */
         .price-text { color: var(--green); font-size: 26px; font-weight: bold; order: 1; }
         
         .details-area { text-align: right; }
@@ -37,7 +34,7 @@
         .info-line { font-size: 14px; color: #999; margin-bottom: 6px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
         .info-line i { color: var(--gold); }
 
-        /* صف الأزرار بالألوان والترتيب كما في الصور */
+        /* الأزرار الخمسة حسب الصورة */
         .btns-row { display: flex; gap: 6px; margin-top: 20px; }
         .btn { height: 48px; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; }
         .btn-ship { background: var(--purple); flex: 3; font-weight: bold; }
@@ -53,7 +50,7 @@
 
 <div id="login-screen">
     <div style="background:var(--dark); padding:30px; border-radius:20px; border:1px solid var(--gold); text-align:center;">
-        <h2 style="color:var(--gold)">НОТЕР LOGIN</h2>
+        <h2 style="color:var(--gold)">НОТЕР Admin</h2>
         <input type="password" id="passInput" placeholder="كلمة السر" style="width:100%; padding:12px; margin:15px 0; background:#000; border:1px solid #333; color:#fff; text-align:center; border-radius:10px;">
         <button id="loginBtn" style="background:var(--gold); border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold;">دخول</button>
     </div>
@@ -115,7 +112,7 @@ function startEngine() {
         snap.forEach(child => {
             const o = child.val();
             const id = child.key;
-            const itemPrice = parseInt(o.Price || o.سعر_المنتج || o.السعر || 190);
+            const itemPrice = parseInt(o.Price || o.سعر_المنتج || o.السعر || 0);
             const shipping = getShipping(o.المحافظة);
             const total = itemPrice + shipping;
 
@@ -132,7 +129,7 @@ function startEngine() {
                         <div class="info-line">${o.المحافظة} - ${o.العنوان} <i class="fas fa-map-marker-alt"></i></div>
                     </div>
                     <div class="btns-row" data-id="${id}" data-name="${o.الاسم}" data-phone="${o.الهاتف}" data-price="${total}" data-size="${o.المقاس}" data-qty="${o.الكمية || 1}">
-                        ${o.الحالة === 'مشحون' ? `<button class="btn btn-ship btn-done-ship" style="background:#0084ff;">تم التسليم</button>` : 
+                        ${o.الحالة === 'مشحون' ? `<button class="btn btn-ship" style="background:#0084ff; flex:3;">تم التسليم</button>` : 
                         (o.الحالة === 'تم التسليم' ? `<div style="flex:3; text-align:center; color:var(--green); font-weight:bold;">✅ مستلم</div>` : `<button class="btn btn-ship btn-go-ship">شحن الأوردر</button>`)}
                         <button class="btn btn-prnt"><i class="fas fa-print"></i></button>
                         <button class="btn btn-wa"><i class="fab fa-whatsapp"></i></button>
@@ -173,9 +170,9 @@ document.addEventListener('click', (e) => {
             db.ref('shipped_stats/' + p.size).transaction(c => (parseInt(c) || 0) + parseInt(p.qty));
             db.ref('orders/' + p.id).update({ الحالة: 'مشحون' });
         }
-        if (btn.classList.contains('btn-done-ship')) db.ref('orders/' + p.id).update({ الحالة: 'تم التسليم' });
         if (btn.classList.contains('btn-del') && confirm('حذف؟')) db.ref('orders/' + p.id).remove();
         if (btn.classList.contains('btn-wa')) window.open(`https://wa.me/2${p.phone}`);
+        if (btn.classList.contains('btn-cpy')) navigator.clipboard.writeText(`الاسم: ${p.name}\nالمبلغ: ${p.price}`);
     }
 });
 </script>
