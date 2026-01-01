@@ -14,10 +14,11 @@
         .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
 
-        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
-        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease; }
+        .slider-container { width: 100%; height: 450px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
+        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease-in-out; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .slide img { width: 100%; height: 100%; object-fit: contain; }
+        /* تحسين عرض الصور الجديدة */
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
         
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
@@ -97,8 +98,8 @@
     
     <div class="slider-container">
         <div class="slides-wrapper" id="mainSlider">
-            <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div>
-            <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div>
+            <div class="slide"><img src="https://i.ibb.co/PvmwfyNd/1767276815616-edit-1411419282935049.jpg"></div>
+            <div class="slide"><img src="https://i.ibb.co/nsn5gFxB/1000068271-edit-1412030296766163.jpg"></div>
         </div>
     </div>
     
@@ -192,8 +193,9 @@
     let currentIdx = 0;
     setInterval(() => {
         currentIdx = (currentIdx + 1) % 2;
+        // تعديل اتجاه السلايدر ليعمل بشكل صحيح مع الصور الجديدة
         document.getElementById('mainSlider').style.transform = `translateX(${currentIdx * 100}%)`;
-    }, 5000);
+    }, 4000);
 
     function submitOrder() {
         const name = document.getElementById('name').value.trim();
@@ -222,24 +224,10 @@
             التاريخ: new Date().toLocaleDateString('ar-EG'),
             الحالة: "جديد"
         }).then(() => {
-            // --- كود إرسال التليجرام ---
-            const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
-            const chatId = "7795759414";
-            const messageText = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
-
-            const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`;
-            const sender = new Image();
-            sender.src = telegramUrl;
-            // --------------------------
-
             document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم حجز ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
             document.getElementById('successModal').style.display = 'flex';
-        }).catch((err) => {
-            alert("حدث خطأ، حاول مرة أخرى");
-            btn.disabled = false;
-            btn.innerText = "تأكيد الطلب الآن";
         });
     }
 </script>
 </body>
-</html> 
+</html>
