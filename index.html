@@ -71,15 +71,14 @@
     <div class="product-features">
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
-            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة.</li>
-            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة.</li>
-            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر ماركة HOTEP.</li>
+            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%</b></li>
+            <li><i class="fas fa-check"></i> <b>تغليف ماركة HOTEP الفاخر</b></li>
         </ul>
     </div>
 
     <div class="features-strip">
         <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
+        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة</div>
         <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
     </div>
 
@@ -91,34 +90,23 @@
         <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
     </div>
 
-    <div class="form-group">
-        <label>الاسم بالكامل</label>
-        <input type="text" id="name" placeholder="اكتب اسمك هنا">
-    </div>
-    <div class="form-group">
-        <label>رقم الموبايل</label>
-        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
-    </div>
+    <div class="form-group"><label>الاسم بالكامل</label><input type="text" id="name" placeholder="اكتب اسمك"></div>
+    <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="phone" placeholder="01xxxxxxxxx"></div>
     <div class="form-group">
         <label>المحافظة</label>
         <select id="province" onchange="updateTotal()">
-            <option value="50">القاهرة (50ج شحن)</option>
-            <option value="50">الجيزة (50ج شحن)</option>
-            <option value="70">الإسكندرية (70ج شحن)</option>
-            <option value="70">باقي المحافظات (70ج شحن)</option>
+            <option value="50">القاهرة (50ج)</option>
+            <option value="50">الجيزة (50ج)</option>
+            <option value="70">باقي المحافظات (70ج)</option>
         </select>
     </div>
-    <div class="form-group">
-        <label>العنوان بالتفصيل</label>
-        <textarea id="address" placeholder="المنطقة، اسم الشارع، رقم المنزل..."></textarea>
-    </div>
+    <div class="form-group"><label>العنوان بالتفصيل</label><textarea id="address" placeholder="المنطقة والشارع"></textarea></div>
     <div class="form-group">
         <label>الكمية</label>
         <select id="quantity" onchange="updateTotal()">
             <option value="1">1 علبة (2 قطعة)</option>
             <option value="2">2 علبة (4 قطعة)</option>
             <option value="3">3 علبة (6 قطعة)</option>
-            <option value="4">4 علبة (8 قطعة)</option>
         </select>
     </div>
     <div class="form-group">
@@ -164,7 +152,7 @@
         const total = (qty * 200) + shipCost;
 
         if(!name || phone.length < 11 || !address) {
-            alert("يرجى ملء كافة البيانات بشكل صحيح (رقم الهاتف 11 رقم)");
+            alert("يرجى إدخال البيانات كاملة (رقم الهاتف 11 رقم)");
             return;
         }
 
@@ -180,17 +168,20 @@
             التاريخ: new Date().toLocaleDateString('ar-EG')
         }).then(() => {
             
-            // 2. Telegram (البيانات التي قدمتها)
+            // 2. Telegram - الطريقة المضمونة 100%
             const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
             const chatId = "7795759414"; 
-            const text = `🔥 طلب جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
+            const msg = `🔥 طلب جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
 
-            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`)
-            .then(() => {
+            // استخدام تقنية الصورة لإرسال الطلب فوراً
+            const img = new Image();
+            img.src = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}&v=${Date.now()}`;
+
+            setTimeout(() => {
                 document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم استلام طلبك!`;
                 document.getElementById('successModal').style.display = 'flex';
                 btn.innerText = "تم تأكيد الطلب ✅";
-            });
+            }, 600);
 
         }).catch(err => {
             alert("حدث خطأ، حاول مرة أخرى");
