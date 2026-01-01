@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -17,7 +18,6 @@
         .slider-container { width: 100%; height: 450px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease-in-out; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        /* تحسين عرض الصور الجديدة */
         .slide img { width: 100%; height: 100%; object-fit: cover; }
         
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
@@ -40,42 +40,14 @@
         .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
         label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
         
-        input, select, textarea { 
-            width: 100% !important; 
-            padding: 14px; 
-            border-radius: 12px; 
-            border: 1px solid #222; 
-            background: #000; 
-            color: #fff; 
-            font-size: 16px; 
-            text-align: center; 
-            outline: none; 
-            display: block;
-        }
-
+        input, select, textarea { width: 100% !important; padding: 14px; border-radius: 12px; border: 1px solid #222; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; display: block; }
         textarea#address { resize: vertical; min-height: 80px; font-family: inherit; }
         
         .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
         .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
 
-        #orderBtn { 
-            width: 100%; 
-            padding: 20px; 
-            background: var(--gold); 
-            color: #000; 
-            border: none; 
-            border-radius: 15px; 
-            font-size: 22px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            margin-top: 15px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-            70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-        }
+        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); } 70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); } }
 
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 25px; text-align: center; width: 100%; max-width: 320px; }
@@ -109,8 +81,7 @@
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
             <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</li>
-            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</li>
-            <li><i class="fas fa-check"></i> <b>ثبات الألوان:</b> جودة تصنيع تضمن عدم تغير اللون بعد الغسيل.</li>
+            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة.</li>
             <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</li>
         </ul>
     </div>
@@ -148,7 +119,7 @@
     </div>
     <div class="form-group">
         <label>العنوان بالتفصيل</label>
-        <textarea id="address" placeholder="المنطقة، اسم الشارع، رقم المنزل..."></textarea>
+        <textarea id="address" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea>
     </div>
     
     <div class="form-group">
@@ -157,9 +128,6 @@
             <option value="1">1 علبة (2 قطعة)</option>
             <option value="2">2 علبة (4 قطعة)</option>
             <option value="3">3 علبة (6 قطعة)</option>
-            <option value="4">4 علبة (8 قطعة)</option>
-            <option value="5">5 علبة (10 قطعة)</option>
-            <option value="6">6 علبة (12 قطعة)</option>
         </select>
     </div>
 
@@ -193,7 +161,6 @@
     let currentIdx = 0;
     setInterval(() => {
         currentIdx = (currentIdx + 1) % 2;
-        // تعديل اتجاه السلايدر ليعمل بشكل صحيح مع الصور الجديدة
         document.getElementById('mainSlider').style.transform = `translateX(${currentIdx * 100}%)`;
     }, 4000);
 
@@ -217,11 +184,22 @@
         btn.disabled = true; 
         btn.innerText = "جاري الحجز...";
 
+        // تليجرام
+        const telegramToken = '7774431835:AAH_W76kI4u66u8p6vO-eR-V9OaT_uE_T1w'; 
+        const chatId = '6465451995';    
+        const message = `🔥 طلب جديد من HOTEP 🔥\n\n👤 الاسم: ${name}\n📞 الموبايل: ${phone}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n📦 الكمية: ${qty} علب\n📏 المقاس: ${size}\n💰 الإجمالي: ${total} جنيه`;
+
+        fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: message })
+        });
+
+        // فايربيز
         firebase.database().ref('orders').push({
             الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
             الكمية: qty, المقاس: size, الاجمالي: total,
-            التوقيت: new Date().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}),
-            التاريخ: new Date().toLocaleDateString('ar-EG'),
+            التوقيت: new Date().toLocaleTimeString('ar-EG'),
             الحالة: "جديد"
         }).then(() => {
             document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم حجز ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
