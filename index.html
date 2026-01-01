@@ -35,11 +35,12 @@
         .total-banner { background: #1a1a1a; border: 1px dashed var(--gold); padding: 15px; border-radius: 12px; text-align: center; margin-top: 10px; }
         .total-amount { color: var(--gold); font-size: 22px; font-weight: bold; }
 
-        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; }
+        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        #orderBtn:disabled { background: #444; cursor: not-allowed; }
 
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 25px; border-radius: 25px; text-align: center; max-width: 320px; width: 85%; }
-        .modal-info { background: rgba(212,175,55,0.1); padding: 12px; border-radius: 15px; margin: 15px 0; border: 1px solid #333; text-align: right; line-height: 1.6; }
+        .modal-info { background: rgba(212,175,55,0.1); padding: 12px; border-radius: 15px; margin: 15px 0; border: 1px solid #333; text-align: right; line-height: 1.6; font-size: 14px; }
         .modal-content button { background: var(--gold); border: none; padding: 12px 40px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
@@ -49,10 +50,7 @@
     <div class="modal-content">
         <h2 style="color:var(--gold); margin:0;">HOTEP</h2>
         <p style="color: #25d366; font-weight: bold; margin: 10px 0;">✅ تم استلام طلبك بنجاح!</p>
-        
-        <div class="modal-info" id="confirmDetails">
-            </div>
-        
+        <div class="modal-info" id="confirmDetails"></div>
         <p style="font-size:12px; color: #bbb;">سنتواصل معك هاتفياً خلال 48 ساعة لتأكيد الجاهزية.</p>
         <button onclick="window.location.reload()">حسناً</button>
     </div>
@@ -135,14 +133,14 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
+    // الإعدادات - تأكد من مطابقة رابط قاعدة البيانات
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
     function updateTotal() {
         const qty = parseInt(document.getElementById('quantity').value);
         const ship = parseInt(document.getElementById('province').value);
-        const productTotal = qty * 200;
-        document.getElementById('totalDisplay').innerText = productTotal + ship;
+        document.getElementById('totalDisplay').innerText = (qty * 200) + ship;
     }
 
     let currentIdx = 0;
@@ -156,34 +154,46 @@
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
+        const size = document.getElementById('size').value;
         const provElem = document.getElementById('province');
         const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
         const shipCost = parseInt(provElem.value);
         const qty = parseInt(document.getElementById('quantity').value);
-        const productTotal = qty * 200;
-        const finalTotal = productTotal + shipCost;
+        const finalTotal = (qty * 200) + shipCost;
 
-        if(!name || !phone || !address) return alert("يرجى ملء كافة الحقول");
+        if(!name || !phone || !address) return alert("يرجى ملء كافة الحقول (الاسم، الهاتف، العنوان)");
 
         const btn = document.getElementById('orderBtn');
-        btn.disabled = true; btn.innerText = "جاري الحفظ...";
+        btn.disabled = true; 
+        btn.innerText = "جاري تأكيد الطلب...";
 
+        // إرسال البيانات بما يتوافق مع لوحة الإدارة
         firebase.database().ref('orders').push({
-            الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
-            الكمية: qty + " علبة", المقاس: document.getElementById('size').value,
-            سعر_المنتجات: productTotal, سعر_الشحن: shipCost, الاجمالي: finalTotal,
-            التاريخ: new Date().toLocaleString('ar-EG'), الحاله: "جديد"
+            الاسم: name,
+            الهاتف: phone,
+            المحافظة: provName,
+            العنوان: address,
+            الكمية: qty,
+            المقاس: size,
+            الاجمالي: finalTotal,
+            التوقيت: new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'}),
+            التاريخ: new Date().toLocaleDateString('ar-EG'),
+            الحالة: "جديد"
         }).then(() => {
             document.getElementById('confirmDetails').innerHTML = `
                 <b>أستاذ ${name}،</b><br>
-                تم تجهيز أوردرك (${qty} علبة) مقاس ${document.getElementById('size').value}.<br>
-                سعر المنتجات: ${productTotal} ج.<br>
-                مصاريف الشحن (${provName}): ${shipCost} ج.<br>
-                <b>الإجمالي مع الشحن: ${finalTotal} ج.</b>
+                تم تأكيد طلبك (${qty} علبة) مقاس ${size}.<br>
+                سيتم الشحن إلى ${provName} قريباً.<br>
+                <b>الإجمالي: ${finalTotal} جنيه.</b>
             `;
             document.getElementById('successModal').style.display = 'flex';
+        }).catch(() => {
+            alert("حدث خطأ في الشبكة، حاول مرة أخرى");
+            btn.disabled = false;
+            btn.innerText = "تأكيد الطلب الآن";
         });
     }
 </script>
 </body>
 </html>
+ 
