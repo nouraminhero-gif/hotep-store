@@ -52,7 +52,7 @@
         <h2 style="color:var(--gold); margin:10px 0;">HOTEP</h2>
         <p>تم استلام طلبك بنجاح!</p>
         <div id="confirmDetails" style="background:#000; padding:10px; border-radius:10px; font-size:14px; margin-bottom:15px; line-height:1.6;"></div>
-        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold; cursor:pointer;">حسناً</button>
+        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
     </div>
 </div>
 
@@ -71,16 +71,16 @@
     <div class="product-features">
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
-            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%</b></li>
-            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية</b></li>
-            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين)</b></li>
+            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة.</li>
+            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة.</li>
+            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر ماركة HOTEP.</li>
         </ul>
     </div>
 
     <div class="features-strip">
         <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان</div>
+        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
+        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
     </div>
 
     <div class="size-grid">
@@ -110,7 +110,7 @@
     </div>
     <div class="form-group">
         <label>العنوان بالتفصيل</label>
-        <textarea id="address" placeholder="المنطقة، اسم الشارع..."></textarea>
+        <textarea id="address" placeholder="المنطقة، اسم الشارع، رقم المنزل..."></textarea>
     </div>
     <div class="form-group">
         <label>الكمية</label>
@@ -163,10 +163,10 @@
         const shipCost = parseInt(provElem.value);
         const total = (qty * 200) + shipCost;
 
-        // فحص البيانات بدقة مع تحديد الخطأ
-        if(!name) { alert("يرجى كتابة الاسم"); return; }
-        if(phone.length < 11) { alert("رقم الهاتف يجب أن يكون 11 رقماً"); return; }
-        if(!address) { alert("يرجى كتابة العنوان بالتفصيل"); return; }
+        if(!name || phone.length < 11 || !address) {
+            alert("يرجى ملء كافة البيانات بشكل صحيح (رقم الهاتف 11 رقم)");
+            return;
+        }
 
         const btn = document.getElementById('orderBtn');
         btn.disabled = true; 
@@ -179,17 +179,21 @@
             التوقيت: new Date().toLocaleTimeString('ar-EG'),
             التاريخ: new Date().toLocaleDateString('ar-EG')
         }).then(() => {
-            // 2. Telegram
-            const telegramToken = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
-            const chatId = "7795759414"; 
-            const telegramText = `🔥 طلب جديد لـ HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
             
-            fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(telegramText)}`);
+            // 2. Telegram (البيانات التي قدمتها)
+            const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
+            const chatId = "7795759414"; 
+            const text = `🔥 طلب جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
 
-            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم استلام طلبك!`;
-            document.getElementById('successModal').style.display = 'flex';
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`)
+            .then(() => {
+                document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم استلام طلبك!`;
+                document.getElementById('successModal').style.display = 'flex';
+                btn.innerText = "تم تأكيد الطلب ✅";
+            });
+
         }).catch(err => {
-            alert("حدث خطأ في الاتصال، جرب مرة أخرى");
+            alert("حدث خطأ، حاول مرة أخرى");
             btn.disabled = false;
         });
     }
