@@ -7,13 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
-        
-        /* ضبط النطاق لجميع العناصر */
         * { box-sizing: border-box; }
         
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
-        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; overflow: hidden; }
+        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
 
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
@@ -28,8 +26,13 @@
         .feat-item { text-align: center; font-size: 9px; color: #aaa; flex: 1; }
         .feat-item i { display: block; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
 
+        /* جدول المقاسات المعاد تثبيته وتوسيطه */
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; border: 1px solid #222; width: 100%; }
+        .size-header { background: #111; color: var(--gold); padding: 10px 2px; font-size: 11px; font-weight: bold; }
+        .size-item { background: var(--black); padding: 12px 2px; font-size: 11px; color: #eee; border-top: 1px solid #111; }
+
         .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; text-align: center; }
         
         input, select, textarea { 
             width: 100% !important; 
@@ -44,12 +47,13 @@
             display: block;
         }
 
+        /* العنوان يتمدد لأسفل فقط */
         textarea#address { resize: vertical; min-height: 80px; font-family: inherit; }
         
         .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
         .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
 
-        /* الزرار المتحرك */
+        /* الزرار النابض */
         #orderBtn { 
             width: 100%; 
             padding: 20px; 
@@ -68,7 +72,6 @@
             70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
-        #orderBtn:disabled { animation: none; background: #444; opacity: 0.8; }
 
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 25px; text-align: center; width: 100%; max-width: 320px; }
@@ -102,6 +105,14 @@
         <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
         <div class="feat-item"><i class="fas fa-box-open"></i>معاينة</div>
         <div class="feat-item"><i class="fas fa-shield-alt"></i>قطن 100%</div>
+    </div>
+
+    <div class="size-grid">
+        <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
+        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
+        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
+        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
+        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
     </div>
 
     <div class="form-group">
@@ -183,7 +194,7 @@
         const total = (qty * 200) + shipCost;
 
         if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
-            alert("يرجى إكمال البيانات بشكل صحيح (الاسم، الهاتف، العنوان)");
+            alert("يرجى إكمال البيانات بشكل صحيح");
             return;
         }
 
@@ -192,30 +203,18 @@
         btn.innerText = "جاري الحجز...";
 
         firebase.database().ref('orders').push({
-            الاسم: name,
-            الهاتف: phone,
-            المحافظة: provName,
-            العنوان: address,
-            الكمية: qty,
-            المقاس: size,
-            الاجمالي: total,
+            الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
+            الكمية: qty, المقاس: size, الاجمالي: total,
             التوقيت: new Date().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}),
             التاريخ: new Date().toLocaleDateString('ar-EG'),
             الحالة: "جديد"
         }).then(() => {
-            document.getElementById('confirmDetails').innerHTML = `
-                <b>أهلاً ${name}</b><br>
-                تم حجز ${qty} علبة - مقاس ${size}<br>
-                الإجمالي مع الشحن: ${total} جنيه
-            `;
+            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>الكمية: ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
             document.getElementById('successModal').style.display = 'flex';
-        }).catch((err) => {
-            alert("حدث خطأ في الاتصال، حاول مرة أخرى");
-            btn.disabled = false;
-            btn.innerText = "تأكيد الطلب الآن";
         });
     }
 </script>
 </body>
 </html>
  
+
