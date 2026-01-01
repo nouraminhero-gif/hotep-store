@@ -11,7 +11,7 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
 
-        /* شاشة الدخول */
+        /* تسجيل الدخول */
         #login-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 999999; }
         .login-box { width: 90%; max-width: 350px; text-align: center; padding: 40px; border-radius: 30px; background: #050505; border: 1px solid #1a1a1a; }
         .login-box h1 { color: var(--gold); font-size: 35px; letter-spacing: 5px; margin: 0 0 30px; }
@@ -20,7 +20,7 @@
 
         #admin-content { display: none; }
 
-        /* الإحصائيات */
+        /* الإحصائيات والمقاسات */
         .stats-main { background: #050505; padding: 20px 10px; display: flex; justify-content: space-around; border-bottom: 1px solid #111; }
         .stat-card { text-align: center; }
         .stat-card span { display: block; font-size: 10px; color: var(--gold); margin-bottom: 5px; opacity: 0.8; }
@@ -31,8 +31,14 @@
         .size-item span { display: block; font-size: 9px; color: #444; }
         .size-item b { font-size: 15px; color: #fff; }
 
+        /* شريط البحث */
+        .search-area { padding: 10px 15px; background: #080808; border-bottom: 1px solid #111; }
+        .search-box { position: relative; width: 100%; }
+        .search-box i { position: absolute; right: 15px; top: 13px; color: #444; }
+        .search-box input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 12px; border: 1px solid #222; background: #000; color: #fff; outline: none; font-size: 14px; }
+
         /* التبويبات */
-        .tabs { display: flex; background: #0a0a0a; margin: 15px; border-radius: 15px; border: 1px solid #111; overflow: hidden; }
+        .tabs { display: flex; background: #0a0a0a; margin: 10px 15px; border-radius: 15px; border: 1px solid #111; overflow: hidden; }
         .tab-btn { flex: 1; padding: 15px; border: none; background: transparent; color: #444; cursor: pointer; font-size: 12px; font-weight: bold; }
         .tab-btn.active { background: var(--gold); color: #000; }
 
@@ -40,17 +46,19 @@
         .tab-content.active { display: block; }
 
         /* كارت الأوردر */
-        .order-card { background: #080808; border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #151515; border-right: 5px solid var(--gold); position: relative; }
+        .order-card { background: #080808; border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #151515; border-right: 5px solid var(--gold); position: relative; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .order-time { font-size: 10px; color: #333; display: block; margin-bottom: 8px; }
         .price-tag { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: 800; font-size: 22px; }
         .name-tag { font-size: 18px; font-weight: bold; display: block; margin-bottom: 5px; }
         .qty-badge { background: rgba(212,175,55,0.1); color: var(--gold); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; }
         
+        /* الأزرار */
         .btn-grid { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
         .btn { flex: 1; min-width: 45px; height: 45px; border-radius: 12px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
-        .b-ship { background: #4d2dff; flex: 2; } /* زر الشحن أعرض قليلاً */
+        .b-ship { background: #4d2dff; flex: 2; }
         .b-done { background: var(--blue); flex: 2; }
-        .b-print { background: #fff; color: #000; } /* زر الطباعة أبيض */
+        .b-print { background: #fff; color: #000; }
         .b-copy { background: var(--orange); }
         .b-wa { background: var(--green); }
         .b-del { background: #111; color: var(--red); flex: 0 0 45px; }
@@ -58,10 +66,9 @@
         .excel-btn { width: calc(100% - 30px); margin: 0 15px 15px; padding: 15px; background: #1d6f42; color: #fff; border: none; border-radius: 15px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .reset-link { text-align: center; display: block; color: #222; font-size: 10px; padding: 10px; cursor: pointer; }
 
-        /* إخفاء الأزرار عند الطباعة لطباعة بوليصة نظيفة */
         @media print {
-            .btn-grid, .tabs, .stats-main, .size-bar, .excel-btn, .reset-link { display: none !important; }
-            .order-card { border: 1px solid #000; color: #000; background: #fff; }
+            .btn-grid, .tabs, .stats-main, .size-bar, .excel-btn, .reset-link, .search-area { display: none !important; }
+            .order-card { border: 1px solid #000; color: #000; background: #fff; margin-bottom: 30px; page-break-inside: avoid; }
             body { background: #fff; }
         }
     </style>
@@ -89,6 +96,13 @@
             <div class="size-item"><span>L</span><b id="zL">0</b></div>
             <div class="size-item"><span>XL</span><b id="zXL">0</b></div>
             <div class="size-item"><span>XXL</span><b id="zXXL">0</b></div>
+        </div>
+
+        <div class="search-area">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="بحث بالاسم أو رقم الهاتف..." onkeyup="filterOrders()">
+            </div>
         </div>
 
         <div class="tabs">
@@ -120,7 +134,15 @@
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 start();
-            } else { alert("خطأ في كلمة السر"); }
+            } else { alert("خطأ"); }
+        }
+
+        function filterOrders() {
+            let val = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('order-card');
+            for (let card of cards) {
+                card.style.display = card.innerText.toLowerCase().includes(val) ? "block" : "none";
+            }
         }
 
         function tab(e, id) {
@@ -130,6 +152,9 @@
             for (let b of bs) b.classList.remove("active");
             document.getElementById(id).style.display = "block";
             e.currentTarget.classList.add("active");
+            // تصفير البحث عند التنقل
+            document.getElementById('searchInput').value = "";
+            filterOrders();
         }
 
         function start() {
@@ -137,7 +162,6 @@
             if (!firebase.apps.length) firebase.initializeApp(cfg);
             db = firebase.database();
 
-            // عداد المقاسات
             db.ref('size_stats').on('value', s => {
                 const d = s.val() || {M:0, L:0, XL:0, XXL:0};
                 document.getElementById('zM').innerText = d.M || 0;
@@ -146,7 +170,6 @@
                 document.getElementById('zXXL').innerText = d.XXL || 0;
             });
 
-            // الطلبات
             db.ref('orders').on('value', snap => {
                 let h = { n:'', s:'', d:'' };
                 let counts = { n:0, s:0, d:0 };
@@ -205,6 +228,7 @@
                 document.getElementById('c1').innerText = counts.n;
                 document.getElementById('c2').innerText = counts.s;
                 document.getElementById('c3').innerText = counts.d;
+                filterOrders(); 
             });
         }
 
@@ -213,16 +237,16 @@
             db.ref('orders/' + id).update({ الحالة: 'مشحون' });
         };
         window.setS = (id, s) => db.ref('orders/' + id).update({ الحالة: s });
-        window.del = (id) => { if(confirm('حذف الأوردر؟')) db.ref('orders/' + id).remove(); };
+        window.del = (id) => { if(confirm('حذف؟')) db.ref('orders/' + id).remove(); };
         window.resetStats = () => { if(confirm('تصفير عداد المقاسات؟')) db.ref('size_stats').set({M:0, L:0, XL:0, XXL:0}); };
         window.copyToClipboard = (t) => { navigator.clipboard.writeText(t); alert("تم نسخ البيانات ✅"); };
         
         function dlExcel() {
-            if(exData.length === 0) return alert("لا توجد أوردرات مشحونة");
+            if(exData.length === 0) return alert("لا توجد أوردرات");
             const ws = XLSX.utils.json_to_sheet(exData);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "HotepOrders");
-            XLSX.writeFile(wb, "Hotep_Delivery_List.xlsx");
+            XLSX.writeFile(wb, "Hotep_Delivery.xlsx");
         }
     </script>
 </body>
