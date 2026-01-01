@@ -3,118 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOTEP Admin - Master Edition</title>
+    <title>HOTEP | Ultimate Admin 2026</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
     <style>
-        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --green: #25d366; --blue: #0084ff; --red: #d9534f; --gray: #444; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --green: #25d366; --blue: #0084ff; --red: #d9534f; --orange: #ff8c00; }
+        
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--black); color: #fff; margin: 0; padding: 0; overflow-x: hidden; }
 
-        /* واجهة دخول احترافية */
-        #login-screen { position: fixed; inset: 0; background: var(--black); display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-box { width: 340px; text-align: center; padding: 50px 20px; border-radius: 40px; background: #050505; border: 1px solid #111; box-shadow: 0 0 50px rgba(0,0,0,1); }
-        .login-box h1 { color: var(--gold); font-size: 45px; margin: 0; letter-spacing: 8px; font-weight: 900; }
-        .login-box p { color: var(--gray); font-size: 10px; letter-spacing: 2px; margin-bottom: 40px; }
-        .login-box input { width: 80%; padding: 18px; border-radius: 15px; border: 1px solid #1a1a1a; background: #000; color: var(--gold); text-align: center; font-size: 22px; outline: none; transition: 0.3s; }
+        /* شاشة الدخول - حماية مطلقة وتنسيق فخم */
+        #login-screen { position: fixed; inset: 0; background: var(--black); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; }
+        .login-box { width: 90%; max-width: 360px; text-align: center; padding: 45px 30px; border-radius: 35px; background: #050505; border: 1px solid #1a1a1a; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        .login-box h1 { color: var(--gold); font-size: 38px; margin: 0; letter-spacing: 5px; font-weight: 900; }
+        .login-box p { color: #333; font-size: 10px; margin-bottom: 35px; letter-spacing: 2px; }
+        .login-box input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #222; background: #000; color: var(--gold); text-align: center; font-size: 20px; outline: none; margin-bottom: 20px; }
         .login-box input:focus { border-color: var(--gold); }
-        .login-box button { width: 85%; margin-top: 30px; padding: 16px; border-radius: 15px; border: none; background: var(--gold); color: #000; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .login-box button { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--gold); color: #000; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .login-box button:active { transform: scale(0.96); }
 
+        /* واجهة الإدارة */
         #admin-content { display: none; }
 
-        /* شريط المبيعات والأرباح */
-        .stats-header { background: #050505; padding: 25px 15px; display: flex; justify-content: space-around; border-bottom: 1px solid #111; }
+        .header-stats { background: #080808; padding: 25px 15px; display: flex; justify-content: space-around; border-bottom: 1px solid #111; position: sticky; top: 0; z-index: 100; }
         .stat-card { text-align: center; }
-        .stat-card span { display: block; font-size: 11px; color: var(--gold); opacity: 0.7; margin-bottom: 5px; }
-        .stat-card b { font-size: 26px; font-weight: bold; color: #fff; }
+        .stat-card span { display: block; font-size: 10px; color: var(--gold); opacity: 0.7; margin-bottom: 4px; }
+        .stat-card b { font-size: 22px; font-weight: 800; }
 
-        /* شريط المقاسات الصغير */
-        .size-bar { background: #000; padding: 12px; display: flex; justify-content: space-around; border-bottom: 1px solid #111; }
-        .size-item { text-align: center; }
-        .size-item span { display: block; color: var(--gray); font-size: 10px; }
-        .size-item b { font-size: 15px; color: #eee; }
-
-        .search-area { padding: 15px; }
-        #searchInput { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #1a1a1a; background: #050505; color: #fff; outline: none; box-sizing: border-box; }
-
-        /* نظام التبويبات */
-        .tabs { display: flex; background: #050505; margin: 10px 15px; border-radius: 20px; border: 1px solid #111; overflow: hidden; }
-        .tab-btn { flex: 1; padding: 16px; border: none; background: transparent; color: var(--gray); cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; }
+        .tabs-bar { display: flex; background: #050505; margin: 15px; border-radius: 18px; border: 1px solid #111; overflow: hidden; }
+        .tab-btn { flex: 1; padding: 16px; border: none; background: transparent; color: #444; cursor: pointer; font-size: 12px; font-weight: bold; }
         .tab-btn.active { background: var(--gold); color: #000; }
 
-        .tab-content { padding: 15px; display: none; }
+        .tab-content { padding: 0 15px 40px; display: none; }
         .tab-content.active { display: block; }
 
-        /* كارت الأوردر المطور */
-        .order-card { background: #050505; border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid #111; border-right: 6px solid var(--gold); position: relative; }
-        .price-badge { position: absolute; left: 20px; top: 20px; color: var(--green); font-weight: 800; font-size: 24px; }
-        .order-meta { font-size: 10px; color: #333; margin-bottom: 10px; display: block; }
-        .order-name { font-size: 20px; font-weight: bold; display: block; margin-bottom: 5px; }
-        .order-qty { background: rgba(212,175,55,0.05); color: var(--gold); padding: 5px 12px; border-radius: 10px; font-size: 12px; border: 1px solid rgba(212,175,55,0.1); font-weight: bold; }
+        /* كارت الأوردر المنسق */
+        .order-card { background: #080808; border-radius: 25px; padding: 22px; margin-bottom: 15px; border: 1px solid #151515; border-right: 5px solid var(--gold); position: relative; }
+        .price-text { position: absolute; left: 20px; top: 22px; color: var(--green); font-weight: 800; font-size: 22px; }
+        .cust-name { font-size: 18px; font-weight: bold; display: block; margin-bottom: 6px; color: #fff; }
+        .cust-qty { background: rgba(212,175,55,0.1); color: var(--gold); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; }
+        .cust-details { font-size: 13px; color: #666; margin-top: 15px; line-height: 1.6; }
 
-        .btn-group { display: flex; gap: 10px; margin-top: 25px; flex-wrap: wrap; }
-        .action-btn { flex: 1; height: 48px; border-radius: 14px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; font-weight: 600; }
-        .btn-ship { background: #5533ff; }
-        .btn-done { background: var(--blue); }
-        .btn-print { background: #fff; color: #000; }
-        .btn-wa { background: var(--green); }
-        .btn-del { background: #111; flex: 0 0 48px; color: var(--red); }
+        .btn-flex { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+        .btn-act { flex: 1; height: 46px; border-radius: 12px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
+        .b-ship { background: #4d2dff; font-weight: bold; }
+        .b-done { background: var(--blue); font-weight: bold; }
+        .b-copy { background: var(--orange); }
+        .b-wa { background: var(--green); }
+        .b-del { background: #151515; color: var(--red); flex: 0 0 46px; }
 
-        .excel-section { padding: 10px 15px; }
-        .btn-excel { width: 100%; padding: 14px; background: #1d6f42; color: #fff; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        
-        .reset-link { text-align: center; display: block; padding: 15px; color: #222; font-size: 11px; cursor: pointer; }
+        .excel-btn-full { width: calc(100% - 30px); margin: 0 15px 15px; padding: 15px; background: #1d6f42; color: #fff; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
     </style>
 </head>
 <body>
 
-    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
     <div id="login-screen">
         <div class="login-box">
             <h1>HOTEP</h1>
-            <p>ELITE MANAGEMENT</p>
-            <input type="password" id="passInput" placeholder="••••">
-            <button onclick="checkPass()">ACCESS SYSTEM</button>
+            <p>ELITE MANAGEMENT SYSTEM</p>
+            <input type="password" id="passInput" placeholder="Passcode" onkeypress="if(event.key==='Enter') login()">
+            <button onclick="login()">ENTER SYSTEM</button>
         </div>
     </div>
 
     <div id="admin-content">
-        <div class="stats-header">
-            <div class="stat-card"><span>صافي المبيعات</span><b id="totalMoney">0</b></div>
-            <div class="stat-card"><span>إجمالي القطع</span><b id="totalSold">0</b></div>
+        <div class="header-stats">
+            <div class="stat-card"><span>إجمالي الأرباح</span><b id="m_profit">0</b></div>
+            <div class="stat-card"><span>القطع المباعة</span><b id="m_sold">0</b></div>
         </div>
 
-        <div class="size-bar">
-            <div class="size-item"><span>M</span><b id="sM">0</b></div>
-            <div class="size-item"><span>L</span><b id="sL">0</b></div>
-            <div class="size-item"><span>XL</span><b id="sXL">0</b></div>
-            <div class="size-item"><span>XXL</span><b id="sXXL">0</b></div>
+        <div class="tabs-bar">
+            <button class="tab-btn active" onclick="switchTab(event, 't1')">جديد (<span id="count1">0</span>)</button>
+            <button class="tab-btn" onclick="switchTab(event, 't2')">مشحون (<span id="count2">0</span>)</button>
+            <button class="tab-btn" onclick="switchTab(event, 't3')">مكتمل (<span id="count3">0</span>)</button>
         </div>
 
-        <div class="search-area">
-            <input type="text" id="searchInput" placeholder="ابحث بالاسم، الهاتف، أو العنوان..." onkeyup="filterOrders()">
+        <div id="t1" class="tab-content active"><div id="list1"></div></div>
+        <div id="t2" class="tab-content">
+            <button class="excel-btn-full" onclick="downloadExcel()">
+                <i class="fas fa-file-excel"></i> استخراج كشف الشحن (Excel)
+            </button>
+            <div id="list2"></div>
         </div>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab(event, 'new')">جديد (<span id="cNew">0</span>)</button>
-            <button class="tab-btn" onclick="openTab(event, 'shipped')">مشحون (<span id="cShipped">0</span>)</button>
-            <button class="tab-btn" onclick="openTab(event, 'done')">مكتمل (<span id="cDone">0</span>)</button>
-        </div>
-
-        <div id="new" class="tab-content active"><div id="newList"></div></div>
-        
-        <div id="shipped" class="tab-content">
-            <div class="excel-section">
-                <button class="btn-excel" onclick="exportExcel()">
-                    <i class="fas fa-file-excel"></i> استخراج شيت الشحن (Excel)
-                </button>
-            </div>
-            <div id="shippedList"></div>
-        </div>
-
-        <div id="done" class="tab-content"><div id="doneList"></div></div>
-
-        <span class="reset-link" onclick="resetSizes()">تصفير سجل المقاسات ↺</span>
+        <div id="t3" class="tab-content"><div id="list3"></div></div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -122,134 +97,109 @@
 
     <script>
         let db;
-        let lastOrderCount = -1;
-        let shippedArray = [];
+        let lastSize = -1;
+        let excelData = [];
 
-        function checkPass() {
+        function login() {
             if (document.getElementById('passInput').value === "hero1") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
-                startApp();
-            } else { alert("رمز الدخول غير صحيح"); }
+                init();
+            } else { alert("كلمة السر خاطئة"); }
         }
 
-        function openTab(evt, tabName) {
+        function switchTab(e, id) {
             let contents = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < contents.length; i++) contents[i].style.display = "none";
-            let buttons = document.getElementsByClassName("tab-btn");
-            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.classList.add("active");
+            for (let c of contents) c.style.display = "none";
+            let btns = document.getElementsByClassName("tab-btn");
+            for (let b of btns) b.classList.remove("active");
+            document.getElementById(id).style.display = "block";
+            e.currentTarget.classList.add("active");
         }
 
-        function filterOrders() {
-            let val = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.getElementsByClassName('order-card');
-            for (let card of cards) {
-                card.style.display = card.innerText.toLowerCase().includes(val) ? 'block' : 'none';
-            }
-        }
-
-        function startApp() {
+        function init() {
             const config = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
             if (!firebase.apps.length) firebase.initializeApp(config);
             db = firebase.database();
 
-            // تحديث عداد المقاسات
-            db.ref('stats_counter').on('value', snap => {
-                const s = snap.val() || {M:0, L:0, XL:0, XXL:0};
-                document.getElementById('sM').innerText = s.M || 0;
-                document.getElementById('sL').innerText = s.L || 0;
-                document.getElementById('sXL').innerText = s.XL || 0;
-                document.getElementById('sXXL').innerText = s.XXL || 0;
-            });
-
-            // تحديث الأوردرات
             db.ref('orders').on('value', snap => {
-                let html = { new:'', shipped:'', done:'' };
-                let counts = { new:0, shipped:0, done:0 };
-                let totalProfit = 0; let totalItems = 0;
-                shippedArray = [];
+                let html = { t1:'', t2:'', t3:'' };
+                let c = { t1:0, t2:0, t3:0 };
+                let profit = 0; let items = 0;
+                excelData = [];
 
-                if (lastOrderCount !== -1 && snap.numChildren() > lastOrderCount) {
-                    document.getElementById('notifSound').play();
+                if (lastSize !== -1 && snap.numChildren() > lastSize) {
+                    document.getElementById('notifSound').play().catch(()=>{});
                 }
-                lastOrderCount = snap.numChildren();
+                lastSize = snap.numChildren();
 
                 snap.forEach(child => {
                     const o = child.val();
                     const id = child.key;
+                    
+                    let qty = parseInt(String(o.الكمية || "1").replace(/[^0-9]/g, '')) || 1;
+                    let g = o.المحافظة || "غير محدد";
+                    let ship = (g.includes("قاهرة") || g.includes("جيزة")) ? 50 : 70;
+                    let total = (qty * 200) + ship;
+                    let sz = o.المقاس || 'M';
 
-                    // معالجة ذكية للكمية (إزالة أي نص وإبقاء الأرقام فقط)
-                    let q = parseInt(String(o.الكمية || "1").replace(/[^0-9]/g, '')) || 1;
-                    let gov = o.المحافظة || "";
-                    let shipping = (gov.includes("قاهرة") || gov.includes("جيزة")) ? 50 : 70;
-                    let fullPrice = (q * 200) + shipping;
-                    let time = o.التوقيت || new Date().toLocaleString('ar-EG', {hour12: true});
+                    if(o.الحالة === 'تم التسليم') { profit += (qty * 200); items += qty; }
 
-                    if(o.الحالة === 'تم التسليم') {
-                        totalProfit += (q * 200);
-                        totalItems += q;
-                    }
+                    // النصوص الكاملة للرسائل
+                    const copyBody = `HOTEP ORDER\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${g} - ${o.العنوان}\nالمقاس: ${sz}\nالعدد: ${qty}\nالحساب: ${total}ج`;
+                    const waBody = `أهلاً أ/ ${o.الاسم} ✨\nتم تأكيد طلبك من براند HOTEP ✅\n\nالتفاصيل:\n📦 المنتج: عدد (${qty}) علبة\n📏 المقاس: ${sz}\n💰 الحساب: ${total} جنيه (شامل الشحن)\n\nنشكرك على ثقتك بنا!`;
 
                     const card = `
                         <div class="order-card">
-                            <span class="order-meta"><i class="far fa-clock"></i> ${time}</span>
-                            <div class="price-badge">${fullPrice}ج</div>
-                            <span class="order-name">${o.الاسم}</span>
-                            <span class="order-qty">${q} قطعة - ${o.المقاس || 'M'}</span>
-                            <div style="font-size:13px; color:#555; margin-top:15px; line-height:1.6">
+                            <div class="price-text">${total}ج</div>
+                            <span class="cust-name">${o.الاسم}</span>
+                            <span class="cust-qty">${qty} علبة - ${sz}</span>
+                            <div class="cust-details">
                                 <i class="fas fa-phone"></i> ${o.الهاتف}<br>
-                                <i class="fas fa-map-marker-alt"></i> ${gov} - ${o.العنوان}
+                                <i class="fas fa-map-marker-alt"></i> ${g} - ${o.العنوان}
                             </div>
-                            <div class="btn-group">
+                            <div class="btn-flex">
                                 ${o.الحالة === 'مشحون' ? 
-                                    `<button onclick="updateStatus('${id}','تم التسليم')" class="action-btn btn-done">تم التسليم</button>` : 
-                                    (o.الحالة === 'تم التسليم' ? `<span style="width:100%; text-align:center; color:var(--green); font-weight:bold;">✅ أوردر مكتمل</span>` : `<button onclick="shipOrder('${id}','${o.المقاس}',${q})" class="action-btn btn-ship">شحن الأوردر</button>`)
+                                    `<button onclick="setStat('${id}','تم التسليم')" class="btn-act b-done">تم التسليم</button>` : 
+                                    (o.الحالة === 'تم التسليم' ? `<div style="width:100%;text-align:center;color:var(--green);font-weight:bold;font-size:12px;padding:10px">✅ مكتمل</div>` : `<button onclick="setStat('${id}','مشحون')" class="btn-act b-ship">شحن</button>`)
                                 }
-                                <button onclick="window.print()" class="action-btn btn-print"><i class="fas fa-print"></i></button>
-                                <a href="https://wa.me/2${o.الهاتف}?text=${encodeURIComponent('تم شحن طلبك من HOTEP ✅\nالعدد: '+q+'\nالحساب: '+fullPrice)}" target="_blank" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
-                                <button onclick="deleteOrder('${id}')" class="action-btn btn-del">×</button>
+                                <button onclick="copyToClipboard(\`${copyBody}\`)" class="btn-act b-copy"><i class="fas fa-copy"></i></button>
+                                <a href="https://wa.me/2${o.الهاتف}?text=${encodeURIComponent(waBody)}" target="_blank" class="btn-act b-wa"><i class="fab fa-whatsapp"></i></a>
+                                <button onclick="del('${id}')" class="btn-act b-del"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>`;
 
                     if(o.الحالة === 'مشحون') { 
-                        html.shipped += card; counts.shipped++; 
-                        shippedArray.push({"الاسم":o.الاسم, "الهاتف":o.الهاتف, "المحافظة":gov, "العنوان":o.العنوان, "الكمية":q, "المقاس":o.المقاس, "الحساب":fullPrice});
+                        html.t2 += card; c.t2++; 
+                        excelData.push({"الاسم":o.الاسم, "الهاتف":o.الهاتف, "المحافظة":g, "العنوان":o.العنوان, "الكمية":qty, "المقاس":sz, "الحساب":total});
                     }
-                    else if(o.الحالة === 'تم التسليم') { html.done += card; counts.done++; }
-                    else { html.new += card; counts.new++; }
+                    else if(o.الحالة === 'تم التسليم') { html.t3 += card; c.t3++; }
+                    else { html.t1 += card; c.t1++; }
                 });
 
-                document.getElementById('newList').innerHTML = html.new;
-                document.getElementById('shippedList').innerHTML = html.shipped;
-                document.getElementById('doneList').innerHTML = html.done;
-                document.getElementById('totalMoney').innerText = totalProfit.toLocaleString();
-                document.getElementById('totalSold').innerText = totalItems;
-                document.getElementById('cNew').innerText = counts.new;
-                document.getElementById('cShipped').innerText = counts.shipped;
-                document.getElementById('cDone').innerText = counts.done;
+                document.getElementById('list1').innerHTML = html.t1 || '<p style="text-align:center;color:#222;margin-top:40px">لا توجد أوردرات جديدة</p>';
+                document.getElementById('list2').innerHTML = html.t2;
+                document.getElementById('list3').innerHTML = html.t3;
+                document.getElementById('m_profit').innerText = profit.toLocaleString();
+                document.getElementById('m_sold').innerText = items;
+                document.getElementById('count1').innerText = c.t1;
+                document.getElementById('count2').innerText = c.t2;
+                document.getElementById('count3').innerText = c.t3;
             });
         }
 
-        window.shipOrder = (id, size, qty) => {
-            // تحديث عداد المقاسات عند الشحن فقط
-            db.ref('stats_counter/' + (size || 'M')).transaction(current => (Number(current) || 0) + Number(qty));
-            db.ref('orders/' + id).update({ الحالة: 'مشحون' });
+        window.setStat = (id, s) => db.ref('orders/'+id).update({ الحالة: s });
+        window.del = (id) => { if(confirm('حذف؟')) db.ref('orders/'+id).remove(); };
+        window.copyToClipboard = (txt) => {
+            navigator.clipboard.writeText(txt).then(() => alert("تم نسخ بيانات العميل ✅"));
         };
 
-        window.updateStatus = (id, status) => db.ref('orders/' + id).update({ الحالة: status });
-        
-        window.deleteOrder = (id) => { if(confirm('هل أنت متأكد من حذف الأوردر نهائياً؟')) db.ref('orders/' + id).remove(); };
-
-        window.resetSizes = () => { if(confirm('هل تريد تصفير سجل المقاسات بالكامل؟')) db.ref('stats_counter').set({M:0, L:0, XL:0, XXL:0}); };
-
-        function exportExcel() {
-            if(shippedArray.length === 0) return alert("لا توجد أوردرات مشحونة حالياً");
-            const worksheet = XLSX.utils.json_to_sheet(shippedArray);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Shipped");
-            XLSX.writeFile(workbook, `Hotep_Shipped_${new Date().toLocaleDateString()}.xlsx`);
+        function downloadExcel() {
+            if(excelData.length === 0) return alert("لا توجد بيانات");
+            const ws = XLSX.utils.json_to_sheet(excelData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "HotepOrders");
+            XLSX.writeFile(wb, "Hotep_Orders_2026.xlsx");
         }
     </script>
 </body>
