@@ -8,50 +8,38 @@
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
         * { box-sizing: border-box; }
-        
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        
         .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
-
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; }
-        
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
-
         .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
         .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px; }
         .product-features ul { list-style: none; padding: 0; margin: 0; }
         .product-features li { font-size: 14px; color: #ccc; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
         .product-features li i { color: var(--gold); font-size: 12px; }
-
         .features-strip { display: flex; justify-content: space-around; margin: 15px 0; background: var(--gray); padding: 12px 5px; border-radius: 15px; border: 1px solid #222; }
         .feat-item { text-align: center; font-size: 9px; color: #aaa; flex: 1; }
         .feat-item i { display: block; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
-
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; border: 1px solid #222; width: 100%; }
         .size-header { background: #111; color: var(--gold); padding: 10px 2px; font-size: 11px; font-weight: bold; }
         .size-item { background: var(--black); padding: 12px 2px; font-size: 11px; color: #eee; border-top: 1px solid #111; }
-
         .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
         label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
-        
         input, select, textarea { width: 100% !important; padding: 14px; border-radius: 12px; border: 1px solid #222; background: #000; color: #fff; font-size: 16px; text-align: center; display: block; outline: none; }
         textarea#address { resize: vertical; min-height: 80px; font-family: inherit; }
-        
         .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
         .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
-
         #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; animation: pulse 2s infinite; }
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
             70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
-
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 25px; text-align: center; width: 100%; max-width: 320px; }
     </style>
@@ -83,16 +71,16 @@
     <div class="product-features">
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
-            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة.</li>
-            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة.</li>
-            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر ماركة HOTEP.</li>
+            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%</b></li>
+            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية</b></li>
+            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين)</b></li>
         </ul>
     </div>
 
     <div class="features-strip">
         <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
+        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة</div>
+        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان</div>
     </div>
 
     <div class="size-grid">
@@ -122,7 +110,7 @@
     </div>
     <div class="form-group">
         <label>العنوان بالتفصيل</label>
-        <textarea id="address" placeholder="المنطقة، اسم الشارع، رقم المنزل..."></textarea>
+        <textarea id="address" placeholder="المنطقة، اسم الشارع..."></textarea>
     </div>
     <div class="form-group">
         <label>الكمية</label>
@@ -131,7 +119,6 @@
             <option value="2">2 علبة (4 قطعة)</option>
             <option value="3">3 علبة (6 قطعة)</option>
             <option value="4">4 علبة (8 قطعة)</option>
-            <option value="5">5 علبة (10 قطعة)</option>
         </select>
     </div>
     <div class="form-group">
@@ -176,30 +163,34 @@
         const shipCost = parseInt(provElem.value);
         const total = (qty * 200) + shipCost;
 
-        if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
-            alert("يرجى إدخال البيانات بشكل صحيح");
-            return;
-        }
+        // فحص البيانات بدقة مع تحديد الخطأ
+        if(!name) { alert("يرجى كتابة الاسم"); return; }
+        if(phone.length < 11) { alert("رقم الهاتف يجب أن يكون 11 رقماً"); return; }
+        if(!address) { alert("يرجى كتابة العنوان بالتفصيل"); return; }
 
         const btn = document.getElementById('orderBtn');
         btn.disabled = true; 
         btn.innerText = "جاري الحجز...";
 
+        // 1. Firebase
         firebase.database().ref('orders').push({
             الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
             الكمية: qty, المقاس: size, الاجمالي: total,
             التوقيت: new Date().toLocaleTimeString('ar-EG'),
-            التاريخ: new Date().toLocaleDateString('ar-EG'),
-            الحالة: "جديد"
+            التاريخ: new Date().toLocaleDateString('ar-EG')
         }).then(() => {
+            // 2. Telegram
             const telegramToken = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
             const chatId = "7795759414"; 
-            const telegramText = `🔥 طلب جديد لـ HOTEP\n👤 العميل: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty}\n📍 المحافظة: ${provName}\n💰 الإجمالي: ${total} ج`;
+            const telegramText = `🔥 طلب جديد لـ HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
+            
             fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(telegramText)}`);
 
-            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم حجز ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
+            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم استلام طلبك!`;
             document.getElementById('successModal').style.display = 'flex';
-            btn.innerText = "تم تأكيد الطلب ✅";
+        }).catch(err => {
+            alert("حدث خطأ في الاتصال، جرب مرة أخرى");
+            btn.disabled = false;
         });
     }
 </script>
