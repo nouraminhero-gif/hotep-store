@@ -58,64 +58,17 @@
 
 <div class="container">
     <div class="brand">HOTEP</div>
-    
-    <div class="slider-container">
-        <div class="slides-wrapper" id="mainSlider">
-            <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div>
-            <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div>
-        </div>
-    </div>
-    
+    <div class="slider-container"><div class="slides-wrapper" id="mainSlider"><div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div><div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div></div></div>
     <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
-
-    <div class="product-features">
-        <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
-        <ul>
-            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%</b></li>
-            <li><i class="fas fa-check"></i> <b>تغليف ماركة HOTEP الفاخر</b></li>
-        </ul>
-    </div>
-
-    <div class="features-strip">
-        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
-    </div>
-
-    <div class="size-grid">
-        <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
-        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
-        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
-        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
-        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
-    </div>
-
+    <div class="product-features"><h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3><ul><li><i class="fas fa-check"></i> <b>قطن أصلي 100%</b></li><li><i class="fas fa-check"></i> <b>تغليف ماركة HOTEP الفاخر</b></li></ul></div>
+    <div class="features-strip"><div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div><div class="feat-item"><i class="fas fa-box-open"></i>معاينة</div><div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div></div>
+    <div class="size-grid"><div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div><div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div><div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div><div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div><div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div></div>
     <div class="form-group"><label>الاسم بالكامل</label><input type="text" id="name" placeholder="اكتب اسمك"></div>
     <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="phone" placeholder="01xxxxxxxxx"></div>
-    <div class="form-group">
-        <label>المحافظة</label>
-        <select id="province" onchange="updateTotal()">
-            <option value="50">القاهرة (50ج)</option>
-            <option value="50">الجيزة (50ج)</option>
-            <option value="70">باقي المحافظات (70ج)</option>
-        </select>
-    </div>
+    <div class="form-group"><label>المحافظة</label><select id="province" onchange="updateTotal()"><option value="50">القاهرة (50ج)</option><option value="50">الجيزة (50ج)</option><option value="70">باقي المحافظات (70ج)</option></select></div>
     <div class="form-group"><label>العنوان بالتفصيل</label><textarea id="address" placeholder="المنطقة والشارع"></textarea></div>
-    <div class="form-group">
-        <label>الكمية</label>
-        <select id="quantity" onchange="updateTotal()">
-            <option value="1">1 علبة (2 قطعة)</option>
-            <option value="2">2 علبة (4 قطعة)</option>
-            <option value="3">3 علبة (6 قطعة)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label>المقاس</label>
-        <select id="size">
-            <option>M</option><option>L</option><option>XL</option><option>XXL</option>
-        </select>
-    </div>
-
+    <div class="form-group"><label>الكمية</label><select id="quantity" onchange="updateTotal()"><option value="1">1 علبة (2 قطعة)</option><option value="2">2 علبة (4 قطعة)</option><option value="3">3 علبة (6 قطعة)</option></select></div>
+    <div class="form-group"><label>المقاس</label><select id="size"><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
     <div class="total-banner">إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه</div>
     <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
@@ -152,7 +105,7 @@
         const total = (qty * 200) + shipCost;
 
         if(!name || phone.length < 11 || !address) {
-            alert("يرجى إدخال البيانات كاملة (رقم الهاتف 11 رقم)");
+            alert("يرجى إدخال البيانات كاملة");
             return;
         }
 
@@ -160,7 +113,7 @@
         btn.disabled = true; 
         btn.innerText = "جاري الحجز...";
 
-        // 1. Firebase
+        // 1. الحفظ في Firebase
         firebase.database().ref('orders').push({
             الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
             الكمية: qty, المقاس: size, الاجمالي: total,
@@ -168,20 +121,25 @@
             التاريخ: new Date().toLocaleDateString('ar-EG')
         }).then(() => {
             
-            // 2. Telegram - الطريقة المضمونة 100%
+            // 2. تليجرام باستخدام HTML Form (الطريقة التي لا يمكن حظرها)
             const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
             const chatId = "7795759414"; 
-            const msg = `🔥 طلب جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
+            const msg = `🔥 أوردر جديد HOTEP\n👤 العميل: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
 
-            // استخدام تقنية الصورة لإرسال الطلب فوراً
-            const img = new Image();
-            img.src = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}&v=${Date.now()}`;
+            // إرسال الطلب عبر رابط مباشر يفتحه المتصفح في الخلفية
+            const finalUrl = `https://api.telegram.org/bot${token}/sendMessage`;
+            
+            const params = new URLSearchParams();
+            params.append('chat_id', chatId);
+            params.append('text', msg);
 
-            setTimeout(() => {
-                document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم استلام طلبك!`;
-                document.getElementById('successModal').style.display = 'flex';
-                btn.innerText = "تم تأكيد الطلب ✅";
-            }, 600);
+            // استخدام طريقة SendBeacon (أحدث وأضمن طريقة لإرسال البيانات عند مغادرة أو تغيير الصفحة)
+            navigator.sendBeacon(finalUrl + '?' + params.toString());
+
+            // إظهار رسالة النجاح
+            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم استلام طلبك!`;
+            document.getElementById('successModal').style.display = 'flex';
+            btn.innerText = "تم تأكيد الطلب ✅";
 
         }).catch(err => {
             alert("حدث خطأ، حاول مرة أخرى");
@@ -191,4 +149,4 @@
 </script>
 </body>
 </html>
- 
+
