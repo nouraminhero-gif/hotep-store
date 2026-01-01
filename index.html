@@ -15,9 +15,9 @@
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
 
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
-        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease; }
+        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease-in-out; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .slide img { width: 100%; height: 100%; object-fit: contain; }
+        .slide img { width: 100%; height: 100%; object-fit: contain; } 
         
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
@@ -52,8 +52,6 @@
             display: block;
         }
 
-        textarea#address { resize: vertical; min-height: 80px; font-family: inherit; }
-        
         .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
         .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
 
@@ -97,8 +95,8 @@
     
     <div class="slider-container">
         <div class="slides-wrapper" id="mainSlider">
-            <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div>
-            <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div>
+            <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg" alt="Hotep Image 1"></div>
+            <div class="slide"><img src="https://i.postimg.cc/MTBsdrMY/1000068271-edit-1412030296766163.jpg" alt="Hotep Image 2"></div>
         </div>
     </div>
     
@@ -190,11 +188,11 @@
     }
 
     let currentIdx = 0;
+    const slider = document.getElementById('mainSlider');
     setInterval(() => {
         currentIdx = (currentIdx + 1) % 2;
-        // التعديل هنا ليعمل السلايدر لليمين بشكل صحيح
-        document.getElementById('mainSlider').style.transform = `translateX(${currentIdx * 100}%)`;
-    }, 5000);
+        slider.style.transform = `translateX(${currentIdx * 100}%)`;
+    }, 4000);
 
     function submitOrder() {
         const name = document.getElementById('name').value.trim();
@@ -227,9 +225,7 @@
             const chatId = "7795759414";
             const messageText = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
 
-            const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`;
-            const sender = new Image();
-            sender.src = telegramUrl;
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`);
 
             document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم حجز ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
             document.getElementById('successModal').style.display = 'flex';
