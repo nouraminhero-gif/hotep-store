@@ -7,55 +7,75 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        * { box-sizing: border-box; } /* ضمان عدم خروج أي عنصر عن نطاقه */
         
-        .container { width: 100%; max-width: 450px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 35px; padding: 25px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; } /* تم إضافة التوسيط هنا */
-        .brand { color: var(--gold); font-size: 42px; font-weight: 900; letter-spacing: 8px; margin-bottom: 25px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        
+        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; overflow: hidden; }
+        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
 
-        .slider-container { width: 100%; height: 380px; position: relative; border-radius: 25px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
-        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
+        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease; }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; }
         
-        .price-box { text-align: center; margin-top: -35px; position: relative; z-index: 20; }
-        .price { background: var(--gold); color: #000; font-size: 24px; font-weight: 900; padding: 12px 35px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.3); }
+        .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
+        .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; }
 
-        .features-strip { display: flex; justify-content: space-around; margin: 30px 0 15px; background: var(--gray); padding: 15px 5px; border-radius: 20px; border: 1px solid #222; }
-        .feat-item { text-align: center; font-size: 10px; color: #aaa; flex: 1; }
-        .feat-item i { display: block; font-size: 20px; color: var(--gold); margin-bottom: 8px; }
+        .features-strip { display: flex; justify-content: space-around; margin: 25px 0 15px; background: var(--gray); padding: 12px 5px; border-radius: 15px; border: 1px solid #222; }
+        .feat-item { text-align: center; font-size: 9px; color: #aaa; flex: 1; }
+        .feat-item i { display: block; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
 
-        .description-card { background: #000; border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: center; border: 1px solid #111; } /* التوسيط الداخلي */
-        .description-card h3 { color: var(--gold); font-size: 19px; margin: 0 0 12px 0; }
-        .description-card p { font-size: 14px; margin: 8px 0; color: #999; justify-content: center; display: flex; align-items: center; gap: 8px; }
+        .description-card { background: #000; border-radius: 15px; padding: 15px; margin-bottom: 20px; border: 1px solid #111; }
+        .description-card h3 { color: var(--gold); font-size: 17px; margin: 0 0 10px; }
+        .description-card p { font-size: 13px; color: #999; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
-        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border: 1px solid #222; border-radius: 15px; overflow: hidden; margin: 25px 0; }
-        .size-header { background: #111; color: var(--gold); padding: 10px 2px; font-weight: bold; font-size: 12px; }
-        .size-item { background: var(--black); padding: 12px 2px; font-size: 12px; color: #eee; }
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        .size-header { background: #111; color: var(--gold); padding: 8px 2px; font-size: 11px; }
+        .size-item { background: var(--black); padding: 10px 2px; font-size: 11px; color: #eee; }
 
-        .form-group { margin-bottom: 18px; text-align: center; } /* توسيط الأسئلة والحقول */
-        label { display: block; color: var(--gold); margin-bottom: 10px; font-size: 15px; font-weight: 600; text-align: center; } /* توسيط السؤال */
-        input, select { width: 100%; padding: 16px; border-radius: 15px; border: 1px solid #222; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; }
+        /* تنسيق الحقول الموحد لمنع الخروج عن الإطار */
+        .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
         
-        .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 18px; border-radius: 18px; text-align: center; margin-top: 15px; }
-        .total-amount { color: var(--gold); font-size: 26px; font-weight: 900; }
+        input, select, textarea { 
+            width: 100% !important; /* عرض موحد لكل الخانات */
+            padding: 14px; 
+            border-radius: 12px; 
+            border: 1px solid #222; 
+            background: #000; 
+            color: #fff; 
+            font-size: 16px; 
+            text-align: center; 
+            outline: none; 
+            display: block;
+        }
 
-        #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 20px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; transition: 0.3s; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        /* حقل العنوان - يتمدد للأسفل فقط كما في الصورة 4 */
+        textarea#address { 
+            resize: vertical; 
+            min-height: 80px; 
+            font-family: inherit; 
+        }
         
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 35px 25px; border-radius: 35px; text-align: center; width: 90%; max-width: 350px; }
-        .modal-info { background: #000; padding: 15px; border-radius: 20px; margin: 20px 0; border: 1px solid #1a1a1a; text-align: center; line-height: 1.8; font-size: 15px; }
+        .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
+        .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
+
+        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; }
+
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 25px; text-align: center; width: 85%; max-width: 320px; }
     </style>
 </head>
 <body>
 
 <div id="successModal">
     <div class="modal-content">
-        <i class="fas fa-check-circle" style="font-size: 50px; color: #25d366; margin-bottom: 15px;"></i>
-        <h2 style="color:var(--gold); margin:0;">HOTEP</h2>
-        <p style="color: #eee; font-weight: bold; margin: 10px 0;">تم استلام طلبك بنجاح!</p>
-        <div class="modal-info" id="confirmDetails"></div>
-        <button onclick="window.location.reload()" style="background: var(--gold); border: none; padding: 15px; border-radius: 15px; font-weight: 900; width: 100%;">ممتاز</button>
+        <i class="fas fa-check-circle" style="font-size: 40px; color: #25d366;"></i>
+        <h2 style="color:var(--gold); margin:10px 0;">HOTEP</h2>
+        <p>تم استلام طلبك بنجاح!</p>
+        <div id="confirmDetails" style="background:#000; padding:10px; border-radius:10px; font-size:14px; margin-bottom:15px;"></div>
+        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold;">حسناً</button>
     </div>
 </div>
 
@@ -73,32 +93,26 @@
 
     <div class="features-strip">
         <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة الطلب</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>قطن أصلي 100%</div>
-    </div>
-
-    <div class="description-card">
-        <h3>فخامة القطن المصري</h3>
-        <p><i class="fas fa-star" style="font-size: 10px; color: var(--gold);"></i> العلبة تحتوي على 2 قطعة (أسود).</p>
-        <p><i class="fas fa-star" style="font-size: 10px; color: var(--gold);"></i> خامات ناعمة ضد الحساسية.</p>
+        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة</div>
+        <div class="feat-item"><i class="fas fa-shield-alt"></i>قطن 100%</div>
     </div>
 
     <div class="size-grid">
         <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
-        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65ك</div>
-        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75ك</div>
-        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85ك</div>
-        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100ك</div>
+        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
+        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
+        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
+        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
     </div>
 
     <div class="form-group">
-        <label>بيانات العميل</label>
-        <input type="text" id="name" placeholder="الاسم بالكامل">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" placeholder="اكتب اسمك هنا">
     </div>
     <div class="form-group">
-        <input type="tel" id="phone" placeholder="رقم الموبايل (11 رقم)">
+        <label>رقم الموبايل</label>
+        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
     </div>
-    
     <div class="form-group">
         <label>المحافظة</label>
         <select id="province" onchange="updateTotal()">
@@ -108,28 +122,22 @@
             <option value="70">باقي المحافظات (70ج شحن)</option>
         </select>
     </div>
-
     <div class="form-group">
-        <label>العنوان</label>
-        <input type="text" id="address" placeholder="العنوان بالتفصيل">
+        <label>العنوان بالتفصيل</label>
+        <textarea id="address" placeholder="المنطقة، اسم الشارع، رقم المنزل..."></textarea>
     </div>
-
     <div class="form-group">
         <label>الكمية والمقاس</label>
-        <select id="quantity" onchange="updateTotal()">
-            <option value="1">علبة واحدة (قطعتين)</option>
-            <option value="2">علبتين (4 قطع)</option>
-            <option value="3">3 علب (6 قطع)</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <select id="size">
-            <option value="M">مقاس: M</option>
-            <option value="L">مقاس: L</option>
-            <option value="XL">مقاس: XL</option>
-            <option value="XXL">مقاس: XXL</option>
-        </select>
+        <div style="display:flex; gap:10px;">
+            <select id="quantity" onchange="updateTotal()" style="flex:1;">
+                <option value="1">1 علبة</option>
+                <option value="2">2 علبة</option>
+                <option value="3">3 علبة</option>
+            </select>
+            <select id="size" style="flex:1;">
+                <option>M</option><option>L</option><option>XL</option><option>XXL</option>
+            </select>
+        </div>
     </div>
 
     <div class="total-banner">
@@ -169,7 +177,7 @@
         const shipCost = parseInt(provElem.value);
         const total = (qty * 200) + shipCost;
 
-        if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) return alert("يرجى التأكد من كتابة كافة البيانات ورقم هاتف صحيح");
+        if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) return alert("يرجى إكمال البيانات بشكل صحيح");
 
         const btn = document.getElementById('orderBtn');
         btn.disabled = true; btn.innerText = "جاري الحجز...";
@@ -181,7 +189,7 @@
             التاريخ: new Date().toLocaleDateString('ar-EG'),
             الحالة: "جديد"
         }).then(() => {
-            document.getElementById('confirmDetails').innerHTML = `أهلاً ${name}<br>تم حجز أوردرك بنجاح<br>الإجمالي: ${total} جنيه`;
+            document.getElementById('confirmDetails').innerHTML = `الاسم: ${name}<br>الكمية: ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
             document.getElementById('successModal').style.display = 'flex';
         });
     }
