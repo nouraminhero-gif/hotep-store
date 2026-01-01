@@ -43,8 +43,8 @@
     <div class="brand">HOTEP</div>
     <div class="slider-container">
         <div class="slides-wrapper" id="mainSlider">
-            <div class="slide"><img src="https://i.ibb.co/PvmwfyNd/1767276815616-edit-1411419282935049.jpg"></div>
-            <div class="slide"><img src="https://i.ibb.co/nsn5gFxB/1000068271-edit-1412030296766163.jpg"></div>
+            <div class="slide"><img src="https://i.ibb.co/60m9YvR0/1000068270-edit-1412028712399222.jpg"></div>
+            <div class="slide"><img src="https://i.ibb.co/G4f6fB9V/1000068271-edit-1412030296766163.jpg"></div>
         </div>
     </div>
     <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
@@ -119,12 +119,14 @@
         const chatId = "6465451995";
         const msg = `📦 طلب جديد HOTEP 🔥\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📍 المحافظة: ${prov}\n🏠 العنوان: ${address}\n🔢 الكمية: ${qty}\n📏 المقاس: ${size}\n💰 الإجمالي: ${total} جنيه`;
 
+        // إرسال تليجرام
         fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({chat_id: chatId, text: msg})
         });
 
+        // إرسال فايربيز
         firebase.database().ref('orders').push({
             الاسم: name, الهاتف: phone, العنوان: address, الكمية: qty, المقاس: size, الاجمالي: total,
             تاريخ: new Date().toLocaleString('ar-EG')
