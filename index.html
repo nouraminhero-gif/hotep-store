@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -7,46 +8,88 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; }
         
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
-        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
 
-        /* ستايل السلايدر المحسن */
-        .slider-container { width: 100%; height: 450px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
-        .slides-wrapper { display: flex; width: 100%; height: 100%; position: relative; }
-        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; display: flex; justify-content: center; align-items: center; }
-        .slide.active { opacity: 1; z-index: 1; }
-        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
+        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease; }
+        .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        .slide img { width: 100%; height: 100%; object-fit: contain; }
         
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
 
-        .form-group { width: 100%; margin-bottom: 15px; text-align: right; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; padding-right: 5px; }
-        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #222; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; }
+        .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
+        .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px; }
+        .product-features ul { list-style: none; padding: 0; margin: 0; }
+        .product-features li { font-size: 14px; color: #ccc; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .product-features li i { color: var(--gold); font-size: 12px; }
+
+        .features-strip { display: flex; justify-content: space-around; margin: 15px 0; background: var(--gray); padding: 12px 5px; border-radius: 15px; border: 1px solid #222; }
+        .feat-item { text-align: center; font-size: 9px; color: #aaa; flex: 1; }
+        .feat-item i { display: block; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
+
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; border: 1px solid #222; width: 100%; }
+        .size-header { background: #111; color: var(--gold); padding: 10px 2px; font-size: 11px; font-weight: bold; }
+        .size-item { background: var(--black); padding: 12px 2px; font-size: 11px; color: #eee; border-top: 1px solid #111; }
+
+        .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
         
-        .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin: 20px 0; }
-        .total-amount { color: var(--gold); font-size: 26px; font-weight: 900; }
+        input, select, textarea { 
+            width: 100% !important; 
+            padding: 14px; 
+            border-radius: 12px; 
+            border: 1px solid #222; 
+            background: #000; 
+            color: #fff; 
+            font-size: 16px; 
+            text-align: center; 
+            outline: none; 
+            display: block;
+        }
 
-        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; transition: 0.3s; }
-        #orderBtn:active { transform: scale(0.98); }
+        textarea#address { resize: vertical; min-height: 80px; font-family: inherit; }
+        
+        .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
+        .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
 
-        /* نافذة النجاح */
+        #orderBtn { 
+            width: 100%; 
+            padding: 20px; 
+            background: var(--gold); 
+            color: #000; 
+            border: none; 
+            border-radius: 15px; 
+            font-size: 22px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            margin-top: 15px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px; border-radius: 25px; text-align: center; width: 100%; max-width: 350px; }
+        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 25px; text-align: center; width: 100%; max-width: 320px; }
     </style>
 </head>
 <body>
 
 <div id="successModal">
     <div class="modal-content">
-        <i class="fas fa-check-circle" style="font-size: 50px; color: #25d366; margin-bottom: 15px;"></i>
-        <h2 style="color:var(--gold); margin-bottom:10px;">HOTEP</h2>
-        <p style="margin-bottom: 20px;">تم استلام طلبك بنجاح! سنتواصل معك قريباً.</p>
-        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:12px 30px; border-radius:10px; font-weight:bold; cursor:pointer;">حسناً</button>
+        <i class="fas fa-check-circle" style="font-size: 40px; color: #25d366;"></i>
+        <h2 style="color:var(--gold); margin:10px 0;">HOTEP</h2>
+        <p>تم استلام طلبك بنجاح!</p>
+        <div id="confirmDetails" style="background:#000; padding:10px; border-radius:10px; font-size:14px; margin-bottom:15px; line-height:1.6;"></div>
+        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold; cursor:pointer;">حسناً</button>
     </div>
 </div>
 
@@ -54,48 +97,77 @@
     <div class="brand">HOTEP</div>
     
     <div class="slider-container">
-        <div class="slides-wrapper">
-            <div class="slide active"><img src="https://i.ibb.co/PvmwfyNd/1767276815616-edit-1411419282935049.jpg"></div>
-            <div class="slide"><img src="https://i.ibb.co/nsn5gFxB/1000068271-edit-1412030296766163.jpg"></div>
+        <div class="slides-wrapper" id="mainSlider">
+            <div class="slide"><img src="https://h.top4top.io/p_3651ehmg00.jpg"></div>
+            <div class="slide"><img src="https://i.top4top.io/p_3651k9m0k1.jpg"></div>
         </div>
     </div>
     
     <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
 
-    <div style="margin: 30px 0;">
-        <div class="form-group">
-            <label>الاسم بالكامل</label>
-            <input type="text" id="name" placeholder="اكتب اسمك هنا">
-        </div>
-        <div class="form-group">
-            <label>رقم الموبايل</label>
-            <input type="tel" id="phone" placeholder="01xxxxxxxxx">
-        </div>
-        <div class="form-group">
-            <label>المحافظة</label>
-            <select id="province" onchange="updateTotal()">
-                <option value="50">القاهرة والجيزة (50ج شحن)</option>
-                <option value="70">الإسكندرية والمحافظات (70ج شحن)</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>العنوان بالتفصيل</label>
-            <textarea id="address" rows="2" placeholder="المنطقة، الشارع، رقم المنزل"></textarea>
-        </div>
-        <div class="form-group">
-            <label>الكمية</label>
-            <select id="quantity" onchange="updateTotal()">
-                <option value="1">1 علبة (2 قطعة)</option>
-                <option value="2">2 علبة (4 قطعة)</option>
-                <option value="3">3 علبة (6 قطعة)</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>المقاس</label>
-            <select id="size">
-                <option>M</option><option>L</option><option>XL</option><option>XXL</option>
-            </select>
-        </div>
+    <div class="product-features">
+        <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
+        <ul>
+            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</li>
+            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</li>
+            <li><i class="fas fa-check"></i> <b>ثبات الألوان:</b> جودة تصنيع تضمن عدم تغير اللون بعد الغسيل.</li>
+            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</li>
+        </ul>
+    </div>
+
+    <div class="features-strip">
+        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
+        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
+        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
+    </div>
+
+    <div class="size-grid">
+        <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
+        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
+        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
+        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
+        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
+    </div>
+
+    <div class="form-group">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" placeholder="اكتب اسمك هنا">
+    </div>
+    <div class="form-group">
+        <label>رقم الموبايل</label>
+        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
+    </div>
+    <div class="form-group">
+        <label>المحافظة</label>
+        <select id="province" onchange="updateTotal()">
+            <option value="50">القاهرة (50ج شحن)</option>
+            <option value="50">الجيزة (50ج شحن)</option>
+            <option value="70">الإسكندرية (70ج شحن)</option>
+            <option value="70">باقي المحافظات (70ج شحن)</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>العنوان بالتفصيل</label>
+        <textarea id="address" placeholder="المنطقة، اسم الشارع، رقم المنزل..."></textarea>
+    </div>
+    
+    <div class="form-group">
+        <label>الكمية</label>
+        <select id="quantity" onchange="updateTotal()">
+            <option value="1">1 علبة (2 قطعة)</option>
+            <option value="2">2 علبة (4 قطعة)</option>
+            <option value="3">3 علبة (6 قطعة)</option>
+            <option value="4">4 علبة (8 قطعة)</option>
+            <option value="5">5 علبة (10 قطعة)</option>
+            <option value="6">6 علبة (12 قطعة)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>المقاس</label>
+        <select id="size">
+            <option>M</option><option>L</option><option>XL</option><option>XXL</option>
+        </select>
     </div>
 
     <div class="total-banner">
@@ -109,73 +181,52 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // إعدادات Firebase
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-    // تحديث السعر التلقائي
     function updateTotal() {
         const qty = parseInt(document.getElementById('quantity').value);
         const ship = parseInt(document.getElementById('province').value);
         document.getElementById('totalDisplay').innerText = (qty * 200) + ship;
     }
 
-    // تشغيل السلايدر
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.slide');
+    let currentIdx = 0;
     setInterval(() => {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }, 4000);
+        currentIdx = (currentIdx + 1) % 2;
+        document.getElementById('mainSlider').style.transform = `translateX(${currentIdx * 100}%)`;
+    }, 5000);
 
-    // وظيفة إرسال الطلب
-    async function submitOrder() {
+    function submitOrder() {
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
-        const qty = document.getElementById('quantity').value;
         const size = document.getElementById('size').value;
-        const prov = document.getElementById('province').options[document.getElementById('province').selectedIndex].text;
-        const total = document.getElementById('totalDisplay').innerText;
+        const qty = parseInt(document.getElementById('quantity').value);
+        const provElem = document.getElementById('province');
+        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
+        const shipCost = parseInt(provElem.value);
+        const total = (qty * 200) + shipCost;
 
-        if(!name || phone.length < 11 || !address) {
-            alert("يرجى إكمال جميع البيانات بشكل صحيح");
+        if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
+            alert("يرجى إكمال البيانات بشكل صحيح");
             return;
         }
 
         const btn = document.getElementById('orderBtn');
-        btn.disabled = true;
+        btn.disabled = true; 
         btn.innerText = "جاري الحجز...";
 
-        // إرسال لتليجرام
-        const token = "7774431835:AAH_W76kI4u66u8p6vO-eR-V9OaT_uE_T1w";
-        const chatId = "6465451995";
-        const msg = `🔥 طلب جديد HOTEP 🔥\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📍 المحافظة: ${prov}\n🏠 العنوان: ${address}\n📦 الكمية: ${qty}\n📏 المقاس: ${size}\n💰 الإجمالي: ${total} ج`;
-
-        try {
-            // تنفيذ إرسال تليجرام
-            await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: chatId, text: msg })
-            });
-
-            // تنفيذ إرسال فايربيز
-            await firebase.database().ref('orders').push({
-                name, phone, prov, address, qty, size, total,
-                time: new Date().toLocaleString('ar-EG')
-            });
-
+        firebase.database().ref('orders').push({
+            الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
+            الكمية: qty, المقاس: size, الاجمالي: total,
+            التوقيت: new Date().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}),
+            التاريخ: new Date().toLocaleDateString('ar-EG'),
+            الحالة: "جديد"
+        }).then(() => {
+            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم حجز ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
             document.getElementById('successModal').style.display = 'flex';
-        } catch (error) {
-            alert("عذراً، حدث خطأ. تأكد من اتصالك بالإنترنت");
-            btn.disabled = false;
-            btn.innerText = "تأكيد الطلب الآن";
-        }
+        });
     }
 </script>
 </body>
 </html>
- 
-
