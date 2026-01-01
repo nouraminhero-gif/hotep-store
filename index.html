@@ -22,17 +22,22 @@
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
 
-        .features-strip { display: flex; justify-content: space-around; margin: 25px 0 15px; background: var(--gray); padding: 12px 5px; border-radius: 15px; border: 1px solid #222; }
+        .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
+        .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px; }
+        .product-features ul { list-style: none; padding: 0; margin: 0; }
+        .product-features li { font-size: 14px; color: #ccc; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .product-features li i { color: var(--gold); font-size: 12px; }
+
+        .features-strip { display: flex; justify-content: space-around; margin: 15px 0; background: var(--gray); padding: 12px 5px; border-radius: 15px; border: 1px solid #222; }
         .feat-item { text-align: center; font-size: 9px; color: #aaa; flex: 1; }
         .feat-item i { display: block; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
 
-        /* جدول المقاسات المعاد تثبيته وتوسيطه */
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; border: 1px solid #222; width: 100%; }
         .size-header { background: #111; color: var(--gold); padding: 10px 2px; font-size: 11px; font-weight: bold; }
         .size-item { background: var(--black); padding: 12px 2px; font-size: 11px; color: #eee; border-top: 1px solid #111; }
 
         .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; text-align: center; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
         
         input, select, textarea { 
             width: 100% !important; 
@@ -47,13 +52,11 @@
             display: block;
         }
 
-        /* العنوان يتمدد لأسفل فقط */
         textarea#address { resize: vertical; min-height: 80px; font-family: inherit; }
         
         .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
         .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
 
-        /* الزرار النابض */
         #orderBtn { 
             width: 100%; 
             padding: 20px; 
@@ -101,10 +104,20 @@
     
     <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
 
+    <div class="product-features">
+        <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
+        <ul>
+            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</li>
+            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</li>
+            <li><i class="fas fa-check"></i> <b>ثبات الألوان:</b> جودة تصنيع تضمن عدم تغير اللون بعد الغسيل.</li>
+            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</li>
+        </ul>
+    </div>
+
     <div class="features-strip">
         <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>قطن 100%</div>
+        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
+        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
     </div>
 
     <div class="size-grid">
@@ -138,7 +151,7 @@
     </div>
     
     <div class="form-group">
-        <label>الكمية (العلبة بها قطعتين)</label>
+        <label>الكمية</label>
         <select id="quantity" onchange="updateTotal()">
             <option value="1">1 علبة (2 قطعة)</option>
             <option value="2">2 علبة (4 قطعة)</option>
@@ -209,7 +222,7 @@
             التاريخ: new Date().toLocaleDateString('ar-EG'),
             الحالة: "جديد"
         }).then(() => {
-            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>الكمية: ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
+            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم حجز ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
             document.getElementById('successModal').style.display = 'flex';
         });
     }
@@ -217,4 +230,3 @@
 </body>
 </html>
  
-
