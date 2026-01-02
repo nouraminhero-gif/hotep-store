@@ -22,57 +22,21 @@
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
 
-        .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
-        .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px; }
-        .product-features ul { list-style: none; padding: 0; margin: 0; }
-        .product-features li { font-size: 14px; color: #ccc; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .product-features li i { color: var(--gold); font-size: 12px; }
-
-        .features-strip { display: flex; justify-content: space-around; margin: 15px 0; background: var(--gray); padding: 12px 5px; border-radius: 15px; border: 1px solid #222; }
-        .feat-item { text-align: center; font-size: 9px; color: #aaa; flex: 1; }
-        .feat-item i { display: block; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
-
-        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; border: 1px solid #222; width: 100%; }
-        .size-header { background: #111; color: var(--gold); padding: 10px 2px; font-size: 11px; font-weight: bold; }
-        .size-item { background: var(--black); padding: 12px 2px; font-size: 11px; color: #eee; border-top: 1px solid #111; }
-
-        /* التنسيق الجديد للسطر الثلاثي */
         .triple-row { display: flex; gap: 8px; margin-bottom: 15px; width: 100%; }
         .triple-row .form-group { margin-bottom: 0; flex: 1; }
-        .triple-row select { padding: 12px 5px; font-size: 13px; }
+        .triple-row select { padding: 12px 2px; font-size: 11px; font-weight: bold; }
 
         .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
         label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
         
         input, select, textarea { 
-            width: 100% !important; 
-            padding: 14px; 
-            border-radius: 12px; 
-            border: 1px solid #222; 
-            background: #000; 
-            color: #fff; 
-            font-size: 16px; 
-            text-align: center; 
-            outline: none; 
-            display: block;
+            width: 100% !important; padding: 14px; border-radius: 12px; border: 1px solid #222; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; display: block;
         }
 
         .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
         .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
 
-        #orderBtn { 
-            width: 100%; 
-            padding: 20px; 
-            background: var(--gold); 
-            color: #000; 
-            border: none; 
-            border-radius: 15px; 
-            font-size: 22px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            margin-top: 15px;
-            animation: pulse 2s infinite;
-        }
+        #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; animation: pulse 2s infinite; }
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
             70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
@@ -90,7 +54,7 @@
         <i class="fas fa-check-circle" style="font-size: 40px; color: #25d366;"></i>
         <h2 style="color:var(--gold); margin:10px 0;">HOTEP</h2>
         <p>تم استلام طلبك بنجاح!</p>
-        <div id="confirmDetails" style="background:#000; padding:10px; border-radius:10px; font-size:14px; margin-bottom:15px; line-height:1.6;"></div>
+        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:10px; font-size:14px; margin-bottom:15px; line-height:1.8; text-align: right; color: #eee;"></div>
         <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold; cursor:pointer;">حسناً</button>
     </div>
 </div>
@@ -100,38 +64,14 @@
     
     <div class="slider-container">
         <div class="slides-wrapper" id="mainSlider">
-            <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg" alt="Hotep Image 1"></div>
-            <div class="slide"><img src="https://i.postimg.cc/MTBsdrMY/1000068271-edit-1412030296766163.jpg" alt="Hotep Image 2"></div>
+            <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg"></div>
+            <div class="slide"><img src="https://i.postimg.cc/MTBsdrMY/1000068271-edit-1412030296766163.jpg"></div>
         </div>
     </div>
     
     <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
 
-    <div class="product-features">
-        <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
-        <ul>
-            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</li>
-            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</li>
-            <li><i class="fas fa-check"></i> <b>ثبات الألوان:</b> جودة تصنيع تضمن عدم تغير اللون بعد الغسيل.</li>
-            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</li>
-        </ul>
-    </div>
-
-    <div class="features-strip">
-        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
-    </div>
-
-    <div class="size-grid">
-        <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
-        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
-        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
-        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
-        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
-    </div>
-
-    <div class="form-group">
+    <div class="form-group" style="margin-top: 30px;">
         <label>الاسم بالكامل</label>
         <input type="text" id="name" placeholder="اكتب اسمك هنا">
     </div>
@@ -144,19 +84,19 @@
         <div class="form-group">
             <label>المحافظة</label>
             <select id="province" onchange="updateTotal()">
-                <option value="50">القاهرة</option>
-                <option value="50">الجيزة</option>
-                <option value="70">الإسكندرية</option>
-                <option value="70">الأقاليم</option>
+                <option value="50">القاهرة (50ج)</option>
+                <option value="50">الجيزة (50ج)</option>
+                <option value="70">الإسكندرية (70ج)</option>
+                <option value="70">محافظات أخرى (70ج)</option>
             </select>
         </div>
         <div class="form-group">
             <label>الكمية</label>
             <select id="quantity" onchange="updateTotal()">
-                <option value="1">1 علبة</option>
-                <option value="2">2 علبة</option>
-                <option value="3">3 علبة</option>
-                <option value="4">4 علبة</option>
+                <option value="1">1 علبة (2ق)</option>
+                <option value="2">2 علبة (4ق)</option>
+                <option value="3">3 علبة (6ق)</option>
+                <option value="4">4 علبة (8ق)</option>
             </select>
         </div>
         <div class="form-group">
@@ -204,9 +144,11 @@
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
         const size = document.getElementById('size').value;
-        const qty = parseInt(document.getElementById('quantity').value);
+        const qtySelect = document.getElementById('quantity');
+        const qty = parseInt(qtySelect.value);
+        const qtyText = qtySelect.options[qtySelect.selectedIndex].text;
         const provElem = document.getElementById('province');
-        const provName = provElem.options[provElem.selectedIndex].text;
+        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
         const shipCost = parseInt(provElem.value);
         const total = (qty * 200) + shipCost;
 
@@ -221,20 +163,25 @@
 
         firebase.database().ref('orders').push({
             الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
-            الكمية: qty, المقاس: size, الاجمالي: total,
-            التوقيت: new Date().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}),
-            التاريخ: new Date().toLocaleDateString('ar-EG'),
-            الحالة: "جديد"
+            الكمية: qtyText, المقاس: size, الاجمالي: total, مصاريف_الشحن: shipCost,
+            التوقيت: new Date().toLocaleTimeString('ar-EG'),
+            التاريخ: new Date().toLocaleDateString('ar-EG')
         }).then(() => {
             const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
             const chatId = "7795759414";
-            const messageText = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
+            const messageText = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyText}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n🚚 الشحن: ${shipCost} ج\n💰 الإجمالي: ${total} ج`;
 
             fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`);
 
-            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم حجز ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
+            document.getElementById('confirmDetails').innerHTML = `
+                <b>👤 الاسم:</b> ${name}<br>
+                <b>📏 المقاس:</b> ${size}<br>
+                <b>📦 الطلب:</b> ${qtyText}<br>
+                <b>🚚 مصاريف الشحن:</b> ${shipCost} جنيه<br>
+                <b>💰 الإجمالي النهائي:</b> ${total} جنيه
+            `;
             document.getElementById('successModal').style.display = 'flex';
-        }).catch((err) => {
+        }).catch(() => {
             alert("حدث خطأ، حاول مرة أخرى");
             btn.disabled = false;
             btn.innerText = "تأكيد الطلب الآن";
