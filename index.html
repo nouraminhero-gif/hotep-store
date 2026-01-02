@@ -1,248 +1,245 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEP | راحة الملوك</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HOTEP | Official Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --gold: #c5a059;
-            --black: #0a0a0a;
-            --dark-gray: #1a1a1a;
-            --white: #ffffff;
-        }
+        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
+        * { box-sizing: border-box; }
+        
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        
+        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; }
+        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--black);
-            color: var(--white);
-            margin: 0;
-            padding: 0;
-        }
+        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
+        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s ease-in-out; }
+        .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        .slide img { width: 100%; height: 100%; object-fit: contain; } 
+        
+        .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
+        .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
 
-        /* الهيدر واللوجو */
-        header {
-            text-align: center;
-            padding: 30px 0;
-            border-bottom: 1px solid var(--dark-gray);
-        }
+        .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
+        .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px; }
+        .product-features ul { list-style: none; padding: 0; margin: 0; }
+        .product-features li { font-size: 14px; color: #ccc; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .product-features li i { color: var(--gold); font-size: 12px; }
 
-        .logo {
-            font-size: 40px;
-            font-weight: bold;
-            letter-spacing: 5px;
-            color: var(--gold);
-            text-transform: uppercase;
-            margin: 0;
-        }
+        .features-strip { display: flex; justify-content: space-around; margin: 15px 0; background: var(--gray); padding: 12px 5px; border-radius: 15px; border: 1px solid #222; }
+        .feat-item { text-align: center; font-size: 9px; color: #aaa; flex: 1; }
+        .feat-item i { display: block; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
 
-        .container {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 20px;
-        }
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; border: 1px solid #222; width: 100%; }
+        .size-header { background: #111; color: var(--gold); padding: 10px 2px; font-size: 11px; font-weight: bold; }
+        .size-item { background: var(--black); padding: 12px 2px; font-size: 11px; color: #eee; border-top: 1px solid #111; }
 
-        /* قسم عرض المنتج */
-        .product-card {
-            background: var(--dark-gray);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid #333;
-            margin-bottom: 30px;
-        }
+        /* التنسيق الجديد للسطر الثلاثي */
+        .triple-row { display: flex; gap: 8px; margin-bottom: 15px; width: 100%; }
+        .triple-row .form-group { margin-bottom: 0; flex: 1; }
+        .triple-row select { padding: 12px 5px; font-size: 13px; }
 
-        .product-image {
-            width: 100%;
-            height: auto;
+        .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
+        
+        input, select, textarea { 
+            width: 100% !important; 
+            padding: 14px; 
+            border-radius: 12px; 
+            border: 1px solid #222; 
+            background: #000; 
+            color: #fff; 
+            font-size: 16px; 
+            text-align: center; 
+            outline: none; 
             display: block;
         }
 
-        .product-info {
-            padding: 20px;
-            text-align: center;
-        }
+        .total-banner { background: var(--gray); border: 1px dashed var(--gold); padding: 15px; border-radius: 15px; margin-top: 15px; }
+        .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
 
-        .product-title {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .price {
-            font-size: 22px;
-            color: var(--gold);
-            font-weight: bold;
-        }
-
-        /* فورم الطلب الاحترافي */
-        .order-form {
-            background: var(--dark-gray);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid var(--gold);
-        }
-
-        .form-title {
-            text-align: center;
-            color: var(--gold);
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-
-        .input-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .input-group {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-group label, .full-width-group label {
-            font-size: 13px;
-            color: var(--gold);
-            margin-bottom: 5px;
-            margin-right: 5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            background: #000;
-            border: 1px solid #444;
-            border-radius: 8px;
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            box-sizing: border-box;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--gold);
-            outline: none;
-            box-shadow: 0 0 5px rgba(197, 160, 89, 0.3);
-        }
-
-        .full-width-group {
-            margin-bottom: 15px;
-        }
-
-        /* زر الشراء */
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            background: #e2ba6d;
-            transform: translateY(-2px);
-        }
-
-        .guarantee {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
+        #orderBtn { 
+            width: 100%; 
+            padding: 20px; 
+            background: var(--gold); 
+            color: #000; 
+            border: none; 
+            border-radius: 15px; 
+            font-size: 22px; 
+            font-weight: 900; 
+            cursor: pointer; 
             margin-top: 15px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
 
-        /* الموبايل */
-        @media (max-width: 480px) {
-            .input-row {
-                gap: 5px;
-            }
-            .input-group label {
-                font-size: 11px;
-            }
-        }
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 25px; text-align: center; width: 100%; max-width: 320px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1 class="logo">HOTEP</h1>
-        <p style="color: #666; font-size: 12px; margin-top: 5px;">PRIDE OF EGYPT</p>
-    </header>
+<div id="successModal">
+    <div class="modal-content">
+        <i class="fas fa-check-circle" style="font-size: 40px; color: #25d366;"></i>
+        <h2 style="color:var(--gold); margin:10px 0;">HOTEP</h2>
+        <p>تم استلام طلبك بنجاح!</p>
+        <div id="confirmDetails" style="background:#000; padding:10px; border-radius:10px; font-size:14px; margin-bottom:15px; line-height:1.6;"></div>
+        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:12px; width:100%; border-radius:10px; font-weight:bold; cursor:pointer;">حسناً</button>
+    </div>
+</div>
 
-    <div class="container">
-        
-        <div class="product-card">
-            <img src="YOUR_IMAGE_LINK_HERE" alt="Hotep Product" class="product-image">
-            <div class="product-info">
-                <h2 class="product-title">بوكسر هوتب الفاخر (قطن 100%)</h2>
-                <div class="price">200 ج.م</div>
-            </div>
+<div class="container">
+    <div class="brand">HOTEP</div>
+    
+    <div class="slider-container">
+        <div class="slides-wrapper" id="mainSlider">
+            <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg" alt="Hotep Image 1"></div>
+            <div class="slide"><img src="https://i.postimg.cc/MTBsdrMY/1000068271-edit-1412030296766163.jpg" alt="Hotep Image 2"></div>
         </div>
+    </div>
+    
+    <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
 
-        <div class="order-form">
-            <div class="form-title">سجل بياناتك لإتمام الطلب</div>
-            
-            <form action="YOUR_BACKEND_URL" method="POST">
-                
-                <div class="full-width-group">
-                    <label>الاسم الكامل</label>
-                    <input type="text" name="name" placeholder="الاسم ثلاثي" required>
-                </div>
-
-                <div class="full-width-group">
-                    <label>رقم الموبايل</label>
-                    <input type="tel" name="phone" placeholder="رقم متاح للاتصال" required>
-                </div>
-
-                <div class="input-row">
-                    <div class="input-group">
-                        <label>المقاس</label>
-                        <select name="size">
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                            <option value="XXL">XXL</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label>عدد العلب</label>
-                        <select name="quantity">
-                            <option value="1">علبة 1</option>
-                            <option value="2">علبتين</option>
-                            <option value="3">3 علب</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label>المحافظة</label>
-                        <select name="city">
-                            <option value="القاهرة">القاهرة</option>
-                            <option value="الجيزة">الجيزة</option>
-                            <option value="الإسكندرية">الإسكندرية</option>
-                            <option value="الدلتا">الدلتا</option>
-                            <option value="الصعيد">الصعيد</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="full-width-group">
-                    <label>العنوان بالتفصيل</label>
-                    <input type="text" name="address" placeholder="المنطقة، اسم الشارع، رقم المنزل" required>
-                </div>
-
-                <button type="submit" class="submit-btn">تأكيد طلب الشراء الآن</button>
-                
-                <p class="guarantee">✓ الدفع عند الاستلام | ✓ معاينة المنتج قبل الدفع</p>
-            </form>
-        </div>
-
+    <div class="product-features">
+        <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
+        <ul>
+            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</li>
+            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</li>
+            <li><i class="fas fa-check"></i> <b>ثبات الألوان:</b> جودة تصنيع تضمن عدم تغير اللون بعد الغسيل.</li>
+            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</li>
+        </ul>
     </div>
 
+    <div class="features-strip">
+        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
+        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
+        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
+    </div>
+
+    <div class="size-grid">
+        <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
+        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
+        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
+        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
+        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
+    </div>
+
+    <div class="form-group">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" placeholder="اكتب اسمك هنا">
+    </div>
+    <div class="form-group">
+        <label>رقم الموبايل</label>
+        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
+    </div>
+
+    <div class="triple-row">
+        <div class="form-group">
+            <label>المحافظة</label>
+            <select id="province" onchange="updateTotal()">
+                <option value="50">القاهرة</option>
+                <option value="50">الجيزة</option>
+                <option value="70">الإسكندرية</option>
+                <option value="70">الأقاليم</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>الكمية</label>
+            <select id="quantity" onchange="updateTotal()">
+                <option value="1">1 علبة</option>
+                <option value="2">2 علبة</option>
+                <option value="3">3 علبة</option>
+                <option value="4">4 علبة</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>المقاس</label>
+            <select id="size">
+                <option>M</option><option>L</option><option>XL</option><option>XXL</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>العنوان بالتفصيل</label>
+        <textarea id="address" placeholder="المنطقة، اسم الشارع، رقم المنزل..."></textarea>
+    </div>
+    
+    <div class="total-banner">
+        إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه
+    </div>
+    
+    <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+    function updateTotal() {
+        const qty = parseInt(document.getElementById('quantity').value);
+        const ship = parseInt(document.getElementById('province').value);
+        document.getElementById('totalDisplay').innerText = (qty * 200) + ship;
+    }
+
+    let currentIdx = 0;
+    const slider = document.getElementById('mainSlider');
+    setInterval(() => {
+        currentIdx = (currentIdx + 1) % 2;
+        slider.style.transform = `translateX(${currentIdx * 100}%)`;
+    }, 4000);
+
+    function submitOrder() {
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const size = document.getElementById('size').value;
+        const qty = parseInt(document.getElementById('quantity').value);
+        const provElem = document.getElementById('province');
+        const provName = provElem.options[provElem.selectedIndex].text;
+        const shipCost = parseInt(provElem.value);
+        const total = (qty * 200) + shipCost;
+
+        if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
+            alert("يرجى إكمال البيانات بشكل صحيح");
+            return;
+        }
+
+        const btn = document.getElementById('orderBtn');
+        btn.disabled = true; 
+        btn.innerText = "جاري الحجز...";
+
+        firebase.database().ref('orders').push({
+            الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
+            الكمية: qty, المقاس: size, الاجمالي: total,
+            التوقيت: new Date().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}),
+            التاريخ: new Date().toLocaleDateString('ar-EG'),
+            الحالة: "جديد"
+        }).then(() => {
+            const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
+            const chatId = "7795759414";
+            const messageText = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qty} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
+
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`);
+
+            document.getElementById('confirmDetails').innerHTML = `<b>${name}</b><br>تم حجز ${qty} علبة - مقاس ${size}<br>الإجمالي: ${total} ج`;
+            document.getElementById('successModal').style.display = 'flex';
+        }).catch((err) => {
+            alert("حدث خطأ، حاول مرة أخرى");
+            btn.disabled = false;
+            btn.innerText = "تأكيد الطلب الآن";
+        });
+    }
+</script>
 </body>
 </html>
