@@ -66,28 +66,75 @@
         .excel-btn { width: calc(100% - 30px); margin: 0 15px 15px; padding: 15px; background: #1d6f42; color: #fff; border: none; border-radius: 15px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .reset-link { text-align: center; display: block; color: #222; font-size: 10px; padding: 10px; cursor: pointer; }
 
-        /* التعديل: تحسين نظام الطباعة لعزل أوردر واحد فقط */
+        /* --- تصميم بوليصة الشحن الاحترافية --- */
+        #print-area { display: none; }
+
         @media print {
             body * { visibility: hidden; }
-            .order-to-print, .order-to-print * { visibility: visible; }
-            .order-to-print { 
+            #print-area { 
+                display: block !important; 
+                visibility: visible !important; 
                 position: fixed; 
-                left: 0; 
-                top: 0; 
-                width: 100%; 
-                border: 2px solid #000 !important; 
-                padding: 30px !important;
-                background: #fff !important;
-                color: #000 !important;
-                border-radius: 0 !important;
+                left: 0; top: 0; 
+                width: 100mm; height: 150mm; 
+                background: #fff !important; 
+                color: #000 !important; 
+                border: 2px solid #000;
+                padding: 10px;
+                font-family: Arial, sans-serif;
             }
-            .order-to-print .btn-grid { display: none !important; }
-            .order-to-print .price-tag { color: #000 !important; left: auto; right: 20px; }
-            .order-to-print .qty-badge { border: 1px solid #000; color: #000 !important; background: none !important; }
+            #print-area * { visibility: visible !important; }
+            @page { size: portrait; margin: 0; }
         }
+
+        .label-header { border-bottom: 3px solid #000; padding-bottom: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .label-header h1 { font-size: 28px; margin: 0; font-weight: 900; }
+        .label-header div { border: 2px solid #000; padding: 2px 10px; font-weight: bold; }
+        .label-section { border-bottom: 1px solid #000; padding: 8px 0; }
+        .label-section small { font-size: 10px; text-transform: uppercase; font-weight: bold; display: block; }
+        .label-section b { font-size: 18px; display: block; margin-top: 3px; }
+        .barcode-sim { text-align: center; padding: 15px 0; border-bottom: 2px solid #000; }
+        .barcode-line { width: 90%; height: 40px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin: 0 auto; }
+        .label-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .cash-box { border: 3px solid #000; padding: 8px 15px; font-size: 24px; font-weight: 900; }
     </style>
 </head>
 <body>
+
+    <div id="print-area">
+        <div class="label-header">
+            <h1>HOTEP</h1>
+            <div>PRIORITY MAIL</div>
+        </div>
+        <div class="label-section">
+            <small>SHIP FROM:</small>
+            <b style="font-size: 14px;">HOTEP Official Store</b>
+        </div>
+        <div class="label-section">
+            <small>SHIP TO:</small>
+            <b id="p-name" style="font-size: 22px;"></b>
+            <b id="p-phone"></b>
+            <b id="p-address" style="font-size: 14px; font-weight: normal;"></b>
+        </div>
+        <div class="label-section" style="display: flex; justify-content: space-between;">
+            <div>
+                <small>ITEMS / SIZE</small>
+                <b id="p-qty"></b>
+            </div>
+            <div style="text-align: left;">
+                <small>ORDER ID</small>
+                <b id="p-id" style="font-size: 14px;"></b>
+            </div>
+        </div>
+        <div class="barcode-sim">
+            <div class="barcode-line"></div>
+            <div id="p-time" style="font-size: 10px; margin-top: 5px;"></div>
+        </div>
+        <div class="label-footer">
+            <div style="font-size: 12px; font-weight: bold;">WWW.HOTEP.STORE</div>
+            <div class="cash-box">CASH: <span id="p-total"></span>ج</div>
+        </div>
+    </div>
 
     <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
@@ -170,12 +217,16 @@
             filterOrders();
         }
 
-        // التعديل: دالة الطباعة المخصصة لأوردر واحد
-        function printSingleOrder(id) {
-            const card = document.getElementById('card-' + id);
-            card.classList.add('order-to-print');
+        // دالة الطباعة بالبوليصة الاحترافية
+        function printLabel(o, id, tot, time) {
+            document.getElementById('p-name').innerText = o.الاسم;
+            document.getElementById('p-phone').innerText = o.الهاتف;
+            document.getElementById('p-address').innerText = (o.المحافظة || "") + " - " + (o.العنوان || "");
+            document.getElementById('p-qty').innerText = (o.الكمية || 1) + " علبة - " + o.المقاس;
+            document.getElementById('p-total').innerText = tot;
+            document.getElementById('p-id').innerText = id.substring(0,8).toUpperCase();
+            document.getElementById('p-time').innerText = time;
             window.print();
-            card.classList.remove('order-to-print');
         }
 
         function start() {
@@ -214,7 +265,6 @@
                     const cpTxt = `HOTEP ORDER\nالاسم: ${o.الاسم}\nالهاتف: ${o.الهاتف}\nالعنوان: ${g} - ${o.العنوان}\nالمقاس: ${o.المقاس}\nالعدد: ${q}\nالحساب: ${tot}ج`;
                     const waMsg = `أهلاً أ/ ${o.الاسم} ✨\nتم تأكيد طلبك من براند HOTEP ✅\n\nالعدد: ${q} علبة\nالمقاس: ${o.المقاس}\nالحساب الإجمالي: ${tot} جنيه\n\nنشكرك على ثقتك!`;
 
-                    // التعديل: إضافة id="card-${id}" للكارت وتعديل زر الطباعة
                     const card = `
                         <div class="order-card" id="card-${id}">
                             <span class="order-time"><i class="far fa-clock"></i> ${time}</span>
@@ -227,7 +277,7 @@
                                     `<button onclick="setS('${id}','تم التسليم')" class="btn b-done">تم التسليم</button>` : 
                                     (o.الحالة === 'تم التسليم' ? `<span style="width:100%;text-align:center;color:var(--green);font-weight:bold;">✅ مكتمل</span>` : `<button onclick="ship('${id}','${o.المقاس}',${q})" class="btn b-ship">شحن الأوردر</button>`)
                                 }
-                                <button onclick="printSingleOrder('${id}')" class="btn b-print"><i class="fas fa-print"></i></button>
+                                <button onclick='printLabel(${JSON.stringify(o)}, "${id}", ${tot}, "${time}")' class="btn b-print"><i class="fas fa-print"></i></button>
                                 <button onclick="copyToClipboard(\`${cpTxt}\`)" class="btn b-copy"><i class="fas fa-copy"></i></button>
                                 <a href="https://wa.me/2${o.الهاتف}?text=${encodeURIComponent(waMsg)}" target="_blank" class="btn b-wa"><i class="fab fa-whatsapp"></i></a>
                                 <button onclick="del('${id}')" class="btn b-del">×</button>
