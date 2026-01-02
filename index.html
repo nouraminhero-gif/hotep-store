@@ -1,20 +1,27 @@
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
+    // 1. إعدادات Firebase
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
+    // 2. تحديث السعر الإجمالي
     function updateTotal() {
         const qty = parseInt(document.getElementById('quantity').value) || 1;
         const ship = parseInt(document.getElementById('province').value) || 50;
         document.getElementById('totalDisplay').innerText = (qty * 200) + ship;
     }
 
+    // 3. تحريك السلايدر (الصور)
     let currentIdx = 0;
     const slider = document.getElementById('mainSlider');
     setInterval(() => {
         currentIdx = (currentIdx + 1) % 2;
-        slider.style.transform = `translateX(${currentIdx * 100}%)`;
+        if(slider) slider.style.transform = `translateX(${currentIdx * 100}%)`;
     }, 4000);
 
+    // 4. وظيفة تسجيل الطلب الأساسية
     function submitOrder() {
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
@@ -28,6 +35,7 @@
         const shipCost = parseInt(provElem.value);
         const total = (parseInt(qtyValue) * 200) + shipCost;
 
+        // التحقق من البيانات
         if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
             alert("يرجى إدخال البيانات بشكل صحيح (الاسم، ورقم هاتف صحيح، والعنوان)");
             return;
@@ -51,10 +59,10 @@
             التاريخ: new Date().toLocaleDateString('ar-EG')
         };
 
-        // 1. تسجيل الأوردر في فايربيز (لوحة الإدارة)
+        // أ- حفظ البيانات في Firebase (لوحة الإدارة)
         firebase.database().ref('orders').push(orderData).then(() => {
             
-            // 2. إرسال رسالة واتساب تلقائية (عبر السيرفر المحلي bot.js)
+            // ب- إرسال الرسالة إلى سيرفر الواتساب المحلي (bot.js)
             fetch('http://localhost:3000/send-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -64,15 +72,15 @@
                     address: address,
                     total: total
                 })
-            }).catch(err => console.log("واتساب غير متاح حالياً"));
+            }).catch(err => console.log("سيرفر الواتساب غير نشط حالياً"));
 
-            // 3. إرسال إشعار تلجرام (كما كان في كودك)
-            const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
-            const chatId = "7795759414";
+            // ج- إرسال إشعار التلجرام
+            const telegramToken = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
+            const telegramChatId = "7795759414";
             const messageText = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyValue} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n🚚 الشحن: ${shipCost} ج\n💰 الإجمالي: ${total} ج`;
-            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`);
+            fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${telegramChatId}&text=${encodeURIComponent(messageText)}`);
 
-            // 4. إظهار نافذة النجاح للعميل
+            // د- إظهار نافذة النجاح للعميل
             document.getElementById('confirmDetails').innerHTML = `
                 <b>👤 الاسم:</b> ${name}<br>
                 <b>📏 المقاس:</b> ${size}<br>
