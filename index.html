@@ -22,24 +22,18 @@
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
 
-        /* الأقسام التي اختفت عادت هنا */
         .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
         .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px; }
         .product-features ul { list-style: none; padding: 0; margin: 0; }
         .product-features li { font-size: 14px; color: #ccc; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
         .product-features li i { color: var(--gold); font-size: 12px; }
 
-        .features-strip { display: flex; justify-content: space-around; margin: 15px 0; background: var(--gray); padding: 12px 5px; border-radius: 15px; border: 1px solid #222; }
-        .feat-item { text-align: center; font-size: 9px; color: #aaa; flex: 1; }
-        .feat-item i { display: block; font-size: 18px; color: var(--gold); margin-bottom: 5px; }
-
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; border: 1px solid #222; width: 100%; }
         .size-header { background: #111; color: var(--gold); padding: 10px 2px; font-size: 11px; font-weight: bold; }
         .size-item { background: var(--black); padding: 12px 2px; font-size: 11px; color: #eee; border-top: 1px solid #111; }
 
-        /* تنسيق الفورم الثلاثي */
         .triple-row { display: flex; gap: 8px; margin-bottom: 15px; width: 100%; }
-        .triple-row .form-group { margin-bottom: 0; flex: 1; text-align: center; }
+        .triple-row .form-group { margin-bottom: 0; flex: 1; }
         .triple-row select { padding: 12px 2px; font-size: 11px; font-weight: bold; }
 
         .form-group { width: 100%; margin-bottom: 15px; text-align: center; }
@@ -53,15 +47,14 @@
         .total-amount { color: var(--gold); font-size: 24px; font-weight: 900; }
 
         #orderBtn { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 15px; animation: pulse 2s infinite; }
-        
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 25px; text-align: center; width: 100%; max-width: 320px; }
-
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
             70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
+
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--dark); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 25px; text-align: center; width: 100%; max-width: 320px; }
     </style>
 </head>
 <body>
@@ -91,16 +84,10 @@
     <div class="product-features">
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
-            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم.</li>
-            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة تماماً.</li>
-            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</li>
+            <li><i class="fas fa-check"></i> <b>قطن أصلي 100%</b></li>
+            <li><i class="fas fa-check"></i> <b>معالجة ضد الحساسية</b></li>
+            <li><i class="fas fa-check"></i> <b>العلبة (قطعتين)</b></li>
         </ul>
-    </div>
-
-    <div class="features-strip">
-        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
     </div>
 
     <div class="size-grid">
@@ -167,9 +154,9 @@
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
     function updateTotal() {
-        const qty = parseInt(document.getElementById('quantity').value);
-        const ship = parseInt(document.getElementById('province').value);
-        document.getElementById('totalDisplay').innerText = (qty * 200) + ship;
+        const qtyValue = parseInt(document.getElementById('quantity').value);
+        const shipCost = parseInt(document.getElementById('province').value);
+        document.getElementById('totalDisplay').innerText = (qtyValue * 200) + shipCost;
     }
 
     let currentIdx = 0;
@@ -184,12 +171,16 @@
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
         const size = document.getElementById('size').value;
+        
+        // إصلاح مشكلة الكمية: نأخذ القيمة الرقمية فقط للإرسال
         const qtySelect = document.getElementById('quantity');
-        const qtyText = qtySelect.options[qtySelect.selectedIndex].text;
+        const qtyNumber = qtySelect.value; // سيقوم بإرسال "1" أو "2" بدلاً من النص الطويل
+        const qtyText = qtySelect.options[qtySelect.selectedIndex].text; // للعرض فقط
+        
         const provElem = document.getElementById('province');
-        const provName = provElem.options[provElem.selectedIndex].text;
+        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
         const shipCost = parseInt(provElem.value);
-        const total = (parseInt(qtySelect.value) * 200) + shipCost;
+        const total = (parseInt(qtyNumber) * 200) + shipCost;
 
         if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
             alert("يرجى إكمال البيانات بشكل صحيح");
@@ -200,24 +191,30 @@
         btn.disabled = true; 
         btn.innerText = "جاري الحجز...";
 
+        // إرسال البيانات بشكل منظم لقاعدة البيانات
         firebase.database().ref('orders').push({
-            الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
-            الكمية: qtyText, المقاس: size, الاجمالي: total, مصاريف_الشحن: shipCost,
+            الاسم: name,
+            الهاتف: phone,
+            المحافظة: provName,
+            العنوان: address,
+            الكمية: qtyNumber, // يرسل الآن الرقم الصحيح (مثلاً: 1)
+            المقاس: size,
+            الاجمالي: total,
             التوقيت: new Date().toLocaleTimeString('ar-EG'),
             التاريخ: new Date().toLocaleDateString('ar-EG')
         }).then(() => {
             const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
             const chatId = "7795759414";
-            const messageText = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyText}\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n🚚 الشحن: ${shipCost} ج\n💰 الإجمالي: ${total} ج`;
+            const messageText = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyNumber} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
 
             fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`);
 
             document.getElementById('confirmDetails').innerHTML = `
                 <b>👤 الاسم:</b> ${name}<br>
                 <b>📏 المقاس:</b> ${size}<br>
-                <b>📦 الطلب:</b> ${qtyText}<br>
-                <b>🚚 مصاريف الشحن:</b> ${shipCost} جنيه<br>
-                <b>💰 الإجمالي النهائي:</b> ${total} جنيه
+                <b>📦 الطلب:</b> ${qtyNumber} علبة<br>
+                <b>🚚 الشحن:</b> ${shipCost} ج<br>
+                <b>💰 الإجمالي:</b> ${total} ج
             `;
             document.getElementById('successModal').style.display = 'flex';
         }).catch(() => {
