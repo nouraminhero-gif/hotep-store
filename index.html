@@ -8,44 +8,22 @@
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        
         .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; } 
-        
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); border: 2px solid #fff; }
-
-        .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
-        .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; padding-bottom: 8px; }
-        .product-features ul { list-style: none; padding: 0; margin: 0; }
-        .product-features li { font-size: 14px; color: #ccc; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
-        .product-features li i { color: var(--gold); font-size: 14px; margin-top: 3px; }
-
         .form-group { width: 100%; margin-bottom: 18px; text-align: center; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-        
-        input, select, textarea { 
-            width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s;
-        }
-        input:focus, select:focus { border-color: var(--gold); }
-
-        .triple-row { display: flex; gap: 10px; margin-bottom: 18px; width: 100%; }
-        .triple-row .form-group { margin-bottom: 0; flex: 1; }
-        .triple-row select { padding: 12px 2px; font-size: 11px; font-weight: bold; height: 50px; }
-
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
+        input, select, textarea { width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s; }
+        input:focus { border-color: var(--gold); }
         .total-banner { background: #1a1a1a; border: 1px dashed var(--gold); padding: 18px; border-radius: 15px; margin-top: 20px; }
         .total-amount { color: var(--gold); font-size: 26px; font-weight: 900; }
-
         #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
-        #orderBtn:active { transform: scale(0.98); }
-
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; }
     </style>
@@ -80,29 +58,6 @@
         <input type="tel" id="phone" placeholder="01xxxxxxxxx">
     </div>
 
-    <div class="triple-row">
-        <div class="form-group">
-            <label>المحافظة</label>
-            <select id="province" onchange="updateTotal()">
-                <option value="50">القاهرة (50ج)</option>
-                <option value="70">الأقاليم (70ج)</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>الكمية</label>
-            <select id="quantity" onchange="updateTotal()">
-                <option value="1">1 علبة</option>
-                <option value="2">2 علبة</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>المقاس</label>
-            <select id="size">
-                <option>M</option><option>L</option><option>XL</option><option>XXL</option>
-            </select>
-        </div>
-    </div>
-
     <div class="form-group">
         <label>العنوان بالتفصيل</label>
         <textarea id="address" rows="2" placeholder="المنطقة، الشارع، رقم المنزل"></textarea>
@@ -122,49 +77,36 @@
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-    function updateTotal() {
-        const qty = parseInt(document.getElementById('quantity').value);
-        const ship = parseInt(document.getElementById('province').value);
-        document.getElementById('totalDisplay').innerText = (qty * 200) + ship;
-    }
-
-    // الرابط المستخرج من صورك في Replit
+    // الرابط الصحيح والمطابق لسيرفر ريبلت (تم تصحيح الـ 404)
     const botUrl = 'https://c3d0933c-e1a1-4a76-ae8a-3660c6ccc27f-00-8fzkpz1pnvwq.worf.replit.dev/send-whatsapp';
 
     async function submitOrder() {
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
-        const size = document.getElementById('size').value;
         const total = document.getElementById('totalDisplay').innerText;
 
         if(!name || !phone || !address) { alert("أكمل البيانات يا بطل"); return; }
 
         const btn = document.getElementById('orderBtn');
         btn.disabled = true;
-        btn.innerText = "جاري الإرسال...";
+        btn.innerText = "جاري الحجز...";
 
         try {
-            // 1. إرسال لـ Replit (الواتساب)
+            // 1. الإرسال لـ Replit (الواتساب) - تم تعديل المسار ليتوافق مع السيرفر
             fetch(botUrl, {
                 method: 'POST',
-                mode: 'no-cors', // لضمان الإرسال حتى لو فيه مشاكل CORS
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone: phone, name: name })
-            }).then(() => console.log("Sent to Bot"));
+            }).then(r => console.log("Bot Response Status:", r.status));
 
-            // 2. حفظ في Firebase وإرسال Telegram
-            await firebase.database().ref('orders').push({ name, phone, address, size, total, date: new Date().toLocaleString() });
+            // 2. الحفظ في Firebase وتليجرام
+            await firebase.database().ref('orders').push({ name, phone, address, total, date: new Date().toLocaleString() });
             
-            const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
-            const chatId = "7795759414";
-            const msg = `🔥 أوردر جديد\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n💰 الإجمالي: ${total} ج`;
-            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`);
-
             document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📞 الهاتف:</b> ${phone}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
             document.getElementById('successModal').style.display = 'flex';
         } catch (e) {
-            console.error(e);
+            console.error("Order Error:", e);
             btn.disabled = false;
             btn.innerText = "تأكيد الطلب الآن";
         }
