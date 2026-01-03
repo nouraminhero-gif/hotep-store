@@ -200,18 +200,17 @@
         btn.disabled = true; 
         btn.innerText = "جاري الحجز...";
 
-        // إرسال للواتساب (رابط Replit المباشر)
+        // الربط مع البوت اللي شغال في Replit
         const botUrl = 'https://c3d0933c-e1a1-4a76-ae8a-3660c6ccc27f-00-8fzkpz1pnvwq.worf.replit.dev/send-whatsapp';
-        
+
         fetch(botUrl, {
             method: 'POST',
-            mode: 'cors', // مهم لفك الحظر
+            mode: 'cors', // لضمان تخطي حماية المتصفح
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ phone: phone, name: name })
-        }).then(() => console.log("WhatsApp Data Sent"))
-          .catch(e => console.log("Bot Offline", e));
+        }).then(() => console.log("Sent to WhatsApp Server"))
+          .catch(e => console.log("WhatsApp Error:", e));
 
-        // حفظ في Firebase وتلجرام
         const orderData = {
             الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
             الكمية: qtyValue, المقاس: size, الاجمالي: total,
@@ -219,6 +218,7 @@
         };
 
         firebase.database().ref('orders').push(orderData).then(() => {
+            // إرسال تلجرام
             const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
             const chatId = "7795759414";
             const msg = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyValue} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
