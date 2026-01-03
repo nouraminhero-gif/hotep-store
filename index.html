@@ -10,20 +10,20 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; } 
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
-        .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); border: 2px solid #fff; }
+        .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; border: 2px solid #fff; }
         .form-group { width: 100%; margin-bottom: 18px; text-align: center; }
         label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
-        input, select, textarea { width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s; }
+        input, select, textarea { width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; }
         input:focus { border-color: var(--gold); }
         .total-banner { background: #1a1a1a; border: 1px dashed var(--gold); padding: 18px; border-radius: 15px; margin-top: 20px; }
         .total-amount { color: var(--gold); font-size: 26px; font-weight: 900; }
-        #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
+        #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; }
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; }
     </style>
@@ -77,7 +77,7 @@
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-    // الرابط الصحيح والمطابق لسيرفر ريبلت (تم تصحيح الـ 404)
+    // الرابط اللي شفته في الـ Console عندك وصححت فيه الشرطة (-)
     const botUrl = 'https://c3d0933c-e1a1-4a76-ae8a-3660c6ccc27f-00-8fzkpz1pnvwq.worf.replit.dev/send-whatsapp';
 
     async function submitOrder() {
@@ -93,20 +93,22 @@
         btn.innerText = "جاري الحجز...";
 
         try {
-            // 1. الإرسال لـ Replit (الواتساب) - تم تعديل المسار ليتوافق مع السيرفر
+            // 1. الإرسال لـ Replit (الواتساب) - تم استخدام no-cors لتجنب قفلة المتصفح
             fetch(botUrl, {
                 method: 'POST',
+                mode: 'no-cors', 
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone: phone, name: name })
-            }).then(r => console.log("Bot Response Status:", r.status));
+            });
 
-            // 2. الحفظ في Firebase وتليجرام
+            // 2. الحفظ في Firebase (للتأكد إن الأوردر مسجل عندك)
             await firebase.database().ref('orders').push({ name, phone, address, total, date: new Date().toLocaleString() });
             
+            // إظهار رسالة النجاح
             document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📞 الهاتف:</b> ${phone}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
             document.getElementById('successModal').style.display = 'flex';
         } catch (e) {
-            console.error("Order Error:", e);
+            console.error(e);
             btn.disabled = false;
             btn.innerText = "تأكيد الطلب الآن";
         }
