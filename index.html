@@ -56,13 +56,6 @@
 
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; box-shadow: 0 0 30px rgba(212,175,55,0.2); }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-            70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-        }
-        .pulse-anim { animation: pulse 2s infinite; }
     </style>
 </head>
 <body>
@@ -71,9 +64,8 @@
     <div class="modal-content">
         <i class="fas fa-check-circle" style="font-size: 50px; color: #25d366; margin-bottom: 15px;"></i>
         <h2 style="color:var(--gold); margin:0 0 10px 0;">تم تسجيل طلبك!</h2>
-        <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">سيتم التواصل معك هاتفياً لتأكيد الشحن</p>
-        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; line-height:1.8; text-align: right; color: #eee; border: 1px solid #222;"></div>
-        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer; font-size: 16px;">إغلاق</button>
+        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; text-align: right; color: #eee; border: 1px solid #222;"></div>
+        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer;">إغلاق</button>
     </div>
 </div>
 
@@ -81,8 +73,8 @@
     <div class="brand">HOTEP</div>
     <div class="slider-container">
         <div class="slides-wrapper" id="mainSlider">
-            <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg" alt="Hotep 1"></div>
-            <div class="slide"><img src="https://i.postimg.cc/MTBsdrMY/1000068271-edit-1412030296766163.jpg" alt="Hotep 2"></div>
+            <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg"></div>
+            <div class="slide"><img src="https://i.postimg.cc/MTBsdrMY/1000068271-edit-1412030296766163.jpg"></div>
         </div>
     </div>
     <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
@@ -90,24 +82,9 @@
     <div class="product-features">
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
-            <li><i class="fas fa-check-circle"></i> <span><b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</span></li>
-            <li><i class="fas fa-check-circle"></i> <span><b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</span></li>
-            <li><i class="fas fa-check-circle"></i> <span><b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>قطن أصلي 100%:</b> نسيج فائق النعومة.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>العلبة (قطعتين):</b> تغليف فاخر ماركة HOTEP.</span></li>
         </ul>
-    </div>
-
-    <div class="features-strip">
-        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
-    </div>
-
-    <div class="size-grid">
-        <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
-        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
-        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
-        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
-        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
     </div>
 
     <div class="form-group">
@@ -124,18 +101,14 @@
             <label>المحافظة</label>
             <select id="province" onchange="updateTotal()">
                 <option value="50">القاهرة (50ج)</option>
-                <option value="50">الجيزة (50ج)</option>
-                <option value="70">الإسكندرية (70ج)</option>
                 <option value="70">الأقاليم (70ج)</option>
             </select>
         </div>
         <div class="form-group">
             <label>الكمية</label>
             <select id="quantity" onchange="updateTotal()">
-                <option value="1">1 علبة (2ق)</option>
-                <option value="2">2 علبة (4ق)</option>
-                <option value="3">3 علبة (6ق)</option>
-                <option value="4">4 علبة (8ق)</option>
+                <option value="1">1 علبة</option>
+                <option value="2">2 علبة</option>
             </select>
         </div>
         <div class="form-group">
@@ -148,14 +121,14 @@
 
     <div class="form-group">
         <label>العنوان بالتفصيل</label>
-        <textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea>
+        <textarea id="address" rows="3"></textarea>
     </div>
     
     <div class="total-banner">
         إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه
     </div>
     
-    <button id="orderBtn" class="pulse-anim" onclick="submitOrder()">تأكيد الطلب الآن</button>
+    <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -166,70 +139,39 @@
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
     function updateTotal() {
-        const qty = parseInt(document.getElementById('quantity').value) || 1;
-        const ship = parseInt(document.getElementById('province').value) || 50;
+        const qty = parseInt(document.getElementById('quantity').value);
+        const ship = parseInt(document.getElementById('province').value);
         document.getElementById('totalDisplay').innerText = (qty * 200) + ship;
     }
 
-    let currentIdx = 0;
-    const slider = document.getElementById('mainSlider');
-    setInterval(() => {
-        currentIdx = (currentIdx + 1) % 2;
-        if(slider) slider.style.transform = `translateX(${currentIdx * 100}%)`;
-    }, 4000);
-
-    function submitOrder() {
-        const name = document.getElementById('name').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const address = document.getElementById('address').value.trim();
+    async function submitOrder() {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
         const size = document.getElementById('size').value;
-        const qtyValue = document.getElementById('quantity').value;
-        const qtyText = document.getElementById('quantity').options[document.getElementById('quantity').selectedIndex].text;
-        
-        const provElem = document.getElementById('province');
-        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
-        const shipCost = parseInt(provElem.value);
-        const total = (parseInt(qtyValue) * 200) + shipCost;
+        const total = document.getElementById('totalDisplay').innerText;
 
-        if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
-            alert("يرجى إدخال البيانات بشكل صحيح");
-            return;
-        }
+        if(!name || !phone || !address) { alert("اكمل البيانات"); return; }
 
-        const btn = document.getElementById('orderBtn');
-        btn.disabled = true; 
-        btn.innerText = "جاري الحجز...";
-
-        // الربط مع البوت اللي شغال في Replit
+        // رابط ريبليت من صورتك
         const botUrl = 'https://c3d0933c-e1a1-4a76-ae8a-3660c6ccc27f-00-8fzkpz1pnvwq.worf.replit.dev/send-whatsapp';
 
-        fetch(botUrl, {
-            method: 'POST',
-            mode: 'cors', // لضمان تخطي حماية المتصفح
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone: phone, name: name })
-        }).then(() => console.log("Sent to WhatsApp Server"))
-          .catch(e => console.log("WhatsApp Error:", e));
+        try {
+            // إرسال للواتساب
+            fetch(botUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: phone, name: name })
+            });
 
-        const orderData = {
-            الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
-            الكمية: qtyValue, المقاس: size, الاجمالي: total,
-            التوقيت: new Date().toLocaleTimeString('ar-EG'), التاريخ: new Date().toLocaleDateString('ar-EG')
-        };
-
-        firebase.database().ref('orders').push(orderData).then(() => {
-            // إرسال تلجرام
-            const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
-            const chatId = "7795759414";
-            const msg = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyValue} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
-            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`);
-
-            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📏 المقاس:</b> ${size}<br><b>📦 الطلب:</b> ${qtyText}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
+            // حفظ في فايربيز وتلجرام
+            await firebase.database().ref('orders').push({ name, phone, address, size, total });
+            
+            document.getElementById('confirmDetails').innerHTML = `👤 الاسم: ${name}<br>📞 الهاتف: ${phone}<br>💰 الإجمالي: ${total} ج`;
             document.getElementById('successModal').style.display = 'flex';
-        }).catch(() => {
-            btn.disabled = false;
-            btn.innerText = "تأكيد الطلب الآن";
-        });
+        } catch (e) {
+            console.error(e);
+        }
     }
 </script>
 </body>
