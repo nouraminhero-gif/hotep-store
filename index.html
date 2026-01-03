@@ -207,12 +207,18 @@
         };
 
         firebase.database().ref('orders').push(orderData).then(() => {
-            // إرسال للواتساب (سيرفر محلي)
-            fetch('http://localhost:3000/send-order', {
+            
+            // --- تعديل الربط مع بوت Replit هنا يا عم الناس ---
+            const botUrl = 'https://c3d0933c-e1a1-4a76-ae8a-3660c6ccc27f-00-8fzkpz1pnvwq.worf.replit.dev/send-whatsapp';
+            
+            fetch(botUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, phone, address, total })
-            }).catch(e => console.log("Bot Offline"));
+                body: JSON.stringify({ 
+                    phone: "2" + phone, // إضافة كود الدولة لمصر
+                    name: name 
+                })
+            }).catch(e => console.log("Bot Error or Offline"));
 
             // إرسال تلجرام
             const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
