@@ -8,15 +8,15 @@
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
         .form-group { width: 100%; margin-bottom: 18px; text-align: center; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; }
-        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; text-align: center; font-size: 16px; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
+        input { width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; }
         #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; }
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px; border-radius: 30px; text-align: center; width: 90%; max-width: 340px; }
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; }
     </style>
 </head>
 <body>
@@ -24,9 +24,9 @@
 <div id="successModal">
     <div class="modal-content">
         <i class="fas fa-check-circle" style="font-size: 50px; color: #25d366; margin-bottom: 15px;"></i>
-        <h2 style="color:var(--gold);">تم تسجيل طلبك!</h2>
-        <p id="confirmDetails" style="color:#eee; text-align: right;"></p>
-        <button onclick="location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold;">إغلاق</button>
+        <h2 style="color:var(--gold); margin:0 0 10px 0;">تم تسجيل طلبك!</h2>
+        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; text-align: right; color: #eee; border: 1px solid #222; line-height: 1.6;"></div>
+        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold;">إغلاق</button>
     </div>
 </div>
 
@@ -34,7 +34,7 @@
     <div class="brand">HOTEP</div>
     <div class="form-group">
         <label>الاسم بالكامل</label>
-        <input type="text" id="name" placeholder="أدخل اسمك">
+        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
     </div>
     <div class="form-group">
         <label>رقم الموبايل</label>
@@ -43,33 +43,44 @@
     <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
+    const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+    // الرابط اللي شفته في صور الـ Console عندك وصححت فيه الـ (/) الناقصة
+    const botUrl = 'https://c3d0933c-e1a1-4a76-ae8a-3660c6ccc27f-00-8fzkpz1pnvwq.worf.replit.dev/send-whatsapp';
+
     async function submitOrder() {
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const btn = document.getElementById('orderBtn');
 
-        if(!name || !phone) return alert("اكمل البيانات");
+        if(!name || !phone) { alert("أكمل البيانات"); return; }
+
         btn.disabled = true;
         btn.innerText = "جاري الإرسال...";
 
-        // الرابط الصحيح والمطابق لسيرفرك 100%
-        const botUrl = 'https://c3d0933c-e1a1-4a76-ae8a-3660c6ccc27f-00-8fzkpz1pnvwq.worf.replit.dev/send-whatsapp';
-
         try {
-            // الإرسال لـ Replit
+            // 1. الإرسال لـ Replit (مع استخدام وضع يتخطى حماية المتصفح)
             fetch(botUrl, {
                 method: 'POST',
-                mode: 'no-cors', // لتخطي حماية المتصفح
+                mode: 'no-cors', 
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone: phone, name: name })
-            });
+            }).then(() => console.log("Sent to Bot"));
 
-            document.getElementById('confirmDetails').innerText = `الاسم: ${name}\nالهاتف: ${phone}`;
+            // 2. الحفظ في Firebase
+            await firebase.database().ref('orders').push({ name, phone, date: new Date().toLocaleString() });
+            
+            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📞 الهاتف:</b> ${phone}`;
             document.getElementById('successModal').style.display = 'flex';
         } catch (e) {
-            alert("حدث خطأ في الاتصال");
+            console.error(e);
             btn.disabled = false;
+            btn.innerText = "تأكيد الطلب الآن";
         }
     }
 </script>
