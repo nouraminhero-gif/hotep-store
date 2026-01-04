@@ -7,39 +7,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
-        .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .slide img { width: 100%; height: 100%; object-fit: contain; } 
-        .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
-        .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); border: 2px solid #fff; }
-        .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
-        .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; padding-bottom: 8px; }
-        .product-features ul { list-style: none; padding: 0; margin: 0; }
-        .product-features li { font-size: 14px; color: #ccc; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
-        .product-features li i { color: var(--gold); font-size: 14px; margin-top: 3px; }
-        .features-strip { display: flex; justify-content: space-around; margin: 15px 0; background: var(--gray); padding: 15px 5px; border-radius: 20px; border: 1px solid #222; }
-        .feat-item { text-align: center; font-size: 11px; color: #aaa; flex: 1; font-weight: bold; }
-        .feat-item i { display: block; font-size: 22px; color: var(--gold); margin-bottom: 8px; }
-        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #333; border-radius: 12px; overflow: hidden; margin: 25px 0; border: 1px solid #333; width: 100%; }
-        .size-header { background: #1a1a1a; color: var(--gold); padding: 12px 2px; font-size: 12px; font-weight: 900; }
-        .size-item { background: var(--black); padding: 14px 2px; font-size: 12px; color: #eee; border-top: 1px solid #111; }
+        * { box-sizing: border-box; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; }
+        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
+        .price-box { text-align: center; margin-top: 10px; }
+        .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; }
         .form-group { width: 100%; margin-bottom: 18px; text-align: center; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-        input, select, textarea { width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s; }
-        .triple-row { display: flex; gap: 10px; margin-bottom: 18px; width: 100%; }
-        .triple-row .form-group { margin-bottom: 0; flex: 1; }
-        .total-banner { background: #1a1a1a; border: 1px dashed var(--gold); padding: 18px; border-radius: 15px; margin-top: 20px; }
-        .total-amount { color: var(--gold); font-size: 26px; font-weight: 900; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; }
         #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; }
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; }
-        .pulse-anim { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 70% { transform: scale(1.02); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -48,43 +27,19 @@
     <div class="modal-content">
         <i class="fas fa-check-circle" style="font-size: 50px; color: #25d366; margin-bottom: 15px;"></i>
         <h2 style="color:var(--gold); margin:0 0 10px 0;">تم تسجيل طلبك!</h2>
-        <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">سيتم التواصل معك هاتفياً لتأكيد الشحن</p>
-        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; text-align: right; color: #eee; border: 1px solid #222;"></div>
-        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer;">إغلاق</button>
+        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; text-align: right; color: #eee;"></div>
+        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold;">إغلاق</button>
     </div>
 </div>
 
 <div class="container">
     <div class="brand">HOTEP</div>
-    <div class="slider-container">
-        <div class="slides-wrapper" id="mainSlider">
-            <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg"></div>
-            <div class="slide"><img src="https://i.postimg.cc/MTBsdrMY/1000068271-edit-1412030296766163.jpg"></div>
-        </div>
-    </div>
     <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
-    <div class="product-features">
-        <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
-        <ul>
-            <li><i class="fas fa-check-circle"></i> <span><b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</span></li>
-        </ul>
-    </div>
-    <div class="form-group">
-        <label>الاسم بالكامل</label>
-        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
-    </div>
-    <div class="form-group">
-        <label>رقم الموبايل</label>
-        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
-    </div>
-    <div class="triple-row">
-        <div class="form-group"><label>المحافظة</label><select id="province" onchange="updateTotal()"><option value="50">القاهرة</option><option value="70">الإسكندرية</option></select></div>
-        <div class="form-group"><label>الكمية</label><select id="quantity" onchange="updateTotal()"><option value="1">1 علبة</option></select></div>
-        <div class="form-group"><label>المقاس</label><select id="size"><option>M</option><option>L</option></select></div>
-    </div>
+    <br>
+    <div class="form-group"><label>الاسم بالكامل</label><input type="text" id="name" placeholder="أدخل اسمك الثلاثي"></div>
+    <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="phone" placeholder="01xxxxxxxxx"></div>
     <div class="form-group"><label>العنوان بالتفصيل</label><textarea id="address" rows="3"></textarea></div>
-    <div class="total-banner">إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه</div>
-    <button id="orderBtn" class="pulse-anim" onclick="submitOrder()">تأكيد الطلب الآن</button>
+    <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -94,39 +49,31 @@
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-    function updateTotal() {
-        const qty = parseInt(document.getElementById('quantity').value) || 1;
-        const ship = parseInt(document.getElementById('province').value) || 50;
-        document.getElementById('totalDisplay').innerText = (qty * 200) + ship;
-    }
-
     function submitOrder() {
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
-        const size = document.getElementById('size').value;
-        const total = document.getElementById('totalDisplay').innerText;
 
         if(!name || !/^01[0125][0-9]{8}$/.test(phone)) { alert("بيانات غير صحيحة"); return; }
 
         const btn = document.getElementById('orderBtn');
         btn.disabled = true; btn.innerText = "جاري الحجز...";
 
-        // 1. حفظ في فايربيز
-        firebase.database().ref('orders').push({ name, phone, address, total, time: new Date().toLocaleString() }).then(() => {
+        // 1. Firebase
+        firebase.database().ref('orders').push({ name, phone, address, time: new Date().toLocaleString() }).then(() => {
             
-            // 2. إرسال واتساب عبر سيرفر ريبلت [رابطك تم وضعه هنا]
+            // 2. Twilio WhatsApp (Replit)
             fetch('https://hotep-bot-nouraminhero.replit.app/send-whatsapp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, phone })
             }).catch(e => console.log("Twilio Error"));
 
-            // 3. إرسال تلجرام
-            const msg = `🔥 أوردر جديد\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n💰 الإجمالي: ${total} ج`;
+            // 3. Telegram
+            const msg = `🔥 أوردر جديد\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n🏠 العنوان: ${address}`;
             fetch(`https://api.telegram.org/bot7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ/sendMessage?chat_id=7795759414&text=${encodeURIComponent(msg)}`);
 
-            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
+            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📞 الهاتف:</b> ${phone}`;
             document.getElementById('successModal').style.display = 'flex';
         });
     }
