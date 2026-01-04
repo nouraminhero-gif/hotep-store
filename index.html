@@ -6,39 +6,31 @@
     <title>HOTEP | Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
-        * { box-sizing: border-box; }
-        body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; }
+        body { background: var(--black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
         .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; }
-        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
-        .price-box { text-align: center; margin-top: 10px; }
-        .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; }
-        .form-group { width: 100%; margin-bottom: 18px; text-align: center; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; }
-        input, select, textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; }
-        #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; }
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; }
+        .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; margin-bottom: 15px; }
+        #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; }
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px; border-radius: 30px; text-align: center; width: 90%; }
     </style>
 </head>
 <body>
 
 <div id="successModal">
     <div class="modal-content">
-        <i class="fas fa-check-circle" style="font-size: 50px; color: #25d366; margin-bottom: 15px;"></i>
-        <h2 style="color:var(--gold); margin:0 0 10px 0;">تم تسجيل طلبك!</h2>
-        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; text-align: right; color: #eee;"></div>
+        <h2 style="color:var(--gold);">تم تسجيل طلبك!</h2>
+        <p id="confirmDetails"></p>
         <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold;">إغلاق</button>
     </div>
 </div>
 
 <div class="container">
     <div class="brand">HOTEP</div>
-    <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
-    <br>
-    <div class="form-group"><label>الاسم بالكامل</label><input type="text" id="name" placeholder="أدخل اسمك الثلاثي"></div>
-    <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="phone" placeholder="01xxxxxxxxx"></div>
-    <div class="form-group"><label>العنوان بالتفصيل</label><textarea id="address" rows="3"></textarea></div>
+    <input type="text" id="name" placeholder="الاسم بالكامل">
+    <input type="tel" id="phone" placeholder="رقم الموبايل">
+    <textarea id="address" rows="3" placeholder="العنوان بالتفصيل"></textarea>
     <button id="orderBtn" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
 
@@ -54,26 +46,26 @@
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
 
-        if(!name || !/^01[0125][0-9]{8}$/.test(phone)) { alert("بيانات غير صحيحة"); return; }
+        if(!name || !phone || !address) { alert("يرجى ملء كافة البيانات"); return; }
 
         const btn = document.getElementById('orderBtn');
         btn.disabled = true; btn.innerText = "جاري الحجز...";
 
-        // 1. Firebase
-        firebase.database().ref('orders').push({ name, phone, address, time: new Date().toLocaleString() }).then(() => {
+        // 1. التخزين في Firebase
+        firebase.database().ref('orders').push({ name, phone, address, date: new Date().toLocaleString() }).then(() => {
             
-            // 2. Twilio WhatsApp (Replit)
+            // 2. إرسال الواتساب عبر السيرفر الخاص بك
             fetch('https://hotep-bot-nouraminhero.replit.app/send-whatsapp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, phone })
             }).catch(e => console.log("Twilio Error"));
 
-            // 3. Telegram
+            // 3. إرسال التلجرام
             const msg = `🔥 أوردر جديد\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n🏠 العنوان: ${address}`;
             fetch(`https://api.telegram.org/bot7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ/sendMessage?chat_id=7795759414&text=${encodeURIComponent(msg)}`);
 
-            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📞 الهاتف:</b> ${phone}`;
+            document.getElementById('confirmDetails').innerText = `أهلاً يا ${name}، تم إرسال طلبك بنجاح.`;
             document.getElementById('successModal').style.display = 'flex';
         });
     }
