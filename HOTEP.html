@@ -123,7 +123,9 @@
         </div>
     </div>
 
-    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+    <audio id="notifSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="login-screen">
         <div class="login-box">
@@ -197,7 +199,15 @@
             db.ref('orders').on('value', snap => {
                 let h = { n:'', s:'', d:'' }; let counts = { n:0, s:0, d:0 };
                 let money = 0; let sold = 0; exData = [];
-                if (lastLen !== -1 && snap.numChildren() > lastLen) document.getElementById('notifSound').play();
+                
+                // تعديل منطق تشغيل الصوت
+                if (lastLen !== -1 && snap.numChildren() > lastLen) {
+                    let audio = document.getElementById('notifSound');
+                    let playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => { console.log("تحتاج لتفاعل المستخدم أولاً"); });
+                    }
+                }
                 lastLen = snap.numChildren();
 
                 snap.forEach(child => {
@@ -260,6 +270,7 @@
             });
         };
 
+        // تحديث دالة الطباعة لتوافق الـ APK
         window.prLabel = (id, n, p, ad, q, t) => {
             document.getElementById('p-name').innerText = n;
             document.getElementById('p-phone').innerText = p;
@@ -267,7 +278,11 @@
             document.getElementById('p-qty').innerText = q;
             document.getElementById('p-total').innerText = t;
             document.getElementById('p-id').innerText = id.substring(0,8).toUpperCase();
-            window.print();
+            
+            // تأخير بسيط لضمان تحديث العناصر قبل الطباعة
+            setTimeout(() => {
+                window.print();
+            }, 500);
         };
 
         window.ship = (id, sz, q) => {
