@@ -10,12 +10,13 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '868525999100309');
+    fbq('init', '2218579488632005');
     fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=868525999100309&ev=PageView&noscript=1"
+    src="https://www.facebook.com/tr?id=2218579488632005&ev=PageView&noscript=1"
     /></noscript>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HOTEP | Official Store</title>
@@ -26,8 +27,12 @@
         
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
-        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+
+        /* تعديل: قسم الفيديو الاحترافي */
+        .video-container { width: 100%; border-radius: 20px; overflow: hidden; border: 2px solid var(--gold); margin-bottom: 20px; background: #000; position: relative; }
+        .video-container video { width: 100%; display: block; }
 
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -39,25 +44,32 @@
 
         .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
         .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; padding-bottom: 8px; }
-        .product-features ul { list-style: none; padding: 0; margin: 0; }
         .product-features li { font-size: 14px; color: #ccc; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
         .product-features li i { color: var(--gold); font-size: 14px; margin-top: 3px; }
 
-        .features-strip { display: flex; justify-content: space-around; margin: 15px 0; background: var(--gray); padding: 15px 5px; border-radius: 20px; border: 1px solid #222; }
-        .feat-item { text-align: center; font-size: 11px; color: #aaa; flex: 1; font-weight: bold; }
-        .feat-item i { display: block; font-size: 22px; color: var(--gold); margin-bottom: 8px; }
+        /* إضافة: الزر العائم للدردشة */
+        .floating-chat { position: fixed; bottom: 20px; left: 20px; z-index: 1000; }
+        .chat-btn { background: var(--gold); color: #000; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(212,175,55,0.4); cursor: pointer; border: 2px solid #fff; }
+        
+        /* إضافة: نافذة الدردشة */
+        #chatBox { display: none; position: fixed; bottom: 90px; left: 20px; width: 300px; height: 400px; background: var(--dark); border: 1px solid var(--gold); border-radius: 20px; flex-direction: column; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow: hidden; }
+        .chat-header { background: var(--gold); color: #000; padding: 15px; font-weight: bold; text-align: center; display: flex; justify-content: space-between; }
+        .chat-messages { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .msg { padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 80%; }
+        .msg.admin { background: #222; color: #fff; align-self: flex-start; }
+        .msg.user { background: var(--gold); color: #000; align-self: flex-end; }
+        .chat-input-area { display: flex; padding: 10px; gap: 5px; background: #000; }
+        .chat-input-area input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #333; }
 
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #333; border-radius: 12px; overflow: hidden; margin: 25px 0; border: 1px solid #333; width: 100%; }
         .size-header { background: #1a1a1a; color: var(--gold); padding: 12px 2px; font-size: 12px; font-weight: 900; }
         .size-item { background: var(--black); padding: 14px 2px; font-size: 12px; color: #eee; border-top: 1px solid #111; }
 
         .form-group { width: 100%; margin-bottom: 18px; text-align: center; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; text-align: center; }
         
-        input, select, textarea { 
-            width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s;
-        }
-        input:focus, select:focus { border-color: var(--gold); }
+        input, select, textarea { width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s; }
+        input:focus { border-color: var(--gold); }
 
         .triple-row { display: flex; gap: 10px; margin-bottom: 18px; width: 100%; }
         .triple-row .form-group { margin-bottom: 0; flex: 1; }
@@ -67,10 +79,9 @@
         .total-amount { color: var(--gold); font-size: 26px; font-weight: 900; }
 
         #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
-        #orderBtn:active { transform: scale(0.98); }
-
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; box-shadow: 0 0 30px rgba(212,175,55,0.2); }
+        
+        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; }
 
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
@@ -82,18 +93,44 @@
 </head>
 <body>
 
+<div class="floating-chat">
+    <div class="chat-btn" onclick="toggleChat()"><i class="fas fa-comments"></i></div>
+</div>
+
+<div id="chatBox">
+    <div class="chat-header">
+        <span>دردشة مباشرة - هوتب</span>
+        <span onclick="toggleChat()" style="cursor:pointer">&times;</span>
+    </div>
+    <div id="chatMessages" class="chat-messages">
+        <div class="msg admin">أهلاً بك في هوتب! كيف يمكننا مساعدتك؟</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="اكتب رسالتك...">
+        <button onclick="sendMessage()" style="background:var(--gold); border:none; padding:10px; border-radius:10px;"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
 <div id="successModal">
     <div class="modal-content">
         <i class="fas fa-check-circle" style="font-size: 50px; color: #25d366; margin-bottom: 15px;"></i>
         <h2 style="color:var(--gold); margin:0 0 10px 0;">تم تسجيل طلبك!</h2>
         <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">سيتم التواصل معك هاتفياً لتأكيد الشحن</p>
-        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; line-height:1.8; text-align: right; color: #eee; border: 1px solid #222;"></div>
-        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer; font-size: 16px;">إغلاق</button>
+        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; text-align: right; color: #eee; border: 1px solid #222;"></div>
+        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold;">إغلاق</button>
     </div>
 </div>
 
 <div class="container">
     <div class="brand">HOTEP</div>
+
+    <div class="video-container">
+        <video id="productVideo" autoplay muted loop playsinline>
+            <source src="رابط_الفيديو_الذي_ستحمله_هنا.mp4" type="video/mp4">
+            تصفحك لا يدعم الفيديو.
+        </video>
+    </div>
+
     <div class="slider-container">
         <div class="slides-wrapper" id="mainSlider">
             <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg" alt="Hotep 1"></div>
@@ -105,16 +142,9 @@
     <div class="product-features">
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
-            <li><i class="fas fa-check-circle"></i> <span><b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</span></li>
-            <li><i class="fas fa-check-circle"></i> <span><b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</span></li>
-            <li><i class="fas fa-check-circle"></i> <span><b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>العلبة (قطعتين):</b> تغليف فاخر يليق بك.</span></li>
         </ul>
-    </div>
-
-    <div class="features-strip">
-        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
     </div>
 
     <div class="size-grid">
@@ -125,23 +155,17 @@
         <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
     </div>
 
-    <div class="form-group">
-        <label>الاسم بالكامل</label>
-        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
-    </div>
-    <div class="form-group">
-        <label>رقم الموبايل</label>
-        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
-    </div>
+    <div class="form-group"><label>الاسم بالكامل</label><input type="text" id="name" placeholder="أدخل اسمك الثلاثي"></div>
+    <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="phone" placeholder="01xxxxxxxxx"></div>
 
     <div class="triple-row">
         <div class="form-group">
             <label>المحافظة</label>
             <select id="province" onchange="updateTotal()">
-                <option value="50">القاهرة (50ج)</option>
-                <option value="50">الجيزة (50ج)</option>
-                <option value="70">الإسكندرية (70ج)</option>
-                <option value="70">الأقاليم (70ج)</option>
+                <option value="50">القاهرة</option>
+                <option value="50">الجيزة</option>
+                <option value="70">الإسكندرية</option>
+                <option value="70">الأقاليم / أخرى</option>
             </select>
         </div>
         <div class="form-group">
@@ -150,26 +174,17 @@
                 <option value="1">1 علبة (2ق)</option>
                 <option value="2">2 علبة (4ق)</option>
                 <option value="3">3 علبة (6ق)</option>
-                <option value="4">4 علبة (8ق)</option>
             </select>
         </div>
         <div class="form-group">
             <label>المقاس</label>
-            <select id="size">
-                <option>M</option><option>L</option><option>XL</option><option>XXL</option>
-            </select>
+            <select id="size"><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
         </div>
     </div>
 
-    <div class="form-group">
-        <label>العنوان بالتفصيل</label>
-        <textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea>
-    </div>
+    <div class="form-group"><label>العنوان بالتفصيل</label><textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea></div>
     
-    <div class="total-banner">
-        إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه
-    </div>
-    
+    <div class="total-banner">إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه</div>
     <button id="orderBtn" class="pulse-anim" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
 
@@ -179,7 +194,37 @@
 <script>
     const firebaseConfig = { databaseURL: "https://hotep-f423e-default-rtdb.europe-west1.firebasedatabase.app/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
+    // نظام الدردشة المباشرة
+    let chatUserId = localStorage.getItem('chatId') || 'user_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('chatId', chatUserId);
+
+    function toggleChat() {
+        const cb = document.getElementById('chatBox');
+        cb.style.display = (cb.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function sendMessage() {
+        const inp = document.getElementById('chatInput');
+        const msg = inp.value.trim();
+        if(msg) {
+            database.ref('chats/' + chatUserId).push({ sender: 'user', text: msg, time: Date.now() });
+            inp.value = '';
+        }
+    }
+
+    database.ref('chats/' + chatUserId).on('value', (snap) => {
+        const container = document.getElementById('chatMessages');
+        container.innerHTML = '<div class="msg admin">أهلاً بك في هوتب! كيف يمكننا مساعدتك؟</div>';
+        snap.forEach(child => {
+            const data = child.val();
+            container.innerHTML += `<div class="msg ${data.sender}">${data.text}</div>`;
+        });
+        container.scrollTop = container.scrollHeight;
+    });
+
+    // نظام الطلبات
     function updateTotal() {
         const qty = parseInt(document.getElementById('quantity').value) || 1;
         const ship = parseInt(document.getElementById('province').value) || 50;
@@ -190,7 +235,7 @@
     const slider = document.getElementById('mainSlider');
     setInterval(() => {
         currentIdx = (currentIdx + 1) % 2;
-        if(slider) slider.style.transform = `translateX(${currentIdx * 100}%)`;
+        if(slider) slider.style.transform = `translateX(-${currentIdx * 100}%)`;
     }, 4000);
 
     function submitOrder() {
@@ -199,47 +244,34 @@
         const address = document.getElementById('address').value.trim();
         const size = document.getElementById('size').value;
         const qtyValue = document.getElementById('quantity').value;
-        const qtyText = document.getElementById('quantity').options[document.getElementById('quantity').selectedIndex].text;
-        
         const provElem = document.getElementById('province');
-        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
-        const shipCost = parseInt(provElem.value);
-        const total = (parseInt(qtyValue) * 200) + shipCost;
+        const provName = provElem.options[provElem.selectedIndex].text;
+        const total = (parseInt(qtyValue) * 200) + parseInt(provElem.value);
 
         if(!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
             alert("يرجى إدخال البيانات بشكل صحيح");
             return;
         }
 
-        const btn = document.getElementById('orderBtn');
-        btn.disabled = true; 
-        btn.innerText = "جاري الحجز...";
+        document.getElementById('orderBtn').disabled = true;
+        document.getElementById('orderBtn').innerText = "جاري الحجز...";
 
         const orderData = {
             الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
-            الكمية: qtyValue, المقاس: size, الاجمالي: total,
-            التوقيت: new Date().toLocaleTimeString('ar-EG'), التاريخ: new Date().toLocaleDateString('ar-EG')
+            الكمية: qtyValue, المقاس: size, الاجمالي: total, الحالة: "جديد",
+            التوقيت: new Date().toLocaleTimeString('ar-EG'), التاريخ: new Date().toLocaleDateString('ar-EG'),
+            isArchived: false
         };
 
-        firebase.database().ref('orders').push(orderData).then(() => {
-            // إرسال للواتساب (سيرفر محلي)
-            fetch('http://localhost:3000/send-order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, phone, address, total })
-            }).catch(e => console.log("Bot Offline"));
-
-            // إرسال تلجرام
+        database.ref('orders').push(orderData).then(() => {
+            // منطقة الحماية: تلجرام
             const token = "7428109209:AAHswEI-1l8eer80_sobcoaQC2_JEPRJ0EQ";
             const chatId = "7795759414";
-            const msg = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyValue} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
+            const msg = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyValue} علبة\n📍 المحافظة: ${provName}\n💰 الإجمالي: ${total} ج`;
             fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`);
 
-            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📏 المقاس:</b> ${size}<br><b>📦 الطلب:</b> ${qtyText}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
+            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📏 المقاس:</b> ${size}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
             document.getElementById('successModal').style.display = 'flex';
-        }).catch(() => {
-            btn.disabled = false;
-            btn.innerText = "تأكيد الطلب الآن";
         });
     }
 </script>
