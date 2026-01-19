@@ -16,13 +16,14 @@
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=2218579488632005&ev=PageView&noscript=1"
     /></noscript>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HOTEP | Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* كود الـ CSS الأصلي كما هو */
+        /* كود الـ CSS الأصلي (خط أحمر) */
         :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
@@ -79,29 +80,27 @@
         }
         .pulse-anim { animation: pulse 2s infinite; }
 
-        /* تعديلات الفيديو والدردشة فقط */
-        .video-box { width: 100%; border-radius: 20px; overflow: hidden; border: 2px solid var(--gold); margin-bottom: 25px; background: #000; line-height: 0; }
-        .video-box video { width: 100%; height: auto; display: block; }
-        
+        /* إضافات قسم الفيديو والدردشة الجديدة */
+        .video-box { width: 100%; border-radius: 20px; overflow: hidden; border: 2px solid var(--gold); margin-bottom: 25px; background: #000; }
         .floating-chat-btn { position: fixed; bottom: 25px; left: 25px; background: var(--gold); color: #000; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; z-index: 999; box-shadow: 0 4px 20px rgba(212,175,55,0.6); border: 2px solid #fff; cursor: pointer; }
         #liveChat { display: none; position: fixed; bottom: 95px; left: 20px; width: 320px; height: 450px; background: var(--dark); border: 2px solid var(--gold); border-radius: 25px; flex-direction: column; z-index: 1000; box-shadow: 0 15px 40px #000; overflow: hidden; }
-        .chat-title { background: var(--gold); color: #000; padding: 15px; font-weight: 900; text-align: center; font-size: 16px; border-bottom: 1px solid #000; }
-        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #0a0a0a; }
-        .chat-msg { padding: 10px 14px; border-radius: 15px; font-size: 14px; max-width: 85%; line-height: 1.4; }
-        .chat-msg.u { background: var(--gold); color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: bold; }
-        .chat-msg.a { background: #222; color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .chat-in { display: flex; padding: 12px; background: #111; gap: 8px; border-top: 1px solid #222; }
-        .chat-in input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; text-align: right; }
+        .chat-title { background: var(--gold); color: #000; padding: 15px; font-weight: 900; text-align: center; }
+        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .chat-msg { padding: 10px 14px; border-radius: 15px; font-size: 14px; max-width: 85%; }
+        .chat-msg.u { background: var(--gold); color: #000; align-self: flex-end; }
+        .chat-msg.a { background: #222; color: #fff; align-self: flex-start; }
+        .chat-in { display: flex; padding: 12px; background: #111; gap: 8px; }
+        .chat-in input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; }
     </style>
 </head>
 <body>
 
 <div id="liveChat">
-    <div class="chat-title"><i class="fas fa-headset"></i> HOTEP SUPPORT</div>
+    <div class="chat-title"><i class="fas fa-comment-dots"></i> HOTEP Live Support</div>
     <div id="chatDisplay" class="chat-msgs"><div class="chat-msg a">مرحباً بك في هوتب! كيف يمكننا مساعدتك بخصوص طلبك؟</div></div>
     <div class="chat-in">
-        <input type="text" id="chatInput" placeholder="اكتب استفسارك هنا...">
-        <button onclick="sendLiveMsg()" style="background:var(--gold); border:none; border-radius:10px; width:45px; cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
+        <input type="text" id="chatInput" placeholder="اكتب رسالتك...">
+        <button onclick="sendLiveMsg()" style="background:var(--gold); border:none; border-radius:10px; width:45px;"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
@@ -121,8 +120,8 @@
     <div class="brand">HOTEP</div>
     
     <div class="video-box">
-        <video width="100%" autoplay muted loop playsinline poster="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg">
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-black-silk-fabric-42021-large.mp4" type="video/mp4">
+        <video width="100%" autoplay muted loop playsinline style="display: block;">
+            <source src="https://v1.mixkit.co/videos/preview/mixkit-silk-fabric-waving-in-the-wind-42021-large.mp4" type="video/mp4">
         </video>
     </div>
 
@@ -157,14 +156,8 @@
         <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
     </div>
 
-    <div class="form-group">
-        <label>الاسم بالكامل</label>
-        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
-    </div>
-    <div class="form-group">
-        <label>رقم الموبايل</label>
-        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
-    </div>
+    <div class="form-group"><label>الاسم بالكامل</label><input type="text" id="name" placeholder="أدخل اسمك الثلاثي"></div>
+    <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="phone" placeholder="01xxxxxxxxx"></div>
 
     <div class="triple-row">
         <div class="form-group">
@@ -187,21 +180,12 @@
         </div>
         <div class="form-group">
             <label>المقاس</label>
-            <select id="size">
-                <option>M</option><option>L</option><option>XL</option><option>XXL</option>
-            </select>
+            <select id="size"><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
         </div>
     </div>
 
-    <div class="form-group">
-        <label>العنوان بالتفصيل</label>
-        <textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea>
-    </div>
-    
-    <div class="total-banner">
-        إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه
-    </div>
-    
+    <div class="form-group"><label>العنوان بالتفصيل</label><textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea></div>
+    <div class="total-banner">إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه</div>
     <button id="orderBtn" class="pulse-anim" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
 
@@ -213,9 +197,9 @@
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // إضافات الدردشة
-    let chatID = localStorage.getItem('hotep_chat_id') || 'c_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('hotep_chat_id', chatID);
+    // نظام الدردشة المباشرة (جديد)
+    let chatID = localStorage.getItem('h_chat') || 'chat_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('h_chat', chatID);
 
     function toggleChat() {
         const c = document.getElementById('liveChat');
@@ -240,7 +224,7 @@
         d.scrollTop = d.scrollHeight;
     });
 
-    // كودك الأصلي تماماً
+    // منطق العمل الأصلي (خط أحمر)
     function updateTotal() {
         const qty = parseInt(document.getElementById('quantity').value) || 1;
         const ship = parseInt(document.getElementById('province').value) || 50;
@@ -261,7 +245,6 @@
         const size = document.getElementById('size').value;
         const qtyValue = document.getElementById('quantity').value;
         const qtyText = document.getElementById('quantity').options[document.getElementById('quantity').selectedIndex].text;
-        
         const provElem = document.getElementById('province');
         const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
         const shipCost = parseInt(provElem.value);
