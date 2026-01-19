@@ -16,15 +16,12 @@
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=2218579488632005&ev=PageView&noscript=1"
     /></noscript>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HOTEP | Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        /* كود الـ CSS الأصلي (خط أحمر) */
-        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
+        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; --blue: #3498db; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
@@ -57,7 +54,9 @@
         .form-group { width: 100%; margin-bottom: 18px; text-align: center; }
         label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
         
-        input, select, textarea { width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s; }
+        input, select, textarea { 
+            width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s;
+        }
         input:focus, select:focus { border-color: var(--gold); }
 
         .triple-row { display: flex; gap: 10px; margin-bottom: 18px; width: 100%; }
@@ -70,6 +69,16 @@
         #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
         #orderBtn:active { transform: scale(0.98); }
 
+        /* Floating Suggestion Button */
+        .fab-suggest { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 25px; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4); z-index: 2000; cursor: pointer; border: 2px solid #fff; }
+        
+        /* Suggestion Modal */
+        #suggestModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
+        .suggest-content { background: var(--dark); border: 2px solid var(--blue); width: 100%; max-width: 350px; padding: 25px; border-radius: 25px; position: relative; }
+        .close-suggest { position: absolute; top: 10px; left: 15px; font-size: 25px; color: #555; cursor: pointer; }
+        .btn-send-suggest { background: var(--blue); color: #fff; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        #replyBox { display: none; background: #001a00; border: 1px solid #2ecc71; color: #2ecc71; padding: 10px; border-radius: 10px; margin-top: 15px; font-size: 13px; text-align: right; }
+
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; box-shadow: 0 0 30px rgba(212,175,55,0.2); }
 
@@ -79,32 +88,23 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
         .pulse-anim { animation: pulse 2s infinite; }
-
-        /* إضافات قسم الفيديو والدردشة الجديدة */
-        .video-box { width: 100%; border-radius: 20px; overflow: hidden; border: 2px solid var(--gold); margin-bottom: 25px; background: #000; }
-        .floating-chat-btn { position: fixed; bottom: 25px; left: 25px; background: var(--gold); color: #000; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; z-index: 999; box-shadow: 0 4px 20px rgba(212,175,55,0.6); border: 2px solid #fff; cursor: pointer; }
-        #liveChat { display: none; position: fixed; bottom: 95px; left: 20px; width: 320px; height: 450px; background: var(--dark); border: 2px solid var(--gold); border-radius: 25px; flex-direction: column; z-index: 1000; box-shadow: 0 15px 40px #000; overflow: hidden; }
-        .chat-title { background: var(--gold); color: #000; padding: 15px; font-weight: 900; text-align: center; }
-        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-        .chat-msg { padding: 10px 14px; border-radius: 15px; font-size: 14px; max-width: 85%; }
-        .chat-msg.u { background: var(--gold); color: #000; align-self: flex-end; }
-        .chat-msg.a { background: #222; color: #fff; align-self: flex-start; }
-        .chat-in { display: flex; padding: 12px; background: #111; gap: 8px; }
-        .chat-in input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; }
     </style>
 </head>
 <body>
 
-<div id="liveChat">
-    <div class="chat-title"><i class="fas fa-comment-dots"></i> HOTEP Live Support</div>
-    <div id="chatDisplay" class="chat-msgs"><div class="chat-msg a">مرحباً بك في هوتب! كيف يمكننا مساعدتك بخصوص طلبك؟</div></div>
-    <div class="chat-in">
-        <input type="text" id="chatInput" placeholder="اكتب رسالتك...">
-        <button onclick="sendLiveMsg()" style="background:var(--gold); border:none; border-radius:10px; width:45px;"><i class="fas fa-paper-plane"></i></button>
-    </div>
+<div class="fab-suggest" onclick="openSuggestModal()">
+    <i class="fas fa-comment-dots"></i>
 </div>
 
-<div class="floating-chat-btn" onclick="toggleChat()"><i class="fas fa-comments"></i></div>
+<div id="suggestModal">
+    <div class="suggest-content">
+        <span class="close-suggest" onclick="closeSuggestModal()">&times;</span>
+        <h3 style="color:var(--blue); margin-bottom:15px; text-align:center;"><i class="fas fa-edit"></i> اقترح علينا أو اطلب مساعدة</h3>
+        <textarea id="suggestInput" rows="4" placeholder="اكتب رسالتك هنا... سنقوم بالرد عليك في هذه الصفحة فوراً" style="text-align: right; border-color: #333;"></textarea>
+        <button class="btn-send-suggest" onclick="sendSuggestion()">إرسال الرسالة 🚀</button>
+        <div id="replyBox"></div>
+    </div>
+</div>
 
 <div id="successModal">
     <div class="modal-content">
@@ -118,13 +118,6 @@
 
 <div class="container">
     <div class="brand">HOTEP</div>
-    
-    <div class="video-box">
-        <video width="100%" autoplay muted loop playsinline style="display: block;">
-            <source src="https://v1.mixkit.co/videos/preview/mixkit-silk-fabric-waving-in-the-wind-42021-large.mp4" type="video/mp4">
-        </video>
-    </div>
-
     <div class="slider-container">
         <div class="slides-wrapper" id="mainSlider">
             <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg" alt="Hotep 1"></div>
@@ -156,8 +149,14 @@
         <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
     </div>
 
-    <div class="form-group"><label>الاسم بالكامل</label><input type="text" id="name" placeholder="أدخل اسمك الثلاثي"></div>
-    <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="phone" placeholder="01xxxxxxxxx"></div>
+    <div class="form-group">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
+    </div>
+    <div class="form-group">
+        <label>رقم الموبايل</label>
+        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
+    </div>
 
     <div class="triple-row">
         <div class="form-group">
@@ -180,12 +179,21 @@
         </div>
         <div class="form-group">
             <label>المقاس</label>
-            <select id="size"><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
+            <select id="size">
+                <option>M</option><option>L</option><option>XL</option><option>XXL</option>
+            </select>
         </div>
     </div>
 
-    <div class="form-group"><label>العنوان بالتفصيل</label><textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea></div>
-    <div class="total-banner">إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه</div>
+    <div class="form-group">
+        <label>العنوان بالتفصيل</label>
+        <textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea>
+    </div>
+    
+    <div class="total-banner">
+        إجمالي الحساب: <span class="total-amount" id="totalDisplay">250</span> جنيه
+    </div>
+    
     <button id="orderBtn" class="pulse-anim" onclick="submitOrder()">تأكيد الطلب الآن</button>
 </div>
 
@@ -197,34 +205,6 @@
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // نظام الدردشة المباشرة (جديد)
-    let chatID = localStorage.getItem('h_chat') || 'chat_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('h_chat', chatID);
-
-    function toggleChat() {
-        const c = document.getElementById('liveChat');
-        c.style.display = (c.style.display === 'flex') ? 'none' : 'flex';
-    }
-
-    function sendLiveMsg() {
-        const i = document.getElementById('chatInput');
-        if(i.value.trim()) {
-            db.ref('chats/' + chatID).push({ s: 'u', t: i.value, d: Date.now() });
-            i.value = '';
-        }
-    }
-
-    db.ref('chats/' + chatID).on('value', s => {
-        const d = document.getElementById('chatDisplay');
-        d.innerHTML = '<div class="chat-msg a">مرحباً بك في هوتب! كيف يمكننا مساعدتك بخصوص طلبك؟</div>';
-        s.forEach(c => {
-            const m = c.val();
-            d.innerHTML += `<div class="chat-msg ${m.s}">${m.t}</div>`;
-        });
-        d.scrollTop = d.scrollHeight;
-    });
-
-    // منطق العمل الأصلي (خط أحمر)
     function updateTotal() {
         const qty = parseInt(document.getElementById('quantity').value) || 1;
         const ship = parseInt(document.getElementById('province').value) || 50;
@@ -238,6 +218,38 @@
         if(slider) slider.style.transform = `translateX(${currentIdx * 100}%)`;
     }, 4000);
 
+    // Suggestion Functions
+    function openSuggestModal() { document.getElementById('suggestModal').style.display = 'flex'; }
+    function closeSuggestModal() { document.getElementById('suggestModal').style.display = 'none'; }
+
+    function sendSuggestion() {
+        const text = document.getElementById('suggestInput').value.trim();
+        const userName = document.getElementById('name').value.trim() || "عميل زائر";
+        if(!text) return alert("من فضلك اكتب رسالتك أولاً");
+
+        const newSuggestRef = db.ref('suggestions').push();
+        const suggestId = newSuggestRef.key;
+
+        newSuggestRef.set({
+            text: text,
+            userName: userName,
+            date: new Date().toLocaleString('ar-EG'),
+            reply: ""
+        }).then(() => {
+            alert("تم الإرسال! ابقِ في هذه الصفحة، سنرد عليك هنا فوراً.");
+            
+            // Watch for reply
+            db.ref('suggestions/' + suggestId).on('value', (snapshot) => {
+                const data = snapshot.val();
+                if(data && data.reply) {
+                    const rb = document.getElementById('replyBox');
+                    rb.style.display = 'block';
+                    rb.innerHTML = `<b>رد الإدارة:</b> ${data.reply}`;
+                }
+            });
+        });
+    }
+
     function submitOrder() {
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
@@ -245,6 +257,7 @@
         const size = document.getElementById('size').value;
         const qtyValue = document.getElementById('quantity').value;
         const qtyText = document.getElementById('quantity').options[document.getElementById('quantity').selectedIndex].text;
+        
         const provElem = document.getElementById('province');
         const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
         const shipCost = parseInt(provElem.value);
@@ -262,7 +275,8 @@
         const orderData = {
             الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
             الكمية: qtyValue, المقاس: size, الاجمالي: total,
-            التوقيت: new Date().toLocaleTimeString('ar-EG'), التاريخ: new Date().toLocaleDateString('ar-EG')
+            التوقيت: new Date().toLocaleTimeString('ar-EG'), التاريخ: new Date().toLocaleDateString('ar-EG'),
+            isArchived: false, الحالة: "جديد"
         };
 
         db.ref('orders').push(orderData).then(() => {
