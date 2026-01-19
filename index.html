@@ -21,7 +21,7 @@
     <title>HOTEP | Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; --blue: #3498db; }
+        :root { --gold: #D4AF37; --black: #000; --dark: #0a0a0a; --gray: #151515; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { background: var(--black); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
@@ -69,15 +69,14 @@
         #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
         #orderBtn:active { transform: scale(0.98); }
 
-        /* Floating Suggestion Button */
-        .fab-suggest { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 25px; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4); z-index: 2000; cursor: pointer; border: 2px solid #fff; }
+        /* Floating Message Button */
+        .fab-msg { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--gold); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 15px rgba(212,175,55,0.4); z-index: 2000; cursor: pointer; border: 2px solid #fff; }
         
-        /* Suggestion Modal */
-        #suggestModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
-        .suggest-content { background: var(--dark); border: 2px solid var(--blue); width: 100%; max-width: 350px; padding: 25px; border-radius: 25px; position: relative; }
+        /* Suggestion Modal (Gold & Black) */
+        #suggestModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 3000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+        .suggest-content { background: var(--dark); border: 2px solid var(--gold); width: 100%; max-width: 360px; padding: 25px; border-radius: 25px; position: relative; text-align: center; }
         .close-suggest { position: absolute; top: 10px; left: 15px; font-size: 25px; color: #555; cursor: pointer; }
-        .btn-send-suggest { background: var(--blue); color: #fff; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; margin-top: 15px; cursor: pointer; }
-        #replyBox { display: none; background: #001a00; border: 1px solid #2ecc71; color: #2ecc71; padding: 10px; border-radius: 10px; margin-top: 15px; font-size: 13px; text-align: right; }
+        .btn-send-suggest { background: var(--gold); color: #000; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; margin-top: 15px; cursor: pointer; font-size: 16px; }
 
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; box-shadow: 0 0 30px rgba(212,175,55,0.2); }
@@ -92,17 +91,26 @@
 </head>
 <body>
 
-<div class="fab-suggest" onclick="openSuggestModal()">
-    <i class="fas fa-comment-dots"></i>
+<div class="fab-msg" onclick="openSuggestModal()">
+    <i class="fas fa-envelope-open-text"></i>
 </div>
 
 <div id="suggestModal">
-    <div class="suggest-content">
+    <div class="suggest-content" id="suggestMain">
         <span class="close-suggest" onclick="closeSuggestModal()">&times;</span>
-        <h3 style="color:var(--blue); margin-bottom:15px; text-align:center;"><i class="fas fa-edit"></i> اقترح علينا أو اطلب مساعدة</h3>
-        <textarea id="suggestInput" rows="4" placeholder="اكتب رسالتك هنا... سنقوم بالرد عليك في هذه الصفحة فوراً" style="text-align: right; border-color: #333;"></textarea>
-        <button class="btn-send-suggest" onclick="sendSuggestion()">إرسال الرسالة 🚀</button>
-        <div id="replyBox"></div>
+        <h3 style="color:var(--gold); margin-bottom:20px;"><i class="fas fa-pen-fancy"></i> رأيك يهمنا في هوتب</h3>
+        
+        <input type="text" id="suggestName" placeholder="اسمك الكريم" style="margin-bottom: 12px; border-color: #222; font-size: 14px;">
+        <textarea id="suggestInput" rows="4" placeholder="اكتب اقتراحك أو رسالتك هنا..." style="text-align: right; border-color: #222; font-size: 14px;"></textarea>
+        
+        <button class="btn-send-suggest" onclick="sendSuggestion()">إرسال الرسالة ✅</button>
+    </div>
+    
+    <div class="suggest-content" id="suggestThanks" style="display:none;">
+        <i class="fas fa-heart" style="font-size: 50px; color: var(--gold); margin-bottom: 15px;"></i>
+        <h2 style="color:var(--gold); margin:0 0 10px 0;">شكراً لثقتك!</h2>
+        <p style="color: #ccc; font-size: 15px; margin-bottom: 20px;">لقد استلمنا رسالتك وسنعمل بها لتطوير تجربتك مع HOTEP</p>
+        <button onclick="closeSuggestModal()" style="background:#222; color:var(--gold); border:1px solid var(--gold); padding:12px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer;">إغلاق</button>
     </div>
 </div>
 
@@ -219,34 +227,31 @@
     }, 4000);
 
     // Suggestion Functions
-    function openSuggestModal() { document.getElementById('suggestModal').style.display = 'flex'; }
+    function openSuggestModal() { 
+        document.getElementById('suggestModal').style.display = 'flex'; 
+        document.getElementById('suggestMain').style.display = 'block';
+        document.getElementById('suggestThanks').style.display = 'none';
+    }
     function closeSuggestModal() { document.getElementById('suggestModal').style.display = 'none'; }
 
     function sendSuggestion() {
         const text = document.getElementById('suggestInput').value.trim();
-        const userName = document.getElementById('name').value.trim() || "عميل زائر";
-        if(!text) return alert("من فضلك اكتب رسالتك أولاً");
+        const userName = document.getElementById('suggestName').value.trim();
+        
+        if(!text || !userName) return alert("من فضلك اكتب اسمك ورسالتك أولاً");
 
-        const newSuggestRef = db.ref('suggestions').push();
-        const suggestId = newSuggestRef.key;
-
-        newSuggestRef.set({
+        db.ref('suggestions').push({
             text: text,
             userName: userName,
-            date: new Date().toLocaleString('ar-EG'),
-            reply: ""
+            date: new Date().toLocaleString('ar-EG')
         }).then(() => {
-            alert("تم الإرسال! ابقِ في هذه الصفحة، سنرد عليك هنا فوراً.");
+            // Show Thanks UI
+            document.getElementById('suggestMain').style.display = 'none';
+            document.getElementById('suggestThanks').style.display = 'block';
             
-            // Watch for reply
-            db.ref('suggestions/' + suggestId).on('value', (snapshot) => {
-                const data = snapshot.val();
-                if(data && data.reply) {
-                    const rb = document.getElementById('replyBox');
-                    rb.style.display = 'block';
-                    rb.innerHTML = `<b>رد الإدارة:</b> ${data.reply}`;
-                }
-            });
+            // Clear inputs
+            document.getElementById('suggestInput').value = "";
+            document.getElementById('suggestName').value = "";
         });
     }
 
