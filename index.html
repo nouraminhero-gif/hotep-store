@@ -34,21 +34,27 @@
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; } 
         
-        /* تعديل حاوية الفيديو لضمان ظهوره */
         .video-container { width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid #222; margin-bottom: 20px; background: #000; }
         .video-container video { width: 100%; display: block; background: #000; }
 
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); border: 2px solid #fff; }
 
-        /* تعديل شكل حقول الإدخال والقائمة المنسدلة */
-        input, select, textarea { 
-            width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid var(--gold) !important; background: var(--black) !important; color: #fff !important; font-size: 16px; text-align: center; outline: none; transition: border 0.3s;
+        /* تعديل القائمة المنسدلة لتكون سوداء بالكامل */
+        select { 
+            width: 100% !important; padding: 12px; border-radius: 12px; 
+            border: 1px solid var(--gold) !important; 
+            background: var(--black) !important; 
+            color: var(--gold) !important; 
+            font-size: 14px; text-align: center; outline: none;
+            appearance: none; -webkit-appearance: none;
         }
-        input:focus, select:focus { border-color: #fff !important; }
+        select option { background: var(--black); color: #fff; padding: 10px; }
 
-        /* تخصيص لون قائمة المحافظات عند الفتح */
-        select option { background: var(--black); color: #fff; }
+        input, textarea { 
+            width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s;
+        }
+        input:focus { border-color: var(--gold); }
 
         .product-features { background: #000; border: 1px solid #1a1a1a; border-radius: 20px; padding: 15px; margin: 25px 0; text-align: right; }
         .product-features h3 { color: var(--gold); font-size: 18px; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; padding-bottom: 8px; }
@@ -78,13 +84,8 @@
         #orderBtn:active { transform: scale(0.98); }
 
         .fab-msg { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--gold); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 15px rgba(212,175,55,0.4); z-index: 2000; cursor: pointer; border: 2px solid #fff; }
-        #suggestModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 3000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
-        .suggest-content { background: var(--dark); border: 2px solid var(--gold); width: 100%; max-width: 360px; padding: 25px; border-radius: 25px; position: relative; text-align: center; }
-        .close-suggest { position: absolute; top: 10px; left: 15px; font-size: 25px; color: #555; cursor: pointer; }
-        .btn-send-suggest { background: var(--gold); color: #000; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; margin-top: 15px; cursor: pointer; font-size: 16px; }
-
         #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; box-shadow: 0 0 30px rgba(212,175,55,0.2); }
+        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; }
 
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
@@ -95,36 +96,6 @@
     </style>
 </head>
 <body>
-
-<div class="fab-msg" onclick="openSuggestModal()">
-    <i class="fas fa-envelope-open-text"></i>
-</div>
-
-<div id="suggestModal">
-    <div class="suggest-content" id="suggestMain">
-        <span class="close-suggest" onclick="closeSuggestModal()">&times;</span>
-        <h3 style="color:var(--gold); margin-bottom:20px;"><i class="fas fa-pen-fancy"></i> رأيك يهمنا في هوتب</h3>
-        <input type="text" id="suggestName" placeholder="اسمك الكريم" style="margin-bottom: 12px; border-color: #222; font-size: 14px;">
-        <textarea id="suggestInput" rows="4" placeholder="اكتب اقتراحك أو رسالتك هنا..." style="text-align: right; border-color: #222; font-size: 14px;"></textarea>
-        <button class="btn-send-suggest" onclick="sendSuggestion()">إرسال الرسالة ✅</button>
-    </div>
-    <div class="suggest-content" id="suggestThanks" style="display:none;">
-        <i class="fas fa-heart" style="font-size: 50px; color: var(--gold); margin-bottom: 15px;"></i>
-        <h2 style="color:var(--gold); margin:0 0 10px 0;">شكراً لثقتك!</h2>
-        <p style="color: #ccc; font-size: 15px; margin-bottom: 20px;">لقد استلمنا رسالتك وسنعمل بها لتطوير تجربتك مع HOTEP</p>
-        <button onclick="closeSuggestModal()" style="background:#222; color:var(--gold); border:1px solid var(--gold); padding:12px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer;">إغلاق</button>
-    </div>
-</div>
-
-<div id="successModal">
-    <div class="modal-content">
-        <i class="fas fa-check-circle" style="font-size: 50px; color: #25d366; margin-bottom: 15px;"></i>
-        <h2 style="color:var(--gold); margin:0 0 10px 0;">تم تسجيل طلبك!</h2>
-        <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">سيتم التواصل معك هاتفياً لتأكيد الشحن</p>
-        <div id="confirmDetails" style="background:#000; padding:15px; border-radius:15px; font-size:14px; margin-bottom:20px; line-height:1.8; text-align: right; color: #eee; border: 1px solid #222;"></div>
-        <button onclick="window.location.reload()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer; font-size: 16px;">إغلاق</button>
-    </div>
-</div>
 
 <div class="container">
     <div class="brand">HOTEP</div>
@@ -137,7 +108,7 @@
     </div>
 
     <div class="video-container">
-        <video autoplay muted loop playsinline controls>
+        <video autoplay muted loop playsinline poster="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg">
             <source src="https://raw.githubusercontent.com/nouraminhero-gif/hotep-store/main/VN-20260213_201602263.mp4" type="video/mp4">
         </video>
     </div>
@@ -148,65 +119,41 @@
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
             <li><i class="fas fa-check-circle"></i> <span><b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</span></li>
-            <li><i class="fas fa-check-circle"></i> <span><b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</span></li>
             <li><i class="fas fa-check-circle"></i> <span><b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</span></li>
         </ul>
-    </div>
-
-    <div class="features-strip">
-        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
-        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
-        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
-    </div>
-
-    <div class="size-grid">
-        <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
-        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
-        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
-        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
-        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
-    </div>
-
-    <div class="form-group">
-        <label>الاسم بالكامل</label>
-        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
-    </div>
-    <div class="form-group">
-        <label>رقم الموبايل</label>
-        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
     </div>
 
     <div class="triple-row">
         <div class="form-group">
             <label>المحافظة</label>
             <select id="province" onchange="updateTotal()">
-                <option value="50">القاهرة</option>
-                <option value="50">الجيزة</option>
-                <option value="60">الإسكندرية</option>
-                <option value="60">البحيرة</option>
-                <option value="70">الدقهلية</option>
-                <option value="70">القليوبية</option>
-                <option value="70">الغربية</option>
-                <option value="70">كفر الشيخ</option>
-                <option value="70">المنوفية</option>
-                <option value="70">الشرقية</option>
-                <option value="70">دمياط</option>
-                <option value="70">الإسماعيلية</option>
-                <option value="70">بورسعيد</option>
-                <option value="70">السويس</option>
-                <option value="80">الفيوم</option>
-                <option value="80">بني سويف</option>
-                <option value="80">المنيا</option>
-                <option value="80">أسيوط</option>
-                <option value="80">سوهاج</option>
-                <option value="90">قنا</option>
-                <option value="90">الأقصر</option>
-                <option value="90">أسوان</option>
-                <option value="90">البحر الأحمر</option>
-                <option value="90">مطروح</option>
-                <option value="100">شمال سيناء</option>
-                <option value="100">جنوب سيناء</option>
-                <option value="100">الوادي الجديد</option>
+                <option value="50">القاهرة (50ج)</option>
+                <option value="50">الجيزة (50ج)</option>
+                <option value="60">الإسكندرية (60ج)</option>
+                <option value="60">البحيرة (60ج)</option>
+                <option value="70">الدقهلية (70ج)</option>
+                <option value="70">القليوبية (70ج)</option>
+                <option value="70">الغربية (70ج)</option>
+                <option value="70">كفر الشيخ (70ج)</option>
+                <option value="70">المنوفية (70ج)</option>
+                <option value="70">الشرقية (70ج)</option>
+                <option value="70">دمياط (70ج)</option>
+                <option value="70">الإسماعيلية (70ج)</option>
+                <option value="70">بورسعيد (70ج)</option>
+                <option value="70">السويس (70ج)</option>
+                <option value="80">الفيوم (80ج)</option>
+                <option value="80">بني سويف (80ج)</option>
+                <option value="80">المنيا (80ج)</option>
+                <option value="80">أسيوط (80ج)</option>
+                <option value="80">سوهاج (80ج)</option>
+                <option value="90">قنا (90ج)</option>
+                <option value="90">الأقصر (90ج)</option>
+                <option value="90">أسوان (90ج)</option>
+                <option value="90">البحر الأحمر (90ج)</option>
+                <option value="90">مطروح (90ج)</option>
+                <option value="100">شمال سيناء (100ج)</option>
+                <option value="100">جنوب سيناء (100ج)</option>
+                <option value="100">الوادي الجديد (100ج)</option>
             </select>
         </div>
         <div class="form-group">
@@ -226,6 +173,14 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
+    </div>
+    <div class="form-group">
+        <label>رقم الموبايل</label>
+        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
+    </div>
     <div class="form-group">
         <label>العنوان بالتفصيل</label>
         <textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea>
@@ -259,36 +214,14 @@
         if(slider) slider.style.transform = `translateX(${currentIdx * 100}%)`;
     }, 4000);
 
-    function openSuggestModal() { 
-        document.getElementById('suggestModal').style.display = 'flex'; 
-        document.getElementById('suggestMain').style.display = 'block';
-        document.getElementById('suggestThanks').style.display = 'none';
-    }
-    function closeSuggestModal() { document.getElementById('suggestModal').style.display = 'none'; }
-
-    function sendSuggestion() {
-        const text = document.getElementById('suggestInput').value.trim();
-        const userName = document.getElementById('suggestName').value.trim();
-        if(!text || !userName) return alert("من فضلك اكتب اسمك ورسالتك أولاً");
-        db.ref('suggestions').push({
-            text: text, userName: userName, date: new Date().toLocaleString('ar-EG')
-        }).then(() => {
-            document.getElementById('suggestMain').style.display = 'none';
-            document.getElementById('suggestThanks').style.display = 'block';
-            document.getElementById('suggestInput').value = "";
-            document.getElementById('suggestName').value = "";
-        });
-    }
-
     function submitOrder() {
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const address = document.getElementById('address').value.trim();
         const size = document.getElementById('size').value;
         const qtyValue = document.getElementById('quantity').value;
-        const qtyText = document.getElementById('quantity').options[document.getElementById('quantity').selectedIndex].text;
         const provElem = document.getElementById('province');
-        const provName = provElem.options[provElem.selectedIndex].text;
+        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
         const shipCost = parseInt(provElem.value);
         const total = (parseInt(qtyValue) * 200) + shipCost;
 
@@ -305,7 +238,7 @@
             الاسم: name, الهاتف: phone, المحافظة: provName, العنوان: address,
             الكمية: qtyValue, المقاس: size, الاجمالي: total,
             التوقيت: new Date().toLocaleTimeString('ar-EG'), التاريخ: new Date().toLocaleDateString('ar-EG'),
-            isArchived: false, الحالة: "جديد"
+            الحالة: "جديد"
         };
 
         db.ref('orders').push(orderData).then(() => {
@@ -313,9 +246,8 @@
             const chatId = "7795759414";
             const msg = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyValue} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
             fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`);
-
-            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📏 المقاس:</b> ${size}<br><b>📦 الطلب:</b> ${qtyText}<br><b>📍 المحافظة:</b> ${provName}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
-            document.getElementById('successModal').style.display = 'flex';
+            alert("تم تسجيل طلبك بنجاح!");
+            window.location.reload();
         }).catch(() => {
             btn.disabled = false;
             btn.innerText = "تأكيد الطلب الآن";
