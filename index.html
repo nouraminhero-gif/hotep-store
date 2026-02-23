@@ -29,11 +29,14 @@
         .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 
-        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px; border: 1px solid #222; }
+        .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 10px; border: 1px solid #222; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; } 
         
+        .video-container { width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid #222; margin-bottom: 20px; background: #000; }
+        .video-container video { width: 100%; display: block; }
+
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); border: 2px solid #fff; }
 
@@ -69,10 +72,7 @@
         #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
         #orderBtn:active { transform: scale(0.98); }
 
-        /* Floating Message Button */
         .fab-msg { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--gold); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 15px rgba(212,175,55,0.4); z-index: 2000; cursor: pointer; border: 2px solid #fff; }
-        
-        /* Suggestion Modal (Gold & Black) */
         #suggestModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 3000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .suggest-content { background: var(--dark); border: 2px solid var(--gold); width: 100%; max-width: 360px; padding: 25px; border-radius: 25px; position: relative; text-align: center; }
         .close-suggest { position: absolute; top: 10px; left: 15px; font-size: 25px; color: #555; cursor: pointer; }
@@ -99,13 +99,10 @@
     <div class="suggest-content" id="suggestMain">
         <span class="close-suggest" onclick="closeSuggestModal()">&times;</span>
         <h3 style="color:var(--gold); margin-bottom:20px;"><i class="fas fa-pen-fancy"></i> رأيك يهمنا في هوتب</h3>
-        
         <input type="text" id="suggestName" placeholder="اسمك الكريم" style="margin-bottom: 12px; border-color: #222; font-size: 14px;">
         <textarea id="suggestInput" rows="4" placeholder="اكتب اقتراحك أو رسالتك هنا..." style="text-align: right; border-color: #222; font-size: 14px;"></textarea>
-        
         <button class="btn-send-suggest" onclick="sendSuggestion()">إرسال الرسالة ✅</button>
     </div>
-    
     <div class="suggest-content" id="suggestThanks" style="display:none;">
         <i class="fas fa-heart" style="font-size: 50px; color: var(--gold); margin-bottom: 15px;"></i>
         <h2 style="color:var(--gold); margin:0 0 10px 0;">شكراً لثقتك!</h2>
@@ -126,12 +123,20 @@
 
 <div class="container">
     <div class="brand">HOTEP</div>
+    
     <div class="slider-container">
         <div class="slides-wrapper" id="mainSlider">
             <div class="slide"><img src="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg" alt="Hotep 1"></div>
             <div class="slide"><img src="https://i.postimg.cc/MTBsdrMY/1000068271-edit-1412030296766163.jpg" alt="Hotep 2"></div>
         </div>
     </div>
+
+    <div class="video-container">
+        <video autoplay muted loop playsinline>
+            <source src="https://raw.githubusercontent.com/nouraminhero-gif/hotep-store/main/VN-20260213_201602263.mp4" type="video/mp4">
+        </video>
+    </div>
+
     <div class="price-box"><div class="price">200 جنيه للعلبة</div></div>
 
     <div class="product-features">
@@ -170,10 +175,33 @@
         <div class="form-group">
             <label>المحافظة</label>
             <select id="province" onchange="updateTotal()">
-                <option value="50">القاهرة (50ج)</option>
-                <option value="50">الجيزة (50ج)</option>
-                <option value="70">الإسكندرية (70ج)</option>
-                <option value="70">الأقاليم (70ج)</option>
+                <option value="50">القاهرة</option>
+                <option value="50">الجيزة</option>
+                <option value="60">الإسكندرية</option>
+                <option value="60">البحيرة</option>
+                <option value="60">الدقهلية</option>
+                <option value="60">القليوبية</option>
+                <option value="60">الغربية</option>
+                <option value="60">كفر الشيخ</option>
+                <option value="60">المنوفية</option>
+                <option value="60">الشرقية</option>
+                <option value="60">دمياط</option>
+                <option value="60">الإسماعيلية</option>
+                <option value="60">بورسعيد</option>
+                <option value="60">السويس</option>
+                <option value="80">الفيوم</option>
+                <option value="80">بني سويف</option>
+                <option value="80">المنيا</option>
+                <option value="80">أسيوط</option>
+                <option value="90">سوهاج</option>
+                <option value="90">قنا</option>
+                <option value="90">الأقصر</option>
+                <option value="90">أسوان</option>
+                <option value="90">البحر الأحمر</option>
+                <option value="90">مطروح</option>
+                <option value="100">شمال سيناء</option>
+                <option value="100">جنوب سيناء</option>
+                <option value="100">الوادي الجديد</option>
             </select>
         </div>
         <div class="form-group">
@@ -226,7 +254,6 @@
         if(slider) slider.style.transform = `translateX(${currentIdx * 100}%)`;
     }, 4000);
 
-    // Suggestion Functions
     function openSuggestModal() { 
         document.getElementById('suggestModal').style.display = 'flex'; 
         document.getElementById('suggestMain').style.display = 'block';
@@ -237,19 +264,12 @@
     function sendSuggestion() {
         const text = document.getElementById('suggestInput').value.trim();
         const userName = document.getElementById('suggestName').value.trim();
-        
         if(!text || !userName) return alert("من فضلك اكتب اسمك ورسالتك أولاً");
-
         db.ref('suggestions').push({
-            text: text,
-            userName: userName,
-            date: new Date().toLocaleString('ar-EG')
+            text: text, userName: userName, date: new Date().toLocaleString('ar-EG')
         }).then(() => {
-            // Show Thanks UI
             document.getElementById('suggestMain').style.display = 'none';
             document.getElementById('suggestThanks').style.display = 'block';
-            
-            // Clear inputs
             document.getElementById('suggestInput').value = "";
             document.getElementById('suggestName').value = "";
         });
@@ -262,9 +282,8 @@
         const size = document.getElementById('size').value;
         const qtyValue = document.getElementById('quantity').value;
         const qtyText = document.getElementById('quantity').options[document.getElementById('quantity').selectedIndex].text;
-        
         const provElem = document.getElementById('province');
-        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
+        const provName = provElem.options[provElem.selectedIndex].text;
         const shipCost = parseInt(provElem.value);
         const total = (parseInt(qtyValue) * 200) + shipCost;
 
@@ -290,13 +309,14 @@
             const msg = `🔥 أوردر جديد HOTEP\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📏 المقاس: ${size}\n📦 الكمية: ${qtyValue} علبة\n📍 المحافظة: ${provName}\n🏠 العنوان: ${address}\n💰 الإجمالي: ${total} ج`;
             fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`);
 
-            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📏 المقاس:</b> ${size}<br><b>📦 الطلب:</b> ${qtyText}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
+            document.getElementById('confirmDetails').innerHTML = `<b>👤 الاسم:</b> ${name}<br><b>📏 المقاس:</b> ${size}<br><b>📦 الطلب:</b> ${qtyText}<br><b>📍 المحافظة:</b> ${provName}<br><b>💰 الإجمالي:</b> ${total} جنيه`;
             document.getElementById('successModal').style.display = 'flex';
         }).catch(() => {
             btn.disabled = false;
             btn.innerText = "تأكيد الطلب الآن";
         });
     }
+    updateTotal();
 </script>
 </body>
 </html>
