@@ -29,27 +29,37 @@
         .container { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid #1a1a1a; border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .brand { color: var(--gold); font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 
+        /* السلايدر العلوي */
         .slider-container { width: 100%; height: 350px; position: relative; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 10px; border: 1px solid #222; }
         .slides-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .slide { min-width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .slide img { width: 100%; height: 100%; object-fit: contain; } 
         
-        .video-container { width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid #222; margin-bottom: 20px; background: #000; }
+        /* حاوية الفيديو */
+        .video-container { width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid var(--gold); margin-bottom: 20px; background: #000; position: relative; }
         .video-container video { width: 100%; display: block; background: #000; }
 
         .price-box { text-align: center; margin-top: -30px; position: relative; z-index: 20; }
         .price { background: var(--gold); color: #000; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4); border: 2px solid #fff; }
 
-        /* تعديل القائمة المنسدلة لتكون سوداء بالكامل */
+        /* تعديل جذري للقوائم لضمان الخلفية السوداء */
         select { 
             width: 100% !important; padding: 12px; border-radius: 12px; 
             border: 1px solid var(--gold) !important; 
-            background: var(--black) !important; 
+            background-color: #000 !important; 
             color: var(--gold) !important; 
             font-size: 14px; text-align: center; outline: none;
-            appearance: none; -webkit-appearance: none;
+            cursor: pointer;
+            appearance: none; -webkit-appearance: none; -moz-appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="%23D4AF37"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat; background-position: left 10px center;
         }
-        select option { background: var(--black); color: #fff; padding: 10px; }
+
+        /* هذا الجزء يضمن لون الخيارات داخل القائمة */
+        select option { 
+            background-color: #000 !important; 
+            color: var(--gold) !important; 
+        }
 
         input, textarea { 
             width: 100% !important; padding: 15px; border-radius: 12px; border: 1px solid #252525; background: #000; color: #fff; font-size: 16px; text-align: center; outline: none; transition: border 0.3s;
@@ -75,18 +85,12 @@
 
         .triple-row { display: flex; gap: 10px; margin-bottom: 18px; width: 100%; }
         .triple-row .form-group { margin-bottom: 0; flex: 1; }
-        .triple-row select { padding: 12px 2px; font-size: 11px; font-weight: bold; height: 50px; }
 
         .total-banner { background: #1a1a1a; border: 1px dashed var(--gold); padding: 18px; border-radius: 15px; margin-top: 20px; }
         .total-amount { color: var(--gold); font-size: 26px; font-weight: 900; }
 
         #orderBtn { width: 100%; padding: 22px; background: var(--gold); color: #000; border: none; border-radius: 15px; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
-        #orderBtn:active { transform: scale(0.98); }
-
-        .fab-msg { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--gold); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 15px rgba(212,175,55,0.4); z-index: 2000; cursor: pointer; border: 2px solid #fff; }
-        #successModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--dark); border: 2px solid var(--gold); padding: 30px 20px; border-radius: 30px; text-align: center; width: 100%; max-width: 340px; }
-
+        
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
             70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
@@ -108,7 +112,7 @@
     </div>
 
     <div class="video-container">
-        <video autoplay muted loop playsinline poster="https://i.postimg.cc/htKHhgzX/1767276815616-edit-1411419282935049.jpg">
+        <video autoplay muted loop playsinline controls>
             <source src="https://raw.githubusercontent.com/nouraminhero-gif/hotep-store/main/VN-20260213_201602263.mp4" type="video/mp4">
         </video>
     </div>
@@ -119,8 +123,32 @@
         <h3><i class="fas fa-gem"></i> فخامة القطن المصري</h3>
         <ul>
             <li><i class="fas fa-check-circle"></i> <span><b>قطن أصلي 100%:</b> نسيج فائق النعومة لراحة تدوم طوال اليوم.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>معالجة ضد الحساسية:</b> أقمشة صديقة للبشرة ولا تسبب تهيجاً.</span></li>
             <li><i class="fas fa-check-circle"></i> <span><b>العلبة (قطعتين):</b> تغليف فاخر يليق بماركة HOTEP.</span></li>
         </ul>
+    </div>
+
+    <div class="features-strip">
+        <div class="feat-item"><i class="fas fa-shipping-fast"></i>شحن سريع</div>
+        <div class="feat-item"><i class="fas fa-box-open"></i>معاينة المنتج</div>
+        <div class="feat-item"><i class="fas fa-shield-alt"></i>ضمان جودة</div>
+    </div>
+
+    <div class="size-grid">
+        <div class="size-header">المقاس</div><div class="size-header">العرض</div><div class="size-header">الطول</div><div class="size-header">الوزن</div>
+        <div class="size-item">M</div><div class="size-item">34سم</div><div class="size-item">26سم</div><div class="size-item">55-65k</div>
+        <div class="size-item">L</div><div class="size-item">36سم</div><div class="size-item">27سم</div><div class="size-item">65-75k</div>
+        <div class="size-item">XL</div><div class="size-item">38سم</div><div class="size-item">28سم</div><div class="size-item">75-85k</div>
+        <div class="size-item">XXL</div><div class="size-item">40سم</div><div class="size-item">29سم</div><div class="size-item">85-100k</div>
+    </div>
+
+    <div class="form-group">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
+    </div>
+    <div class="form-group">
+        <label>رقم الموبايل</label>
+        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
     </div>
 
     <div class="triple-row">
@@ -174,14 +202,6 @@
     </div>
 
     <div class="form-group">
-        <label>الاسم بالكامل</label>
-        <input type="text" id="name" placeholder="أدخل اسمك الثلاثي">
-    </div>
-    <div class="form-group">
-        <label>رقم الموبايل</label>
-        <input type="tel" id="phone" placeholder="01xxxxxxxxx">
-    </div>
-    <div class="form-group">
         <label>العنوان بالتفصيل</label>
         <textarea id="address" rows="3" placeholder="المنطقة، الشارع، رقم المنزل..."></textarea>
     </div>
@@ -221,7 +241,7 @@
         const size = document.getElementById('size').value;
         const qtyValue = document.getElementById('quantity').value;
         const provElem = document.getElementById('province');
-        const provName = provElem.options[provElem.selectedIndex].text.split(' ')[0];
+        const provName = provElem.options[provElem.selectedIndex].text;
         const shipCost = parseInt(provElem.value);
         const total = (parseInt(qtyValue) * 200) + shipCost;
 
